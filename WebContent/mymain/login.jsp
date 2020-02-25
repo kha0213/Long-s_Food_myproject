@@ -11,6 +11,5 @@
 <body>
 <jsp:include page="header.jsp"/>
 <h1>로그인페이지</h1>
-<jsp:include page="footer.jsp"/>
 </body>
 </html>

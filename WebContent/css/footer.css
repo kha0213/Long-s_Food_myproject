@@ -10,11 +10,8 @@
 #footer{
     background-color: #f5f3f6;
 }
-#footer .footer_content{
-    display: flex;
-    justify-content: center;
-}
-#footer .footer_content p{
+
+#footer div div{
     font-family: 'Roboto', sans-serif;
     font-size: 1.3em;
     width: 50%;
