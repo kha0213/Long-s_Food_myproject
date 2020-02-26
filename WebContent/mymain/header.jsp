@@ -25,12 +25,9 @@
 	<div class="container-flude" id="header">
 		<div class="row" id="header_nav">
 			<div class="col-5" id="header_nav_logo">
-				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="#"><img
-							alt="메인로고" src="${conPath }/image/logo.png" id="logo"></a></li>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">
-					Long's Food
-					</a></li>
+				<ul class="nav" id="header_nav_ul">
+					<li class="nav-item" class="clear-fix"><a class="nav-link" href="#"><img
+							alt="메인로고" src="${conPath }/image/logo.png" id="logo"> Long's Food</a></li>
 
 				</ul>
 			</div>
