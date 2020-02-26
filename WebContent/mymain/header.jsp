@@ -68,7 +68,6 @@
 							<a class="dropdown-item" href="#">Cart</a>
 							<a class="dropdown-item" href="#">Service Center</a>
 						</div></li>
-
 				</ul>
 			</div>
 			<!-- 모바일일떄 -->
