@@ -21,7 +21,7 @@
     transition: all 0.5s;
     font-size: 1.3em;
 }
-#header #header_nav_logo ul:hover{
+#header #header_nav_logo #header_nav_ul li:hover{
     transition: all 1s;
     transform: rotateZ(-3deg);
 }

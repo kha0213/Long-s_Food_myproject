@@ -25,6 +25,7 @@
         font-family: 'Kaushan Script', cursive;
         font-family: 'Lobster Two', cursive;
         font-family: 'Lobster', cursive;
+        
         font-family: 'Nanum Pen Script', cursive;
         font-family: 'Roboto', sans-serif;
         font-family: 'Alata', sans-serif;
