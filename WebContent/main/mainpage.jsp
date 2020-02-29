@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="conPath" value="${pageContext.request.contextPath }"></c:set>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +35,40 @@
 <link rel="stylesheet" href="${conPath }/css/content.css" type="text/css">
 
 </head>
+<c:if test="${joinResult eq 1 }">
+	<script>
+		alert('회원가입에 성공하셨습니다. 로그인 이후에 서비스이용해주세요');
+		window.close();
+	</script>
+</c:if>
+<c:if test="${joinResult eq 0 }">
+	<script>
+		alert('회원가입에 실패하셨습니다. 관리자에게 문의해주세요');
+		window.close();
+	</script>
+</c:if>
+
+<c:if test="${loginResult eq true }">
+	<script>
+		alert('로그인 성공');
+		window.close();
+	</script>
+</c:if>
+<c:if test="${loginResult eq false }">
+	<script>
+		alert('로그인 실패 아이디와 비밀번호를 확인해주세요');
+		window.close();
+	</script>
+</c:if>
+
+
+
+
+
+
+
+
+
 
 <body>
 	<div id="wrap" class="container-fluid">

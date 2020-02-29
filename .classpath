@@ -13,5 +13,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Study/IDE/apache-tomcat-9.0.30/lib/cos.jar"/>
+	<classpathentry kind="lib" path="C:/Study/IDE/apache-tomcat-9.0.30/lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Study/IDE/apache-tomcat-9.0.30/lib/jstl.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

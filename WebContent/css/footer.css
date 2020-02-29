@@ -13,10 +13,14 @@
 
 #footer div div{
     font-family: 'Roboto', sans-serif;
-    font-size: 1.3em;
+    font-size: 1.1em;
     width: 50%;
 }
-
+@media (max-width:700px){
+	#footer div div{
+		font-size: 0.8em;
+	}
+}
 
 #footer .footer_logo{
     width: 100%;

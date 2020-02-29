@@ -9,7 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
 <style>
-
 </style>
 <link rel="stylesheet" href="${conPath }/css/header.css">
 <link rel="stylesheet"
@@ -19,6 +18,24 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Alata|Dancing+Script|Gochi+Hand|Indie+Flower|Kaushan+Script|Lobster|Lobster+Two|Nanum+Pen+Script|Roboto&display=swap"
 	rel="stylesheet">
+<c:if test="${not empty joinView }">
+	<script>
+		window.open(
+						"${conPath}/member/join.jsp",
+						"_blank",
+						"toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=500,width=600,height=850");
+	
+	</script>
+</c:if>
+<c:if test="${not empty loginView }">
+	<script>
+		window.open(
+						"${conPath}/member/login.jsp",
+						"_blank",
+						"toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=500,width=462,height=364");
+	
+	</script>
+</c:if>
 </head>
 <body>
 
@@ -26,19 +43,30 @@
 		<div class="row" id="header_nav">
 			<div class="col-5" id="header_nav_logo">
 				<ul class="nav" id="header_nav_ul">
-					<li class="nav-item" class="clear-fix"><a class="nav-link" href="#"><img
-							alt="메인로고" src="${conPath }/image/logo.png" id="logo"> Long's Food</a></li>
+					<li class="nav-item" class="clear-fix"><a class="nav-link"
+						href="${conPath }/main.do"><img alt="메인로고" src="${conPath }/image/logo.png"
+							id="logo"> Long's Food</a></li>
 
 				</ul>
 			</div>
 			<div class="col-7" id="header_nav_pc">
 				<ul class="nav justify-content-end">
-					<li class="nav-item"><a class="nav-link text-dark" href="#">Home</a>
+					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/main.do">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">Login</a></li>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">Sign Up</a></li>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">My Page</a></li>
+					<c:if test="${empty member }">
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/loginView.do">Login</a></li>
+						<li class="nav-item"><a class="nav-link text-dark"
+							href="${conPath }/joinView.do">Sign Up</a></li>
+					</c:if>
+					<c:if test="${not empty member }">
+						<li class="nav-item"><a class="nav-link text-dark"
+							href="${conPath }/joinView.do">${member.mname }(${member.mid })님</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="#">My
+								Page</a></li>
+					</c:if>
 					<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
+					<li class="nav-item"><a class="nav-link text-dark" href="#">C.S</a></li>
+
 				</ul>
 			</div>
 			<!-- 태블릿,PC일떄 -->
@@ -51,19 +79,26 @@
 					<li class="nav-item"><a class="nav-link" href="#"> <img
 							alt="cart" src="${conPath }/image/cart.png">
 					</a></li>
-					<li class="nav-item dropdown">
-					<a	class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 						role="button" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false"> 
-						<img alt="cart" src="${conPath }/image/menu.png">
+						aria-expanded="false"> <img alt="cart"
+							src="${conPath }/image/menu.png">
 					</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Home</a> 
-							<a class="dropdown-item" href="#">Login</a> 
-							<a class="dropdown-item" href="#">Sign Up</a> 
-							<a class="dropdown-item" href="#">My Page</a> 
-							<a class="dropdown-item" href="#">Cart</a>
-							<a class="dropdown-item" href="#">Service Center</a>
+						<div class="dropdown-menu dropdown-menu-right"
+							aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Home</a>
+							<c:if test="${empty member }">
+								<a class="dropdown-item" href="${conPath }/loginView.do">Login</a>
+								<a class="dropdown-item" href="${conPath }/joinView.do">Sign
+									Up</a>
+							</c:if>
+							<c:if test="${not empty member }">
+								<a class="dropdown-item" href="${conPath }/joinView.do">${member.mname }(${member.mid })님</a>
+								<a class="dropdown-item" href="#">My Page</a>
+							</c:if>
+							<a class="dropdown-item" href="#">Cart</a> <a
+								class="dropdown-item" href="#">Service Center</a>
 						</div></li>
 				</ul>
 			</div>
