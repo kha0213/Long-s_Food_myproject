@@ -94,6 +94,12 @@
 						</th>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="2" class="text-right"><input type="button" onclick="location.href='${conPath}/mgjoinView.do'" class="btn btn-outline-dark btn-sm" value="관리자 등록">
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</form>
 	</div>

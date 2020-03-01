@@ -15,9 +15,9 @@
 </head>
 <body>
 	
-	<form action="${conPath }/login.do" method="post">
+	<form action="${conPath }/login.do" method="post" name="loginfrm">
   <div class="form-group text-center m-3">
-    <h2>로그인</h2>
+    <h2>회원 로그인</h2>
   </div>
   <div class="form-group m-3">
     <label>ID</label>
@@ -30,6 +30,8 @@
   <div class="text-center">
   <button type="submit" class="btn btn-outline-success">로그인</button>
 	</div>
+	<div class="text-right pr-1"><input type="button" onclick="location.href='${conPath}/mgloginView.do'" class="btn btn-outline-dark btn-sm" value="관리자 로그인">
+    </div>
 </form>
 	
 	

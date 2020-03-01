@@ -20,7 +20,7 @@ public class LoginService implements Service {
 		else {
 			request.setAttribute("loginResult", true);
 			HttpSession session = request.getSession();
-			session.setAttribute("member", mDao.loginMember(mid, mpw));
+			session.setAttribute("member", member);
 		}
 		
 		

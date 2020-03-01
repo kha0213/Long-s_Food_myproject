@@ -44,11 +44,11 @@
     
 }
 
-#content #content_background{
+/* #content #content_background{
     height: 800px;
     background: url('../image/ex11.jpg') no-repeat 0 0 ;
     background-size: cover;
-}
+} */
 #content #main{
     border: 5px gray solid;
     background-color: #f5f3f6;
@@ -63,4 +63,5 @@
     border: 1px red solid;
     background-color: #f5f3f6;
 }
-
+#content #carouselImage{
+}

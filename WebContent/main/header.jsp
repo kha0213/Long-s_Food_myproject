@@ -29,13 +29,12 @@
 </c:if>
 <c:if test="${not empty loginView }">
 	<script>
-		window.open(
-						"${conPath}/member/login.jsp",
+	window.open(		"${conPath}/member/login.jsp",
 						"_blank",
 						"toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=500,width=462,height=364");
-	
 	</script>
 </c:if>
+
 </head>
 <body>
 
@@ -53,18 +52,28 @@
 				<ul class="nav justify-content-end">
 					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/main.do">Home</a>
 					</li>
-					<c:if test="${empty member }">
+					<!-- 로그인 전 헤더 -->
+					<c:if test="${empty member && empty manager }">
 						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/loginView.do">Login</a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/joinView.do">Sign Up</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
 					</c:if>
+					<!-- 고객 헤더 -->
 					<c:if test="${not empty member }">
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/joinView.do">${member.mname }(${member.mid })님</a></li>
-						<li class="nav-item"><a class="nav-link text-dark" href="#">My
-								Page</a></li>
+							href="${conPath }/mypage.do"><small>${member.mname }님</small></a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/logout.do">Log out</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
 					</c:if>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
+					<!-- 관리자 헤더 -->
+					<c:if test="${not empty manager }">
+						<li class="nav-item"><a class="nav-link text-dark"
+							href="${conPath }/main.do"><small>${manager.mgname }님</small></a></li>
+						<li class="nav-item"><a class="nav-link text-dark"
+							href="${conPath }/registProduct.do">상품등록</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/logout.do">Log out</a></li>
+					</c:if>
 					<li class="nav-item"><a class="nav-link text-dark" href="#">C.S</a></li>
 
 				</ul>
@@ -87,15 +96,20 @@
 					</a>
 						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Home</a>
-							<c:if test="${empty member }">
+							<a class="dropdown-item" href="${conPath }/main.do">Home</a>
+							<c:if test="${empty member && empty manager }">
 								<a class="dropdown-item" href="${conPath }/loginView.do">Login</a>
 								<a class="dropdown-item" href="${conPath }/joinView.do">Sign
 									Up</a>
 							</c:if>
 							<c:if test="${not empty member }">
-								<a class="dropdown-item" href="${conPath }/joinView.do">${member.mname }(${member.mid })님</a>
+								<a class="dropdown-item" href="${conPath }/mypage.do">${member.mname }님</a>
 								<a class="dropdown-item" href="#">My Page</a>
+								<a class="dropdown-item" href="${conPath }/logout.do">Log out</a>
+							</c:if>
+							<c:if test="${not empty manager }">
+								<a class="dropdown-item" href="${conPath }/registProduct.do">상품등록</a>
+								<a class="dropdown-item" href="${conPath }/logout.do">Log out</a>
 							</c:if>
 							<a class="dropdown-item" href="#">Cart</a> <a
 								class="dropdown-item" href="#">Service Center</a>
