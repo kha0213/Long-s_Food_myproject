@@ -104,19 +104,8 @@
 	<div id="wrap" class="container">
 		<jsp:include page="header.jsp" />
 
-		<div id="content" >
-			<div id="content_search" class="pt-5">
-				<form action="#" method="GET">
-					<input type="text" name="text" id="search_text" placeholder="검색">
-					<input type="submit" name="submit" id="search_submit" value="">
-				</form>
-			</div>
-			<div class="text-right">
-				<button class="btn btn-outline-primary" onclick="location.href='${conPath}/productAll.do'">
-					전체 상품 보기
-				</button>
-			</div>
-
+		<div id="content">
+			
 			<div id="carouselImage" class="carousel slide carousel-fade"
 				data-ride="carousel">
 				<div class="carousel-inner">
@@ -148,7 +137,7 @@
 						<img src="${conPath }/image/mainpage/img7.jpg"
 							class="d-block w-100 img-fluid" alt="mainImage">
 					</div>
-					
+
 				</div>
 				<a class="carousel-control-prev" href="#carouselImage" role="button"
 					data-slide="prev"> <span class="carousel-control-prev-icon"
@@ -161,11 +150,13 @@
 			</div>
 
 			<!-- top3 -->
-			<div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-3 card-deck">
+			<div
+				class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-3 card-deck">
 				<div class="col mb-4">
 					<div class="card mh-100">
 						<div class="bg-warning">
-						<img src="${conPath }/image/food/yogurt.jpg" class="card-img-top" alt="yogurt">
+							<img src="${conPath }/image/food/yogurt.jpg" class="card-img-top"
+								alt="yogurt">
 						</div>
 						<div class="card-body">
 							<h5 class="card-title text-center">TOP1</h5>
@@ -177,7 +168,8 @@
 				</div>
 				<div class="col mb-4">
 					<div class="card">
-						<img src="${conPath }/image/food/hotcake.jpg" class="card-img-top" alt="hotcake">
+						<img src="${conPath }/image/food/hotcake.jpg" class="card-img-top"
+							alt="hotcake">
 						<div class="card-body">
 							<h5 class="card-title text-center">TOP2</h5>
 							<p class="card-text">This is a longer card with supporting
@@ -188,7 +180,8 @@
 				</div>
 				<div class="col mb-4">
 					<div class="card">
-						<img src="${conPath }/image/food/blueberry_icecream.jpg" class="card-img-top" alt="blueberry_icecream">
+						<img src="${conPath }/image/food/blueberry_icecream.jpg"
+							class="card-img-top" alt="blueberry_icecream">
 						<div class="card-body">
 							<h5 class="card-title text-center">TOP3</h5>
 							<p class="card-text">This is a longer card with supporting
@@ -198,7 +191,8 @@
 				</div>
 				<div class="col mb-4">
 					<div class="card">
-						<img src="${conPath }/image/food/avocado.jpg" class="card-img-top" alt="avoado">
+						<img src="${conPath }/image/food/avocado.jpg" class="card-img-top"
+							alt="avoado">
 						<div class="card-body">
 							<h5 class="card-title text-center">TOP4</h5>
 							<p class="card-text">This is a longer card with supporting
@@ -206,7 +200,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 
 			<div id="ad_side">ad_side</div>
