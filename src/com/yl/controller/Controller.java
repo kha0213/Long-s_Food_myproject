@@ -9,12 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yl.service.JoinService;
-import com.yl.service.LoginService;
-import com.yl.service.LogoutService;
-import com.yl.service.MgJoinService;
-import com.yl.service.MgloginService;
-import com.yl.service.Service;
+import com.yl.service.*;
 
 /**
  * Servlet implementation class Controller
@@ -109,9 +104,13 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/registProductView.do")) {
 			viewPage = "manager/registProduct.jsp";
 		}else if(command.equals("/registProduct.do")) {
-//			service = new RegistProduct();
-//			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			service = new RegistProduct();
+			service.execute(request, response);
+			viewPage = "productAll.do";
+		}else if(command.equals("/productAll.do")) {
+			service = new ProductAll();
+			service.execute(request, response);
+			viewPage = "board/productAll.jsp";
 		}
 		
 		

@@ -23,7 +23,7 @@
 		window.open(
 						"${conPath}/member/join.jsp",
 						"_blank",
-						"toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=500,width=600,height=850");
+						"toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=500,width=600,height=1000");
 	
 	</script>
 </c:if>
@@ -40,11 +40,11 @@
 
 	<div class="container-flude" id="header">
 		<div class="row" id="header_nav">
-			<div class="col-5" id="header_nav_logo">
+			<div class="inline" id="header_nav_logo">
 				<ul class="nav" id="header_nav_ul">
 					<li class="nav-item" class="clear-fix"><a class="nav-link"
 						href="${conPath }/main.do"><img alt="메인로고" src="${conPath }/image/logo.png"
-							id="logo"> Long's Food</a></li>
+							id="logo"><span id="logoName"> Long's Food</span></a></li>
 
 				</ul>
 			</div>
@@ -71,7 +71,7 @@
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/main.do"><small>${manager.mgname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/registProduct.do">상품등록</a></li>
+							href="${conPath }/registProductView.do">상품등록</a></li>
 						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/logout.do">Log out</a></li>
 					</c:if>
 					<li class="nav-item"><a class="nav-link text-dark" href="#">C.S</a></li>
@@ -80,7 +80,7 @@
 			</div>
 			<!-- 태블릿,PC일떄 -->
 
-			<div class="col-sm" id="header_nav_mob">
+			<div class="col" id="header_nav_mob">
 				<ul class="nav justify-content-end">
 					<li class="nav-item"><a class="nav-link active" href="#">
 							<img alt="user" src="${conPath }/image/user.png">
@@ -108,7 +108,7 @@
 								<a class="dropdown-item" href="${conPath }/logout.do">Log out</a>
 							</c:if>
 							<c:if test="${not empty manager }">
-								<a class="dropdown-item" href="${conPath }/registProduct.do">상품등록</a>
+								<a class="dropdown-item" href="${conPath }/registProductView.do">상품등록</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log out</a>
 							</c:if>
 							<a class="dropdown-item" href="#">Cart</a> <a

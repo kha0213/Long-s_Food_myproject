@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 
 import com.yl.dto.Manager_dto;
 import com.yl.dto.Member_dto;
+import com.yl.dto.Product_dto;
 
 public class Manager_dao {
 	public static final int SUCCESS = 1;
@@ -127,5 +129,96 @@ public class Manager_dao {
 		}
 		return result;
 	}
+	
+	
+	private ArrayList<Product_dto> getProductListSQL(int startRow,int endRow,String sql){
+		ArrayList<Product_dto> products = new ArrayList<Product_dto>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String pcode = rs.getString("pcode");
+				String pname = rs.getString("pname");
+				int pprice = rs.getInt("pprice");
+				String pimage = rs.getString("pimage");
+				int pstock= rs.getInt("pstock");
+				String pdescription = rs.getString("pdescription");
+				int pdiscount= rs.getInt("pdiscount");
+				Date pregist = rs.getDate("pregist");
+				int pcumulative_sales= rs.getInt("pcumulative_sales");
+				int preview_count= rs.getInt("preview_count");
+				products.add(new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count));
+			}
+		} catch (SQLException e) {
+			System.out.println("getProductListDesc오류 :"+e.getMessage());
+		} finally {
+				try {
+					if(rs!=null) rs.close();
+					if(pstmt!=null) pstmt.close();
+					if(conn!=null) conn.close();
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			
+		}
+		
+		return products;
+	}
+	
+	public ArrayList<Product_dto> getProductListSort(int startRow,int endRow,String sortingCriteria){
+		String sql = "";
+		if(sortingCriteria.equals("lowprice")) {
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pprice, preview_count DESC) A)"  +
+					" WHERE RN BETWEEN ? AND ?";
+		}else if(sortingCriteria.equals("pregist")) {
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pregist DESC, preview_count DESC) A)"  +
+					" WHERE RN BETWEEN ? AND ?";
+		}else if(sortingCriteria.equals("preview_count")) {
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY preview_count DESC) A)"  +
+					" WHERE RN BETWEEN ? AND ?";
+		}else if(sortingCriteria.equals("highprice")) {
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pprice DESC, preview_count DESC) A)"  +
+					" WHERE RN BETWEEN ? AND ?";
+		}
+		return getProductListSQL(startRow, endRow, sql);
+	}
+	
+	
+	
+	
+	public int getTotalNumber(String obj) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) FROM "+obj;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			result = rs.getInt(1);
+		} catch (SQLException e) {
+			System.out.println("getTotalNumer오류 : "+e.getMessage());
+		} finally {
+				try {
+					if(rs!=null) rs.close();
+					if(pstmt!=null) pstmt.close();
+					if(conn!=null) conn.close();
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			
+		}
+		return result;
+	}
+	
 	
 }

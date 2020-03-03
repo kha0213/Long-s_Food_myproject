@@ -45,7 +45,7 @@
 <c:if test="${joinResult eq 0 }">
 	<script>
 		alert('회원가입에 실패하셨습니다. 관리자에게 문의해주세요');
-		window.close();
+		history.back();
 	</script>
 </c:if>
 
@@ -59,7 +59,7 @@
 <c:if test="${loginResult eq false }">
 	<script>
 		alert('로그인 실패 아이디와 비밀번호를 확인해주세요');
-		window.close();
+		history.back();
 	</script>
 </c:if>
 <c:if test="${logoutResult eq true }">
@@ -77,7 +77,7 @@
 <c:if test="${mgjoinResult eq 0 }">
 	<script>
 		alert('관리자 등록 실패 담당관리자에게 문의하세요');
-		window.close();
+		history.back();
 	</script>
 </c:if>
 
@@ -91,7 +91,7 @@
 <c:if test="${mgloginResult eq false }">
 	<script>
 		alert('관리자 로그인 실패 아이디와 비밀번호를 확인해주세요');
-		window.close();
+		history.back();
 	</script>
 </c:if>
 
@@ -110,6 +110,11 @@
 					<input type="text" name="text" id="search_text" placeholder="검색">
 					<input type="submit" name="submit" id="search_submit" value="">
 				</form>
+			</div>
+			<div class="text-right">
+				<button class="btn btn-outline-primary" onclick="location.href='${conPath}/productAll.do'">
+					전체 상품 보기
+				</button>
 			</div>
 
 			<div id="carouselImage" class="carousel slide carousel-fade"
@@ -156,7 +161,7 @@
 			</div>
 
 			<!-- top3 -->
-			<div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-3">
+			<div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-3 card-deck">
 				<div class="col mb-4">
 					<div class="card mh-100">
 						<div class="bg-warning">

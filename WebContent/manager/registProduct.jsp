@@ -17,7 +17,7 @@
 	<div id="wrap" class="container">
 		<jsp:include page="../main/header.jsp"/>
 		
-		<h2 class="text-center mt-5">상품등록<small>(${manager.mname }님)</small></h2>
+		<h2 class="text-center mt-5">상품등록<small>(${manager.mgname }님)</small></h2>
 		
 		
 		
@@ -38,7 +38,7 @@
     </div>
     <div class="form-group">
       <label>상품이미지</label>
-      <input type="file" class="form-control-file">
+      <input type="file" class="form-control-file" name="pimage">
       <small class="form-text text-muted">5mb이하 이미지만 등록가능합니다.</small>
     </div>
     <div class="form-group">
@@ -47,7 +47,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>상품설명</label>
-      <textarea rows="5" class="form-control"></textarea>
+      <textarea rows="5" class="form-control" name="pdescription"></textarea>
     </div>
   	<div class="form-group text-center">
   <input type="submit" class="btn btn-primary" value="상품 등록">
