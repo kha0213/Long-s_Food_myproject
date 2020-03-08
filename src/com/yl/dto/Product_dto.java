@@ -13,11 +13,12 @@ public class Product_dto {
 	private Date pregist;
 	private int pcumulative_sales;
 	private int preview_count;
+	private String mgname; //manager와 join
 	public Product_dto() {
 		super();
 	}
 	public Product_dto(String pcode, String pname, int pprice, String pimage, int pstock, String pdescription,
-			int pdiscount, Date pregist, int pcumulative_sales, int preview_count) {
+			int pdiscount, Date pregist, int pcumulative_sales, int preview_count, String mgname) {
 		super();
 		this.pcode = pcode;
 		this.pname = pname;
@@ -29,6 +30,7 @@ public class Product_dto {
 		this.pregist = pregist;
 		this.pcumulative_sales = pcumulative_sales;
 		this.preview_count = preview_count;
+		this.mgname = mgname;
 	}
 	public String getPcode() {
 		return pcode;
@@ -90,6 +92,13 @@ public class Product_dto {
 	public void setPreview_count(int preview_count) {
 		this.preview_count = preview_count;
 	}
+	public String getMgname() {
+		return mgname;
+	}
+	public void setMgname(String mgname) {
+		this.mgname = mgname;
+	}
+	
 	
 	
 }

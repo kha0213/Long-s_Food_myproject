@@ -42,6 +42,36 @@ public class Member_dao {
 		}
 		return conn;
 	}
+	
+	public boolean midConfirm(String mid) {
+		boolean result = false;
+		String sql = "SELECT * FROM MEMBER WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			result = rs.next();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return result;
+	}
+	
+	
 	public int joinMember(String mid,String mpw,String mname,String mphone,String maddress, 
 			Date mbirth,String memail,String mgender) {
 		int result = FAIL;
@@ -82,9 +112,7 @@ public class Member_dao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
-			System.out.println(conn);
 			pstmt = conn.prepareStatement(sql);
-			System.out.println(pstmt);
 			pstmt.setString(1, mid);
 			pstmt.setInt(2, ad_email);
 			pstmt.setInt(3, ad_phone);

@@ -16,12 +16,13 @@
 	Manager_dao mgDao = Manager_dao.getInstance();
 	for(int i=1;i<=150;i++){
 		String pcode = "testPcode"+i;
+		String mgname = "adtest";
 		String pname = "testPname"+i;
 		int pprice = (int)(Math.random()*100000);
 		String pimage = ((i%20)+1)+".jpg";
 		int pstock = (int)(Math.random()*100);
 		String pdescription = i+"번 test 제품 설명";
-	mgDao.registProduct(pcode, pname, pprice, pimage, pstock, pdescription);
+	mgDao.registProduct(pcode,mgname, pname, pprice, pimage, pstock, pdescription);
 		
 	}
 	

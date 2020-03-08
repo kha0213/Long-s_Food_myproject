@@ -8,18 +8,83 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+<script>
+	
+	$(document).ready(function(){
+		$('input[name="mid"]').keyup(function(){
+			var mid = $('input[name="mid"]').val();
+			
+			$.ajax({
+				url : '${conPath}/idConfirm.do',
+				type : 'get',
+				dataType : 'html',
+				data : "mid="+mid,
+				success : function(data){
+					$('#idConfirmResult').html(data);
+					var id = $('#idConfirmResult').html().trim();
+					if(id == '중복된 아이디가 존재합니다.'){
+						$('#idConfirmResult').removeClass('alert-success').addClass('alert alert-danger');
+					}else{
+						$('#idConfirmResult').removeClass('alert-danger').addClass('alert alert-success');
+					}
+				}
+			});//ajax
+		
+			
+		});
+		$('input[type="password"]').keyup(function(){
+			var mpw = $('input[name="mpw"]').val();
+			var mpwChk = $('input[name="mpwChk"]').val();
+			
+			if(mpw.length !=0 && mpw == mpwChk){
+				$('#pwConfirmResult').removeClass('alert-danger').addClass('alert').addClass('alert-success').html('<small>비밀번호가 일치합니다.</small>');
+				
+			}else{
+				$('#pwConfirmResult').removeClass('alert-success').addClass('alert').addClass('alert-danger').html('<small>비밀번호가 일치하지 않습니다.</small>');
+			}
+		});
+		
+		
+		
+		
+		$('form').submit(function(){
+			var idConfirmResult = $('#idConfirmResult').text().trim();
+			var pwConfirmResult =  $('#pwConfirmResult').text().trim();
+			if(idConfirmResult!='사용 가능한 아이디입니다.'){
+				alert('아이디를 확인해주세요');
+				$('input[name="mid"]').focus();
+				return false;
+			}
+			if(pwConfirmResult!='비밀번호가 일치합니다.'){
+				alert('비밀번호를 확인해주세요');
+				$('input[name="mpwChk"]').focus();
+				return false;
+			}
+		});
+	});
+</script>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-	
-<script>
-	function idchk(){
-		var id = frm.mid.value;
-		location.href='${conPath}/idChk.do?mid='+id;
-	}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-</script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+	  $( "#datepicker" ).datepicker({
+	    	dateFormat : 'yy-mm-dd',
+	    	monthNames : ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    	showMonthAfterYear : true,
+	    	yearSuffix : '년',
+	    	showOtherMonths : true,
+	    	dayNamesMin:['일','월','화','수','목','금','토']
+	    });
+  } ); 
+  </script>
 </head>
 <body style="background-color: #f5f3f6">
 	<div id="wrap" class="container-fluid">
@@ -33,54 +98,53 @@
 				</thead>
 				<tbody>
 					<tr>
-						<th class="col">ID <span style="color:red">*</span>
-						<br><span class="text-muted"><small>ID중복체크 먼저 해주세요</small></span>
-								</th>
-						<td class="text-center"><input type="text" name="mid" required="required">
-						<br> <input type="button" class="mt-2 btn btn-primary btn-sm" value="ID 중복체크" 
-						onclick="location.href='${conPath}/idChk.do?id='">
+						<th scope="col">ID <span style="color:red">*</span></th>
+						<td class="text-center"><input type="text" class="form-control" name="mid" required="required">
+						<p class="h6 mt-1 text-left" role="alert" id="idConfirmResult"></p>
+						
 						</td>
 						
 					</tr>
 					<tr>
-						<th scope="row">비밀번호 <span style="color:red">*</span></th>
-						<td><input type="password" class="form.control" name="mpw" required="required"></td>
+						<th scope="col">비밀번호 <span style="color:red">*</span></th>
+						<td><input type="password" class="form-control" name="mpw" required="required"></td>
 					
 					</tr>
 					<tr>
-						<th scope="row">비밀번호 확인 <span style="color:red">*</span></th>
-						<td><input type="password" class="form-control" name="mpwChk" required="required"></td>
-					
+						<th scope="col">비밀번호 확인 <span style="color:red">*</span></th>
+						<td><input type="password" class="form-control" name="mpwChk" required="required">
+						<p role="alert" id="pwConfirmResult" class="h6 mt-1 text-left"></p>
+						</td>
 					</tr>
 					<tr>
-						<th scope="row">이름 <span style="color:red">*</span></th>
+						<th scope="col">이름 <span style="color:red">*</span></th>
 						<td><input type="text" class="form-control" name="mname" required="required"></td>
 					</tr>
 					<tr>
-						<th scope="row">전화번호 <span style="color:red">*</span></th>
+						<th scope="col">전화번호 <span style="color:red">*</span></th>
 						<td><input type="text" class="form-control" name="mphone" required="required"></td>
 					</tr>
 					<tr>
-						<th scope="row">주소</th>
+						<th scope="col">주소</th>
 						<td><input type="text" class="form-control" name="maddress"></td>
 					</tr>
 					<tr>
-						<th scope="row">생일</th>
-						<td><input type="date" class="form-control" name="mbirth"></td>
+						<th scope="col">생일</th>
+						<td><input type="text" class="form-control" name="mbirth" id="datepicker"></td>
 					</tr>
 					<tr>
-						<th scope="row">이메일</th>
+						<th scope="col">이메일</th>
 						<td><input type="email" class="form-control" name="memail"></td>
 					</tr>
 					<tr>
-						<th scope="row">성별</th>
+						<th scope="col">성별</th>
 						<td>
 							<input type="radio" name="mgender" value="남자">남자 &nbsp;
 							<input type="radio" name="mgender" value="여자">여자
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">광고</th>
+						<th scope="col">광고</th>
 						<td>
 							<label><input type="checkbox" name="ad_email" value="1"> 메일 수신</label><br>
 							<label><input type="checkbox" name="ad_phone" value="1"> 문자 수신</label><br>
@@ -104,9 +168,7 @@
 		</form>
 	</div>
 	<!--wrap-->
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script>
+	
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

@@ -11,11 +11,12 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Manager_dao;
+import com.yl.dto.Manager_dto;
 
 public class RegistProduct implements Service {
 
@@ -25,7 +26,9 @@ public class RegistProduct implements Service {
 		String saveDirectory=request.getRealPath("image/product");
 		int maxProductSize = 1024*1024*5;
 		String pimage = "";
-		
+		HttpSession session = request.getSession();
+		Manager_dto manager = (Manager_dto) session.getAttribute("manager");
+		String mgname = manager.getMgname();
 		MultipartRequest mRequest = null;
 		
 		try {
@@ -45,7 +48,7 @@ public class RegistProduct implements Service {
 			if(pimage == null) pimage = "noProductImage.png";
 			
 			Manager_dao mgDao = Manager_dao.getInstance();
-			int result = mgDao.registProduct(pcode, pname, pprice, pimage, pstock, pdescription);
+			int result = mgDao.registProduct(pcode,mgname, pname, pprice, pimage, pstock, pdescription);
 			
 			  if(result == Manager_dao.SUCCESS) {
 				  request.setAttribute("registProductResult", true); 

@@ -9,13 +9,64 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-	crossorigin="anonymous">
-
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 <script>
+$(document).ready(function(){
+	$('input[name="mgid"]').keyup(function(){
+		var mgid = $('input[name="mgid"]').val();
+		
+		$.ajax({
+			url : '${conPath}/mgidConfirm.do',
+			type : 'get',
+			dataType : 'html',
+			data : "mgid="+mgid,
+			success : function(data){
+				$('#mgidConfirmResult').html(data);
+				var id = $('#mgidConfirmResult').html().trim();
+				if(id == '중복된 아이디가 존재합니다.'){
+					$('#mgidConfirmResult').removeClass('alert-success').addClass('alert alert-danger');
+				}else{
+					$('#mgidConfirmResult').removeClass('alert-danger').addClass('alert alert-success');
+				}
+			}
+		});//ajax
 	
+		
+	});
+	$('input[type="password"]').keyup(function(){
+		var mpw = $('input[name="mgpw"]').val();
+		var mpwChk = $('input[name="mgpwChk"]').val();
+		
+		if(mpw.length !=0 && mpw == mpwChk){
+			$('#mgpwConfirmResult').removeClass('alert-danger').addClass('alert').addClass('alert-success').html('<small>비밀번호가 일치합니다.</small>');
+			
+		}else{
+			$('#mgpwConfirmResult').removeClass('alert-success').addClass('alert').addClass('alert-danger').html('<small>비밀번호가 일치하지 않습니다.</small>');
+		}
+	});
+	
+	
+	
+	
+	$('form').submit(function(){
+		var idConfirmResult = $('#mgidConfirmResult').text().trim();
+		var pwConfirmResult =  $('#mgpwConfirmResult').text().trim();
+		if(idConfirmResult!='사용 가능한 아이디입니다.'){
+			alert('아이디를 확인해주세요');
+			$('input[name="mgid"]').focus();
+			return false;
+		}
+		if(pwConfirmResult!='비밀번호가 일치합니다.'){
+			alert('비밀번호를 확인해주세요');
+			$('input[name="mgpwChk"]').focus();
+			return false;
+		}
+	});
+});
 </script>
+
 </head>
 <body style="background-color: #f5f3f6">
 	<div id="wrap" class="container-fluid">
@@ -30,34 +81,33 @@
 				</thead>
 				<tbody>
 					<tr>
-						<th class="col">ID <span style="color: red">*</span> <br>
-						<span class="text-muted"><small>ID중복체크 먼저 해주세요</small></span>
-						</th>
+						<th scope="col">ID <span style="color: red">*</span></th>
 						<td class="text-center"><input type="text" name="mgid"
-							required="required"> <br> <input type="button"
-							class="mt-2 btn btn-primary btn-sm" value="ID 중복체크"
-							onclick="location.href='${conPath}/idChk.do?id='"></td>
-
+							class="form-control" required="required"> 
+						<p class="h6 mt-1 text-left" role="alert" id="mgidConfirmResult"></p>							
+						</td>
+						
 					</tr>
 					<tr>
-						<th scope="row">비밀번호 <span style="color: red">*</span></th>
-						<td><input type="password" class="form.control" name="mgpw"
+						<th scope="col">비밀번호 <span style="color: red">*</span></th>
+						<td><input type="password" class="form-control" name="mgpw"
 							required="required"></td>
 
 					</tr>
 					<tr>
-						<th scope="row">비밀번호 확인 <span style="color: red">*</span></th>
+						<th scope="col">비밀번호 확인 <span style="color: red">*</span></th>
 						<td><input type="password" class="form-control"
-							name="mgpwChk" required="required"></td>
-
+							name="mgpwChk" required="required">
+						<p role="alert" id="mgpwConfirmResult" class="h6 mt-1 text-left"></p>
+						</td>
 					</tr>
 					<tr>
-						<th scope="row">이름 <span style="color: red">*</span></th>
+						<th scope="col">이름 <span style="color: red">*</span></th>
 						<td><input type="text" class="form-control" name="mgname"
 							required="required"></td>
 					</tr>
 					<tr>
-						<th scope="row">담당부서 <span style="color: red">*</span></th>
+						<th scope="col">담당부서 <span style="color: red">*</span></th>
 						<td>
 							<div class="input-group mb-3">
 								<select class="custom-select" name="mgpartname"
@@ -90,9 +140,6 @@
 		</form>
 	</div>
 	<!--wrap-->
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

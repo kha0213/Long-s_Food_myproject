@@ -69,7 +69,33 @@ public class Manager_dao {
 		}
 		return result;
 	}
-	
+	public boolean mgidConfirm(String mgid) {
+		boolean result = false;
+		String sql = "SELECT * FROM MANAGER WHERE MGID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mgid);
+			rs = pstmt.executeQuery();
+			result = rs.next();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return result;
+	}
 	
 	public Manager_dto loginManager(String mgid,String mgpw) {
 		Manager_dto manager = null;
@@ -102,20 +128,21 @@ public class Manager_dao {
 		return manager;
 	}
 	
-	public int registProduct(String pcode, String pname, int pprice, String pimage,int pstock,String pdescription) {
+	public int registProduct(String pcode,String mgid, String pname, int pprice, String pimage,int pstock,String pdescription) {
 		int result = FAIL;
-		String sql = "INSERT INTO PRODUCT (PCODE,PNAME,PPRICE,PIMAGE,PSTOCK,PDESCRIPTION) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO PRODUCT (PCODE,MGID,PNAME,PPRICE,PIMAGE,PSTOCK,PDESCRIPTION) VALUES (?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, pcode);
-			pstmt.setString(2, pname);
-			pstmt.setInt(3, pprice);
-			pstmt.setString(4, pimage);
-			pstmt.setInt(5, pstock);
-			pstmt.setString(6, pdescription);
+			pstmt.setString(2, mgid);
+			pstmt.setString(3, pname);
+			pstmt.setInt(4, pprice);
+			pstmt.setString(5, pimage);
+			pstmt.setInt(6, pstock);
+			pstmt.setString(7, pdescription);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -153,7 +180,8 @@ public class Manager_dao {
 				Date pregist = rs.getDate("pregist");
 				int pcumulative_sales= rs.getInt("pcumulative_sales");
 				int preview_count= rs.getInt("preview_count");
-				products.add(new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count));
+				String mgname= rs.getString("mgname");
+				products.add(new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count,mgname));
 			}
 		} catch (SQLException e) {
 			System.out.println("getProductListDesc오류 :"+e.getMessage());
@@ -174,16 +202,16 @@ public class Manager_dao {
 	public ArrayList<Product_dto> getProductListSort(int startRow,int endRow,String sortingCriteria){
 		String sql = "";
 		if(sortingCriteria.equals("lowprice")) {
-			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pprice, preview_count DESC) A)"  +
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT P.*,M.MGNAME FROM PRODUCT P,MANAGER M WHERE P.MGID = M.MGID ORDER BY pprice, preview_count DESC) A)"  +
 					" WHERE RN BETWEEN ? AND ?";
 		}else if(sortingCriteria.equals("pregist")) {
-			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pregist DESC, preview_count DESC) A)"  +
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT P.*,M.MGNAME FROM PRODUCT P,MANAGER M WHERE P.MGID = M.MGID ORDER BY pregist DESC, preview_count DESC) A)"  +
 					" WHERE RN BETWEEN ? AND ?";
 		}else if(sortingCriteria.equals("preview_count")) {
-			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY preview_count DESC) A)"  +
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT P.*,M.MGNAME FROM PRODUCT P,MANAGER M WHERE P.MGID = M.MGID ORDER BY preview_count DESC) A)"  +
 					" WHERE RN BETWEEN ? AND ?";
 		}else if(sortingCriteria.equals("highprice")) {
-			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT * FROM PRODUCT ORDER BY pprice DESC, preview_count DESC) A)"  +
+			sql = "SELECT * FROM (SELECT ROWNUM RN, A.* FROM (SELECT P.*,M.MGNAME FROM PRODUCT P,MANAGER M WHERE P.MGID = M.MGID ORDER BY pprice DESC, preview_count DESC) A)"  +
 					" WHERE RN BETWEEN ? AND ?";
 		}
 		return getProductListSQL(startRow, endRow, sql);

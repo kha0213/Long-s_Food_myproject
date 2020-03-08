@@ -68,9 +68,10 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/joinView.do")) {
 			request.setAttribute("joinView", true);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/idChk.do")) {
-			// 미완성~~!!
-			viewPage = "main.do";
+		}else if(command.equals("/idConfirm.do")) {
+			service = new MidDuplicationCheckService();
+			service.execute(request, response);
+			viewPage = "message/idConfirm.jsp";
 		}else if(command.equals("/join.do")) {
 			service = new JoinService();
 			service.execute(request, response);
@@ -92,9 +93,10 @@ public class Controller extends HttpServlet {
 			service = new MgJoinService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/mgidChk.do")) {
-			// 미완성~~!!
-			viewPage = "main.do";
+		}else if(command.equals("/mgidConfirm.do")) {
+			service = new MgidDuplicationCheckService();
+			service.execute(request, response);
+			viewPage = "message/mgidConfirm.jsp";
 		}else if(command.equals("/mgloginView.do")) {
 			viewPage = "manager/mglogin.jsp";
 		}else if(command.equals("/mglogin.do")) {
