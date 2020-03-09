@@ -12,24 +12,22 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-<script
-  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-$(function(){
-	$('.product').mouseenter(function(){
-		$(this).css('cursor','pointer');
-		$(this).addClass('border border-primary');
-			
-	});
-	$('.product').mouseleave(function(){
-		$(this).removeClass('border border-primary');
-	});
-	$('.product').click(function(){
-		location.href='productDetails.do?pcode=${product.pcode}';
-	});
-	
-});
+	$(function() {
+		$('.product').mouseenter(function() {
+			$(this).css('cursor', 'pointer');
+			$(this).addClass('border border-primary');
 
+		});
+		$('.product').mouseleave(function() {
+			$(this).removeClass('border border-primary');
+		});
+		$('.product').click(function() {
+			location.href = 'productDetails.do?pcode=${product.pcode}';
+		});
+
+	});
 </script>
 </head>
 <body style="background-color: #f5f3f6">
@@ -57,9 +55,8 @@ $(function(){
 			<span class="text-muted">정렬순서</span>
 			<button class="btn btn-secondary dropdown-toggle" type="button"
 				id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">
-				${empty sortingCriteria?"리뷰 많은 순":sortingCriteria }
-				 				
+				aria-expanded="false">${empty sortingCriteria?"리뷰 많은 순":sortingCriteria }
+
 			</button>
 			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 				<a class="dropdown-item"
@@ -67,8 +64,8 @@ $(function(){
 					많은 순</a> <a class="dropdown-item"
 					href="${conPath }/productAll.do?sortingCriteria=lowprice">낮은
 					가격순</a> <a class="dropdown-item"
-					href="${conPath }/productAll.do?sortingCriteria=highprice">높은 가격 순</a>
-				<a class="dropdown-item"
+					href="${conPath }/productAll.do?sortingCriteria=highprice">높은
+					가격 순</a> <a class="dropdown-item"
 					href="${conPath }/productAll.do?sortingCriteria=pregist">등록일 순</a>
 			</div>
 		</div>
@@ -80,35 +77,49 @@ $(function(){
 							class="card-img-top" alt="상품이미지">
 						<div class="card-body">
 							<h5 class="card-title">${product.pname }</h5>
-							<h6 class="card-subtitle mt-2 mb-2"> 
-							<c:if test="${product.pdiscount>=20 }">
-							<img src="${conPath }/image/icon/sale.png" alt="sale">
-							</c:if>
-							${product.pdiscount }%할인 &nbsp; <del><fmt:formatNumber value="${product.pprice}" currencySymbol="true"/>원</del><br>
-							<strong style="color:red"><fmt:formatNumber value="${product.pprice*(100-product.pdiscount)/100}" currencySymbol="true"/>원</strong>
-							(리뷰:${product.preview_count }개)  
+							<h6 class="card-subtitle mt-2 mb-2">
+								<c:if test="${product.pdiscount>=20 }">
+									<img src="${conPath }/image/icon/sale.png" alt="sale">
+								</c:if>
+								${product.pdiscount }%할인 &nbsp;
+								<del>
+									<fmt:formatNumber value="${product.pprice}"
+										currencySymbol="true" />
+									원
+								</del>
+								<br> <strong style="color: red"><fmt:formatNumber
+										value="${product.pprice*(100-product.pdiscount)/100}"
+										currencySymbol="true" />원</strong> (리뷰:${product.preview_count }개)
 							</h6>
-     <div class="cody-body">
-      <p>${product.pdescription }</p>
- 	</div>
-  </div>
+							<div class="cody-body">
+								<p>${product.pdescription }</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</c:forEach>
-			
-		</div>
-		<div class="text-center">
-			<c:if test="${startPage ne 1 }">
-				<a href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${startPage-1}">이전</a>
-			</c:if>
-			<c:forEach var="page" begin="${startPage }" end="${endPage }">
-				<a href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${page}">${page }</a>
-			</c:forEach>
-			<c:if test="${endPage ne totalPage }">
-				<a href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${endPage+1}">다음</a>
-			</c:if>
+
 		</div>
 
+
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center mt-5 mb-5">
+				<li class="page-item"><c:if test="${startPage ne 1 }">
+						<a class="page-link" aria-label="Previous"
+							href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${startPage-1}">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</c:if></li>
+				<c:forEach var="page" begin="${startPage }" end="${endPage }">
+					<li class="page-item"><a class="page-link"
+						href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${page}">${page }</a></li>
+				</c:forEach>
+				<li class="page-item"><a class="page-link"
+					href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${endPage+1}"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
 
 	</div>
 	<!-- wrap -->
