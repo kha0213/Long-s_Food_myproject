@@ -36,13 +36,13 @@
 	type="text/css">
 
 </head>
-<c:if test="${joinResult eq 1 }">
+<c:if test="${joinResult eq true }">
 	<script>
 		alert('회원가입에 성공하셨습니다. 로그인 이후에 서비스이용해주세요');
 		window.close();
 	</script>
 </c:if>
-<c:if test="${joinResult eq 0 }">
+<c:if test="${joinResult eq false }">
 	<script>
 		alert('회원가입에 실패하셨습니다. 관리자에게 문의해주세요');
 		history.back();
@@ -68,13 +68,13 @@
 	</script>
 </c:if>
 <!-- 관리자 가입 결과 -->
-<c:if test="${mgjoinResult eq 1 }">
+<c:if test="${mgjoinResult eq true }">
 	<script>
 		alert('관리자 등록 성공 관리자 로그인 후 서비스 이용하세요.');
 		window.close();
 	</script>
 </c:if>
-<c:if test="${mgjoinResult eq 0 }">
+<c:if test="${mgjoinResult eq false }">
 	<script>
 		alert('관리자 등록 실패 담당관리자에게 문의하세요');
 		history.back();

@@ -23,9 +23,6 @@
 		$('.product').mouseleave(function() {
 			$(this).removeClass('border border-primary');
 		});
-		$('.product').click(function() {
-			location.href = 'productDetails.do?pcode=${product.pcode}';
-		});
 
 	});
 </script>
@@ -72,7 +69,7 @@
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
 			<c:forEach var="product" items="${products }">
 				<div class="col">
-					<div class="card product overflow-hidden">
+					<div class="card product overflow-hidden" onclick="location.href = 'productDetail.do?pcode=${product.pcode}'">
 						<img src="${conPath }/image/product/${product.pimage}"
 							class="card-img-top" alt="상품이미지">
 						<div class="card-body">
