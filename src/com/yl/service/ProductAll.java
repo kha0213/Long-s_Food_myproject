@@ -3,7 +3,7 @@ package com.yl.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yl.dao.Manager_dao;
+import com.yl.dao.Product_dao;
 
 public class ProductAll implements Service {
 
@@ -23,11 +23,11 @@ public class ProductAll implements Service {
 		int startRow = (currentPage - 1) * PAGESIZE + 1;
 		int endRow = startRow + PAGESIZE - 1;
 
-		Manager_dao mgDao = Manager_dao.getInstance();
+		Product_dao pDao = Product_dao.getInstance();
 
-		request.setAttribute("products", mgDao.getProductListSort(startRow, endRow, sortingCriteria));
+		request.setAttribute("products", pDao.getProductListSort(startRow, endRow, sortingCriteria));
 
-		int totalPage = (mgDao.getTotalNumber("product") - 1) / PAGESIZE + 1;
+		int totalPage = (pDao.getTotalNumber("product") - 1) / PAGESIZE + 1;
 		int startPage = (currentPage - 1) / BLOCKSIZE * BLOCKSIZE + 1;
 		int endPage = Math.min(startPage + BLOCKSIZE - 1, totalPage);
 

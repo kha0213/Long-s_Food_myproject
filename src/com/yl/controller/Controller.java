@@ -47,25 +47,19 @@ public class Controller extends HttpServlet {
 		String viewPage = null;
 		Service service = null;
 		
-		/* service순서
-		 * 1.main.do 메인
-		 * 2.joinView.do
-		 * 3.idChk.do (미완성)
-		 * 4.join.do
-		 * 5.loginView.do
-		 * 6.login.do
-		 * 7.logout.do
-		 * 8.mgjoinView.do
-		 * 9.mgjoin.do
-		 * 10.mgloginView.do
-		 * 11.mglogin.do
-		 * 12.registProduct.do
-		 */
 		
-		
+		//Main
 		if(command.equals("/main.do")) {
 			viewPage="main/mainpage.jsp";
-		}else if(command.equals("/joinView.do")) {
+		}else if(command.equals("/longfoodIntro.do")) {// longfood 소개
+//			service = new ProductAll();
+//			service.execute(request, response);
+			viewPage = "main/longfoodIntro.jsp";
+		}
+		
+		
+		//Member
+		else if(command.equals("/joinView.do")) {
 			request.setAttribute("joinView", true);
 			viewPage = "main/mainpage.jsp";
 		}else if(command.equals("/idConfirm.do")) {
@@ -83,11 +77,16 @@ public class Controller extends HttpServlet {
 			service = new LoginService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/logout.do")) {
+		}else if(command.equals("/logout.do")) {//session초기화
 			service = new LogoutService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/mgjoinView.do")) {
+		}
+		
+		
+		
+		//Manager
+		else if(command.equals("/mgjoinView.do")) {
 			viewPage = "manager/mgjoin.jsp";
 		}else if(command.equals("/mgjoin.do")) {
 			service = new MgJoinService();
@@ -103,7 +102,11 @@ public class Controller extends HttpServlet {
 			service = new MgloginService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/registProductView.do")) {
+		}
+		
+		
+		//Product
+		else if(command.equals("/registProductView.do")) {
 			viewPage = "manager/registProduct.jsp";
 		}else if(command.equals("/registProduct.do")) {
 			service = new RegistProduct();
@@ -117,16 +120,12 @@ public class Controller extends HttpServlet {
 			service = new ProductDetail();
 			service.execute(request, response);
 			viewPage = "board/productDetail.jsp";
-		}else if(command.equals("/longfoodIntro.do")) {// longfood 소개
-//			service = new ProductAll();
-//			service.execute(request, response);
-			viewPage = "main/longfoodIntro.jsp";
 		}
 		
 		
 		
 		
-		
+		//csBoards
 		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트
 			service = new CsBoardsListService();
 			service.execute(request, response);

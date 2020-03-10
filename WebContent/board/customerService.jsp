@@ -16,12 +16,11 @@
 <script>
 	$(function() {
 		$('.csBoard').mouseenter(function() {
-			$(this).css('cursor', 'pointer');
-			$(this).addClass('border border-primary');
+			$(this).css('cursor', 'pointer').addClass('bg-info');
 
 		});
 		$('.csBoard').mouseleave(function() {
-			$(this).removeClass('border border-primary');
+			$(this).removeClass('bg-info');
 		});
 		
 
@@ -38,40 +37,63 @@
 
 
 			<jsp:include page="../main/header.jsp" />
-	<div class="container">
+	<div class="container mb-5">
 	<div class="row mt-5 mb-3">
-	<span class="h3">고객센터  &nbsp; | &nbsp; <span class="text-muted h6">고객문의 게시판입니다.</span></span>
+	<span class="h3 mb-5">고객센터  &nbsp; | &nbsp; <span class="text-muted h6">고객문의 게시판입니다.</span></span>
 	</div>
 	<c:if test="${not empty member || not empty manager }">
-	<p class="mt-1 text-right"><a href="${conPath }/writeCsBoardView.do?pageNum=${param.pageNum}" class="btn btn-outline-dark">글쓰기</a></p>
+	<p class="m-4 text-right"><a href="${conPadiv }/writeCsBoardView.do?pageNum=${param.pageNum}" class="btn btn-dark">글쓰기</a></p>
 	</c:if>
 	
 	
-		<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">번호</th>
-      <th scope="col">제목</th>
-      <th scope="col">글쓴이</th>
-      <th scope="col">작성일</th>
-      <th scope="col">조회수</th>
-    </tr>
-    
-  </thead>
-  <tbody>
+  <div class="row mt-4 text-center h5">
+      <div class="col">글번호</div>
+      <div class="col-7">제목</div>
+      <div class="col">글쓴이</div>
+      <div class="col-2">작성일</div>
+      <div class="col">조회수</div>
+  </div>
+<hr class="my-4">
+  <div>
   	<c:forEach var="csBoard" items="${csBoards }">
-    <tr class="csBoard" onclick="location.href='productDetails.do?pageNum=${pageNum}&cno=${csBoard.cno }'">
-      <td scope="row">{csBoard.cno}</td>
-      <td scope="row">{csBoard.csubject}</td>
-      <td scope="row">{csBoard.mname}</td>
-      <td scope="row">{csBoard.crdate}</td>
-      <td scope="row">{csBoard.chit}</td>
-    </tr>
+    <div class="csBoard row text-center mt-2 mb-1" onclick="location.href='producdivetails.do?pageNum=${pageNum}&cno=${csBoard.cno }'">
+      <div class="col">${csBoard.cno}</div>
+      <div class="col-7 text-left">${csBoard.csubject}</div>
+      <div class="col">${csBoard.mname}</div>
+      <div class="col-2">${csBoard.crdate}</div>
+      <div class="col">${csBoard.chit}</div>
+    </div>
    </c:forEach>
-  </tbody>
-</table>
-	</div>
-
+</div>
+	
+	
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center mt-5 mb-5">
+				<li class="page-item"><c:if test="${startPage ne 1 }">
+						<a class="page-link" aria-label="Previous"
+							href="${conPath }/csBoardsListService.do?pageNum=${startPage-1}">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</c:if></li>
+				<c:forEach var="page" begin="${startPage }" end="${endPage }">
+					<li class="page-item"><a class="page-link"
+						href="${conPath }/csBoardsListService.do?pageNum=${page}">${page }</a></li>
+				</c:forEach>
+				<li class="page-item"><a class="page-link"
+					href="${conPath }/csBoardsListService.do?pageNum=${endPage+1}"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+	
+	
+	
+	
+	
+	
+	
+	
+</div>
 			<jsp:include page="../main/footer.jsp" />
 
 

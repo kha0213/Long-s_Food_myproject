@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Manager_dao;
+import com.yl.dao.Product_dao;
 import com.yl.dto.Manager_dto;
 
 public class RegistProduct implements Service {
@@ -47,12 +48,12 @@ public class RegistProduct implements Service {
 			pimage = mRequest.getFilesystemName(paramStr);
 			if(pimage == null) pimage = "noProductImage.png";
 			
-			Manager_dao mgDao = Manager_dao.getInstance();
-			int result = mgDao.registProduct(pcode,mgname, pname, pprice, pimage, pstock, pdescription);
+			Product_dao pDao = Product_dao.getInstance();
+			boolean result = pDao.registProduct(pcode,mgname, pname, pprice, pimage, pstock, pdescription);
 			
-			  if(result == Manager_dao.SUCCESS) {
+			  if(result) {
 				  request.setAttribute("registProductResult", true); 
-			  }else if(result ==  Manager_dao.FAIL) { 
+			  }else { 
 				  request.setAttribute("registProductResult", false); 
 			  }
 			 

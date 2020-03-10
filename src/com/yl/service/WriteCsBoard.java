@@ -70,7 +70,7 @@ public class WriteCsBoard implements Service {
 				} finally {
 					try {
 						if(os!=null) os.close();
-						if(is!=null) os.close();
+						if(is!=null) is.close();
 					} catch (IOException e) {
 						System.out.println(e.getMessage());
 					}
