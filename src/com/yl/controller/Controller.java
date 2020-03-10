@@ -121,6 +121,22 @@ public class Controller extends HttpServlet {
 		
 		
 		
+		
+		
+		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트
+			service = new CsBoardsListService();
+			service.execute(request, response);
+			viewPage = "board/customerService.jsp";
+		}else if(command.equals("/writeCsBoardView.do")) {//고객센터글쓰기
+			viewPage = "board/customerServiceWrite.jsp";
+		}else if(command.equals("/writeCsBoard.do")) {//고객센터글쓰기
+			service = new WriteCsBoard();
+			service.execute(request, response);
+			viewPage = "csBoardsListService.do";
+		}
+		
+		
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
 	

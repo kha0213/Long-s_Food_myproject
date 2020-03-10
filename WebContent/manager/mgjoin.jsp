@@ -114,8 +114,8 @@ $(document).ready(function(){
 									required="required">
 									<option selected>부서 선택</option>
 									<option value="상품MD">상품MD</option>
-									<option value="C.S관리">C.S관리</option>
-									<option value="회원관리">회원관리</option>
+									<option value="게시판관리">게시판관리</option>
+									<option value="배송담당">배송담당</option>
 								</select>
 							</div>
 

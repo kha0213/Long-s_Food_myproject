@@ -101,8 +101,8 @@
 
 
 <body>
-	<div id="wrap" class="container">
 		<jsp:include page="header.jsp" />
+	<div id="wrap" class="container">
 
 		<div id="content">
 			

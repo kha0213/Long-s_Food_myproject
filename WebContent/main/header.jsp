@@ -38,7 +38,7 @@
 </head>
 <body>
 
-	<div class="container-flude" id="header">
+	<div class="container" id="header">
 		<div class="row clearfix" id="header_nav">
 			<div class="float-none" id="header_nav_logo">
 				<ul class="nav" id="header_nav_ul">
@@ -78,7 +78,7 @@
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
 					</c:if>
-					<li class="nav-item"><a class="nav-link text-dark" href="#">C.S</a></li>
+					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/csBoardsListService.do">C.S</a></li>
 
 				</ul>
 			</div>
@@ -118,7 +118,7 @@
 									out</a>
 							</c:if>
 							<a class="dropdown-item" href="#">Cart</a> <a
-								class="dropdown-item" href="#">Service Center</a>
+								class="dropdown-item" href="${conPath }/csBoardsListService.do">Service Center</a>
 						</div></li>
 				</ul>
 			</div>
