@@ -15,7 +15,7 @@ public class MgJoinService implements Service {
 		String mgpartname = request.getParameter("mgpartname");
 		
 		Manager_dao mgDao = Manager_dao.getInstance();
-		int result = mgDao.joinManager(mgid, mgpw, mgname, mgpartname);
+		boolean result = mgDao.joinManager(mgid, mgpw, mgname, mgpartname);
 		request.setAttribute("mgjoinResult", result);
 	}
 

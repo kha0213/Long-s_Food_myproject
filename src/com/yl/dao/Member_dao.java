@@ -14,12 +14,6 @@ import javax.sql.DataSource;
 import com.yl.dto.Member_dto;
 
 public class Member_dao {
-	public static final int SUCCESS = 1;
-	public static final int FAIL = 0;
-	public static final int MEMBER_EXIST = 1;
-	public static final int MEMBER_NONEXIST = 0;
-	
-	
 	
 	private Member_dao() {
 		
@@ -72,9 +66,9 @@ public class Member_dao {
 	}
 	
 	
-	public int joinMember(String mid,String mpw,String mname,String mphone,String maddress, 
+	public boolean joinMember(String mid,String mpw,String mname,String mphone,String maddress, 
 			Date mbirth,String memail,String mgender) {
-		int result = FAIL;
+		boolean result = false;
 		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS,MBIRTH,MEMAIL,MGENDER,GNO) VALUES "
 				+ "(?,?,?,?,?,?,?,?,1)";
 		// mid, mpw, mname, mphone, maddress, mbirth, memail mgender
@@ -92,7 +86,7 @@ public class Member_dao {
 			pstmt.setDate(6, mbirth);
 			pstmt.setString(7, memail);
 			pstmt.setString(8, mgender);
-			result = pstmt.executeUpdate();
+			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -130,8 +124,8 @@ public class Member_dao {
 		}
 		
 	}
-	public int joinMember(Member_dto member) {
-		int result = FAIL;
+	public boolean joinMember(Member_dto member) {
+		boolean result = false;
 		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS,MBIRTH,MEMAIL,MGENDER,GNO) VALUES "
 				+ "(?,?,?,?,?,?,?,1)";
 		// mid, mpw, mname, mphone, maddress, mbirth, memail mgender
@@ -149,7 +143,7 @@ public class Member_dao {
 			pstmt.setDate(6, member.getMbirth());
 			pstmt.setString(7, member.getMemail());
 			pstmt.setString(8, member.getMgender());
-			result = pstmt.executeUpdate();
+			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {

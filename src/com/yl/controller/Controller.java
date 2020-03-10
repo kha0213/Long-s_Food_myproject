@@ -113,6 +113,10 @@ public class Controller extends HttpServlet {
 			service = new ProductAll();
 			service.execute(request, response);
 			viewPage = "board/productAll.jsp";
+		}else if(command.equals("/productDetail.do")) {//제품 상세 보기
+			service = new ProductDetail();
+			service.execute(request, response);
+			viewPage = "board/productDetail.jsp";
 		}else if(command.equals("/longfoodIntro.do")) {// longfood 소개
 //			service = new ProductAll();
 //			service.execute(request, response);
