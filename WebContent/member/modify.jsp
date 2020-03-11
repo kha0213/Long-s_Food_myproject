@@ -8,11 +8,15 @@
 <head>
 <meta charset="UTF-8">
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 <script>
 	
 	$(document).ready(function(){
+		if($('input[type="radio"]:eq(0)').val() == '${member.mgender}'){
+			$('input[type="radio"]:eq(0)').attr("checked", true);
+		}
+		if($('input[type="radio"]:eq(1)').val() == '${member.mgender}'){
+			$('input[type="radio"]:eq(1)').attr("checked", true);
+		}
 		
 		$('input[type="password"]').keyup(function(event){
 			var mpw = $('input[name="mpw"]').val();

@@ -245,10 +245,10 @@ public class Member_dao {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mid);
-			pstmt.setInt(2, ad_email);
-			pstmt.setInt(3, ad_phone);
-			pstmt.setInt(4, ad_call);
+			pstmt.setInt(1, ad_email);
+			pstmt.setInt(2, ad_phone);
+			pstmt.setInt(3, ad_call);
+			pstmt.setString(4, mid);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -261,6 +261,7 @@ public class Member_dao {
 			}
 		}
 	}
+	
 	
 	public boolean memberModify(String mid,String mpw,String mname,String mphone,String maddress,Date mbirth,String memail,String mgender) {
 		boolean result = false;

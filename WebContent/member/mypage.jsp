@@ -22,19 +22,30 @@
 		$('#mModify').click(function(){
 			$('#myContent').load('${conPath}/member/modifyPwChk.jsp');
 		});
+		$('#mDelete').click(function(){
+			$('#myContent').load('${conPath}/mDeleteView.do');
+		});
 		
 	});
 
 </script> 
- 
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
+
+<c:if test="${not empty mModifyResult }">
+	<script>
+		alert('${mModifyResult}');
+	</script>
+</c:if>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
 			<div class="container mb-5">
 			<div class="row">
 				<div class="col text-center mb-5">
 					<h2>My Page</h2>
-					<span>배송중 상품 : 1개 &nbsp; &nbsp; | &nbsp; &nbsp; 사용가능한 쿠폰 : 0개</span>
+					<span>고객등급 : VIP &nbsp; &nbsp; |  &nbsp; &nbsp; 배송중 상품 : 1개 &nbsp; &nbsp; | &nbsp; &nbsp; 사용가능한 쿠폰 : 0개  &nbsp; &nbsp;  </span>
 				</div>
 			
 			</div>
@@ -43,8 +54,9 @@
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">배송 확인</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">주문 목록</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">쿠폰 조회</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist">내 상세정보 보기</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mModify">정보 수정</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist">회원 탈퇴</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mDelete">회원 탈퇴</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">1:1문의</span>
 </div>
 <div class="col mb-5 overflow-hidden" id="myContent">

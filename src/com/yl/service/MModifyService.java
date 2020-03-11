@@ -46,7 +46,10 @@ public class MModifyService implements Service {
 		
 		Member_dao mDao = Member_dao.getInstance();
 		
-		
+		mDao.adModify(mid, ad_email, ad_phone, ad_call);
+		if(mDao.memberModify(mid, mpw, mname, mphone, maddress, mbirth, memail, mgender)) {
+			request.setAttribute("mModifyResult", mid+"님 정보수정에 성공하셨습니다.");
+		}
 		
 	}
 

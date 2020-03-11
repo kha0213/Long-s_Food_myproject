@@ -81,7 +81,7 @@ public class Controller extends HttpServlet {
 			service = new MMypageViewService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
-		}else if(command.equals("/mModify.do")) {// 정보수정
+		}else if(command.equals("/mModify.do")) {
 			service = new MModifyService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
