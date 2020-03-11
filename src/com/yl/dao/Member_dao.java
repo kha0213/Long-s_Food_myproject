@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.yl.dto.Member_dto;
+import com.yl.dto.Orders_dto;
 
 public class Member_dao {
 	
@@ -200,5 +202,38 @@ public class Member_dao {
 		}
 		return member;
 	}
+	
+	public ArrayList<Orders_dto> getOrders(String mid) {
+		ArrayList<Orders_dto> result = new ArrayList<Orders_dto>();
+		String sql = "SELECT M.*,ONO,ODATE,PARRIVE_DATE,DNO FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String ono = rs.getString("ono");
+				Date odate = rs.getDate("odate");
+				Date parrive_date = rs.getDate("parrive_date");
+				String dno = rs.getString("dno");
+				result.add(new Orders_dto(ono, odate, parrive_date, dno, mid));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
 	
 }

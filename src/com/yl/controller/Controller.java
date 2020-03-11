@@ -124,16 +124,33 @@ public class Controller extends HttpServlet {
 		
 		
 		
-		
 		//csBoards
 		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트
 			service = new CsBoardsListService();
 			service.execute(request, response);
 			viewPage = "board/customerService.jsp";
-		}else if(command.equals("/writeCsBoardView.do")) {//고객센터글쓰기
+		}else if(command.equals("/csBoardWriteView.do")) {//고객센터글쓰기 ono추가
+			service = new CsBoardWriteView();
+			service.execute(request, response);
 			viewPage = "board/customerServiceWrite.jsp";
-		}else if(command.equals("/writeCsBoard.do")) {//고객센터글쓰기
-			service = new WriteCsBoard();
+		}else if(command.equals("/csBoardWrite.do")) {//고객센터글쓰기
+			service = new CsBoardWrite();
+			service.execute(request, response);
+			viewPage = "csBoardsListService.do";
+		}else if(command.equals("/csBoardsSecretCheck.do")) {//비밀글 확인
+			service = new CsBoardsSecretCheckService();
+			service.execute(request, response);
+			viewPage = "board/csBoardsSecretCheck.jsp";
+		}else if(command.equals("/csBoardsDetail.do")) {//cs글 상세보기
+			service = new CsBoardsDetailService();
+			service.execute(request, response);
+			viewPage = "board/csBoardsDetail.jsp";
+		}else if(command.equals("/csBoardModifyView.do")) {//수정화면
+			service = new CsBoardsModifyViewService();
+			service.execute(request, response);
+			viewPage = "board/csBoardsModify.jsp";
+		}else if(command.equals("/csBoardModify.do")) {//수정실행
+			service = new CsBoardsModifyService();
 			service.execute(request, response);
 			viewPage = "csBoardsListService.do";
 		}

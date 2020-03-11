@@ -12,24 +12,30 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
+	
+
+
+
+
 </head>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
 	<div class="container">
 	<div class="row mt-5 mb-3 ml-2">
-	<span class="h3">고객센터 글 작성 </span>
+	<span class="h3">고객센터 글 수정 </span>
 	</div>
-	<form action="${conPath }/csBoardWrite.do" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="mid" value="${member.mid}">
+	<form action="${conPath }/csBoardModify.do" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="cno" value="${csBoard.cno}">
+		<input type="hidden" name="pageNum" value="${param.pageNum}">
 		<table class="table table-borderless">
     
   <tbody>
     <tr>
       <td scope="row">글 제목</td>
-      <td scope="row"><input type="text" name="csubject" class="form-control"></td>
+      <td scope="row"><input type="text" name="csubject" class="form-control" value="${csBoard.csubject }"></td>
     </tr>
    	<tr>
-      <td scope="row">주문번호<br><small class="text-muted">(주문 관련 문의만 선택해주세요)</small></td>
+     <td scope="row">주문번호<br><small class="text-muted">(주문 관련 문의만 선택해주세요)</small></td>
       <td scope="row">
 		<select class="custom-select">
 			<option selected>이전 주문 보기</option>
@@ -41,27 +47,36 @@
 	  </td>
     </tr>
     <tr>
-      <td scope="row">첨부파일<br><small class="text-muted">(10MB이하 파일만 첨부가능합니다.)</small></td>
-      <td scope="row"><input type="file" name="cimage" class="form-control"></td>
-    </tr>
+    	
+      <td scope="row">첨부파일수정<br><small class="text-muted">(10MB이하 파일만 첨부가능합니다.)</small></td>
+      <td scope="row"><input type="file" name="cimage" class="form-control"><br>
+      <small class="text-muted">첨부 안하시면 이전 첨부파일 그대로입니다.</small>
+      </td>
+     </tr>
+    
     <tr>
       <td scope="row">본문</td>
-      <td scope="row"><textarea class="form-control" name="ccontent"></textarea></td>
+      <td scope="row"><textarea class="form-control" name="ccontent" value="${csBoard.ccontent }"></textarea></td>
     </tr>
     <tr>
 
     <td scope="row" colspan="2" class="custom-control custom-checkbox">
     
     <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="customCheck1" name="csecretCheckbox" value="1">
-  <label class="custom-control-label" for="customCheck1">비밀글 설정</label>
+    <c:if test="${csBoard.csecret eq 1 }">
+  <input type="checkbox" class="custom-control-input csecret" id="customCheck2" name="csecretCheckbox" value="1" checked="checked">
+    </c:if>
+    <c:if test="${csBoard.csecret ne 1 }">
+  <input type="checkbox" class="custom-control-input csecret" id="customCheck2" name="csecretCheckbox" value="1">
+    </c:if>
+  <label class="custom-control-label" for="customCheck2">비밀글 설정</label>
 </div>
     
     
    </td>
     </tr>
     <tr>
-      <td scope="row" colspan="2" class="text-center"><input type="submit" value="작성완료" class="btn btn-primary"></td>
+      <td scope="row" colspan="2" class="text-center"><input type="submit" value="글 수정" class="btn btn-primary"></td>
     </tr>
   </tbody>
 </table>

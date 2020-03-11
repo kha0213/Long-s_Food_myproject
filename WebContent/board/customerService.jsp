@@ -17,7 +17,6 @@
 	$(function() {
 		$('.csBoard').mouseenter(function() {
 			$(this).css('cursor', 'pointer').addClass('bg-info');
-
 		});
 		$('.csBoard').mouseleave(function() {
 			$(this).removeClass('bg-info');
@@ -34,7 +33,11 @@
 			alert('${writeCsResult}');
 		</script>
 	</c:if>
-
+	<c:if test="${not empty csBoardModifyResult }">
+		<script>
+			alert('${csBoardModifyResult}');
+		</script>
+	</c:if>
 
 			<jsp:include page="../main/header.jsp" />
 	<div class="container mb-5">
@@ -42,26 +45,38 @@
 	<span class="h3 mb-5">고객센터  &nbsp; | &nbsp; <span class="text-muted h6">고객문의 게시판입니다.</span></span>
 	</div>
 	<c:if test="${not empty member || not empty manager }">
-	<p class="m-4 text-right"><a href="${conPadiv }/writeCsBoardView.do?pageNum=${param.pageNum}" class="btn btn-dark">글쓰기</a></p>
+	<p class="m-4 text-right"><a href="${conPath }/csBoardWriteView.do?pageNum=${param.pageNum}&mid=${member.mid}" class="btn btn-dark">글쓰기</a></p>
 	</c:if>
 	
 	
   <div class="row mt-4 text-center h5">
-      <div class="col">글번호</div>
-      <div class="col-7">제목</div>
-      <div class="col">글쓴이</div>
+      <div class="col-1">글번호</div>
+      <div class="col">제목</div>
+      <div class="col-1">작성자</div>
       <div class="col-2">작성일</div>
-      <div class="col">조회수</div>
+      <div class="col-1">조회수</div>
   </div>
 <hr class="my-4">
   <div>
+  
   	<c:forEach var="csBoard" items="${csBoards }">
-    <div class="csBoard row text-center mt-2 mb-1" onclick="location.href='producdivetails.do?pageNum=${pageNum}&cno=${csBoard.cno }'">
-      <div class="col">${csBoard.cno}</div>
-      <div class="col-7 text-left">${csBoard.csubject}</div>
-      <div class="col">${csBoard.mname}</div>
-      <div class="col-2">${csBoard.crdate}</div>
-      <div class="col">${csBoard.chit}</div>
+  	
+    <div class="csBoard row text-center" onclick="location.href='${conPath}/csBoardsSecretCheck.do?pageNum=${param.pageNum }&cno=${csBoard.cno }'">
+      <div class="col-1 border-right border-dark p-1 cno">${csBoard.cno} </div>
+      <div class="col text-left p-1 pl-3">
+      
+      <c:if test="${csBoard.csecret eq 1 }">
+     	<img src="${conPath }/image/icon/lock.png" alt="자물쇠">비밀글입니다.
+      </c:if>
+      <c:if test="${csBoard.csecret ne 1 }">
+	   	  ${csBoard.csubject}
+      </c:if>
+      
+      </div>
+      <div class="col-1 p-1 mname">${csBoard.mname}</div>
+      <div class="col-2 p-1"><fmt:formatDate value="${csBoard.crdate}" pattern="yy-MM-dd"/><br>
+    <fmt:formatDate value="${csBoard.crdate}" pattern="HH:mm:ss"/></div>
+      <div class="col-1 p-1">${csBoard.chit}</div>
     </div>
    </c:forEach>
 </div>
@@ -76,8 +91,14 @@
 						</a>
 					</c:if></li>
 				<c:forEach var="page" begin="${startPage }" end="${endPage }">
-					<li class="page-item"><a class="page-link"
+					<c:if test="${currentPage eq page }">
+						<li class="page-item disabled"><a class="page-link"
 						href="${conPath }/csBoardsListService.do?pageNum=${page}">${page }</a></li>
+					</c:if>
+					<c:if test="${currentPage ne page }">
+						<li class="page-item"><a class="page-link"
+						href="${conPath }/csBoardsListService.do?pageNum=${page}">${page }</a></li>
+					</c:if>
 				</c:forEach>
 				<li class="page-item"><a class="page-link"
 					href="${conPath }/csBoardsListService.do?pageNum=${endPage+1}"

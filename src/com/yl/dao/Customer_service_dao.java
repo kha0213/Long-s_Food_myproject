@@ -156,17 +156,44 @@ public class Customer_service_dao {
 	
 	// 글 수정 (수정 후 조회수 0)
 	
-	public boolean modifyCsBoardMember(int cno,String ccontent, boolean csecret, String cimage, String ono) {
+	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String cimage, String ono) {
 		boolean result = false;
-		String sql = "UPDATE CUSTOMER_SERVICE SET CCONTENT=?,CSECRET=?,CIMAGE=?,CHIT=0,CRDATE=SYSDATE,ONO=? WHERE CNO=?";
+		String sql = "UPDATE CUSTOMER_SERVICE SET CSUBJECT=?,CCONTENT=?,CSECRET=?,CIMAGE=?,CHIT=0,CRDATE=SYSDATE,ONO=? WHERE CNO=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, ccontent);
-			pstmt.setInt(2, csecret==true?1:0);
-			pstmt.setString(3, cimage);
+			pstmt.setString(1, csubject);
+			pstmt.setString(2, ccontent);
+			pstmt.setInt(3, csecret==true?1:0);
+			pstmt.setString(4, cimage);
+			pstmt.setString(5, ono);
+			pstmt.setInt(6, cno);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String ono) {
+		boolean result = false;
+		String sql = "UPDATE CUSTOMER_SERVICE SET CSUBJECT=?,CCONTENT=?,CSECRET=?, CHIT=0,CRDATE=SYSDATE,ONO=? WHERE CNO=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, csubject);
+			pstmt.setString(2, ccontent);
+			pstmt.setInt(3, csecret==true?1:0);
 			pstmt.setString(4, ono);
 			pstmt.setInt(5, cno);
 			result = pstmt.executeUpdate()==1;

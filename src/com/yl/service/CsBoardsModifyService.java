@@ -15,7 +15,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Customer_service_dao;
 
-public class WriteCsBoard implements Service {
+public class CsBoardsModifyService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -23,6 +23,7 @@ public class WriteCsBoard implements Service {
 		String filepath = request.getRealPath("image/customer_service");
 		int maxSize = 1024*1024*10;
 		String cimage = null;
+		
 		MultipartRequest mRequest = null;
 		try {
 			mRequest = new MultipartRequest(request, filepath, maxSize, "utf-8",new DefaultFileRenamePolicy());
@@ -31,21 +32,25 @@ public class WriteCsBoard implements Service {
 				String tempStr = enumStr.nextElement();
 				cimage = mRequest.getFilesystemName(tempStr);
 			}
-			
-			String mid = mRequest.getParameter("mid");
-			String mname = mRequest.getParameter("mname");
+			int cno = Integer.parseInt(mRequest.getParameter("cno"));
 			String csubject = mRequest.getParameter("csubject");
 			String ono = mRequest.getParameter("ono");
 			String ccontent = mRequest.getParameter("ccontent");
 			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null);
 			
 			Customer_service_dao csDao = Customer_service_dao.getInstance();
-			if(csDao.writeCsBoardMember(mid, csubject, ccontent, csecret, cimage, ono)) {
-				request.setAttribute("writeCsResult", "글쓰기 성공");
-			}else {
-				request.setAttribute("writeCsResult", "글쓰기 실패");
-			}
 			
+			boolean result = false;
+			if(cimage==null) {
+				result= csDao.modifyCsBoardMember(cno, csubject, ccontent, csecret, ono);
+			}else {
+				result= csDao.modifyCsBoardMember(cno, csubject, ccontent, csecret, cimage, ono);
+			}
+			if(result) {
+				request.setAttribute("csBoardModifyResult", "글수정 성공");
+			}else {
+				request.setAttribute("csBoardModifyResult", "글쓰기 실패");
+			}
 			
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -77,5 +82,8 @@ public class WriteCsBoard implements Service {
 				}
 			}
 		}
+		
+		
 	}
+
 }
