@@ -11,9 +11,7 @@ SELECT * FROM REVIEW;
 SELECT * FROM MANAGER;
 
 --로그인 시 MID,MPW로 DTO가져오기
-SELECT M.*,a.ad_email,a.ad_phone,a.ad_call FROM MEMBER M,AD A WHERE M.MID=A.MID;
-SELECT M.*,a.ad_email,a.ad_phone,a.ad_call FROM MEMBER M,AD A WHERE M.MID=A.MID AND M.MID='ID';
-SELECT M.*,a.ad_email,a.ad_phone,a.ad_call FROM MEMBER M,AD A WHERE M.MID=A.MID AND M.MID='ID' AND M.MPW='111';
+SELECT M.*,a.ad_email,a.ad_phone,a.ad_call,g.gname FROM MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.GNO = G.GNO AND M.MID='aaa' AND MPW='11';
 
 SELECT * FROM MANAGER WHERE MGID='' AND MGPW='';
 SELECT * FROM MANAGER WHERE MGID='1';
