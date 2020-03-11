@@ -7,14 +7,15 @@ public class Member_dto {
 	private String mpw;
 	private String mname;
 	private String mphone;
-	private String maddress;
+	private String maddress_basic;
+	private String maddress_detail;
 	private Date mbirth;
 	private String memail;
 	private String mgender;
 	private int mpoint;
 	private int mcumulative_buy;
 	private Date mjoindate;
-	private int gno;
+	private String gname;
 	private int ad_email;
 	private int ad_phone;
 	private int ad_call;
@@ -25,22 +26,23 @@ public class Member_dto {
 	}
 
 
-	public Member_dto(String mid, String mpw, String mname, String mphone, String maddress, Date mbirth, String memail,
-			String mgender, int mpoint, int mcumulative_buy, Date mjoindate, int gno, int ad_email, int ad_phone,
-			int ad_call) {
+	public Member_dto(String mid, String mpw, String mname, String mphone, String maddress_basic,
+			String maddress_detail, Date mbirth, String memail, String mgender, int mpoint, int mcumulative_buy,
+			Date mjoindate, String gname, int ad_email, int ad_phone, int ad_call) {
 		super();
 		this.mid = mid;
 		this.mpw = mpw;
 		this.mname = mname;
 		this.mphone = mphone;
-		this.maddress = maddress;
+		this.maddress_basic = maddress_basic;
+		this.maddress_detail = maddress_detail;
 		this.mbirth = mbirth;
 		this.memail = memail;
 		this.mgender = mgender;
 		this.mpoint = mpoint;
 		this.mcumulative_buy = mcumulative_buy;
 		this.mjoindate = mjoindate;
-		this.gno = gno;
+		this.gname = gname;
 		this.ad_email = ad_email;
 		this.ad_phone = ad_phone;
 		this.ad_call = ad_call;
@@ -87,13 +89,23 @@ public class Member_dto {
 	}
 
 
-	public String getMaddress() {
-		return maddress;
+	public String getMaddress_basic() {
+		return maddress_basic;
 	}
 
 
-	public void setMaddress(String maddress) {
-		this.maddress = maddress;
+	public void setMaddress_basic(String maddress_basic) {
+		this.maddress_basic = maddress_basic;
+	}
+
+
+	public String getMaddress_detail() {
+		return maddress_detail;
+	}
+
+
+	public void setMaddress_detail(String maddress_detail) {
+		this.maddress_detail = maddress_detail;
 	}
 
 
@@ -157,13 +169,13 @@ public class Member_dto {
 	}
 
 
-	public int getGno() {
-		return gno;
+	public String getGname() {
+		return gname;
 	}
 
 
-	public void setGno(int gno) {
-		this.gno = gno;
+	public void setGname(String gname) {
+		this.gname = gname;
 	}
 
 
@@ -196,7 +208,7 @@ public class Member_dto {
 		this.ad_call = ad_call;
 	}
 
-
+	
 
 	
 	

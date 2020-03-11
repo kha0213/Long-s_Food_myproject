@@ -98,7 +98,7 @@
 						aria-expanded="false"> <img alt="cart"
 							src="${conPath }/image/menu.png">
 					</a>
-						<div class="dropdown-menu dropdown-menu-right"
+						<div class="dropdown dropdown-menu dropdown-menu-right"
 							aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="${conPath }/main.do">Home</a>
 							<c:if test="${empty member && empty manager }">

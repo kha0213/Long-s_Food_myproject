@@ -21,10 +21,6 @@ public class MModifyService implements Service {
 		String mphone = request.getParameter("mphone");
 		String maddress_basic = request.getParameter("maddress_basic");
 		String maddress_detail = request.getParameter("maddress_detail");
-		String maddress = null;
-		if(maddress_basic != null) {
-			maddress = maddress_basic+" "+maddress_detail;
-		}
 		Date mbirth = null;
 		String mbirthStr = request.getParameter("mbirth");
 		if(mbirthStr!=null) {
@@ -47,7 +43,7 @@ public class MModifyService implements Service {
 		Member_dao mDao = Member_dao.getInstance();
 		
 		mDao.adModify(mid, ad_email, ad_phone, ad_call);
-		if(mDao.memberModify(mid, mpw, mname, mphone, maddress, mbirth, memail, mgender)) {
+		if(mDao.memberModify(mid, mpw, mname, mphone, maddress_basic,maddress_detail, mbirth, memail, mgender)) {
 			request.setAttribute("mModifyResult", mid+"님 정보수정에 성공하셨습니다.");
 		}
 		

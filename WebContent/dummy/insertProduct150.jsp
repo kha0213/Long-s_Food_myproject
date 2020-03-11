@@ -35,8 +35,8 @@ mgDao.joinManager("admin", "11", "관리자롱", "상품MD");
 	}
 	
 	Member_dao mDao = Member_dao.getInstance();
-	mDao.adMember("aaa", 1, 1, 1);
-	mDao.joinMember("aaa", "11", "롱롱이", "01023448628", "서울시 송파구", Date.valueOf("1989-03-27"), "email", "남자");
+	mDao.adMember("aaa", 1, 0, 1);
+	mDao.joinMember("aaa", "11", "롱롱이", "01023448628", "서울시 송파구","현대빌라", Date.valueOf("1989-03-27"), "email", "남자");
 
 	
 	Customer_service_dao csDao = Customer_service_dao.getInstance();

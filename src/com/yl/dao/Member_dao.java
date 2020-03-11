@@ -68,12 +68,11 @@ public class Member_dao {
 	}
 	
 	
-	public boolean joinMember(String mid,String mpw,String mname,String mphone,String maddress, 
-			Date mbirth,String memail,String mgender) {
+	public boolean joinMember(String mid,String mpw,String mname,String mphone,String maddress_basic, 
+			String maddress_detail,Date mbirth,String memail,String mgender) {
 		boolean result = false;
-		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS,MBIRTH,MEMAIL,MGENDER,GNO) VALUES "
-				+ "(?,?,?,?,?,?,?,?,1)";
-		// mid, mpw, mname, mphone, maddress, mbirth, memail mgender
+		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS_BASIC,MADDRESS_DETAIL,MBIRTH" + 
+				",MEMAIL,MGENDER,GNO) VALUES (?,?,?,?,?,?,?,?,?,1)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -84,10 +83,11 @@ public class Member_dao {
 			pstmt.setString(2, mpw);
 			pstmt.setString(3, mname);
 			pstmt.setString(4, mphone);
-			pstmt.setString(5, maddress);
-			pstmt.setDate(6, mbirth);
-			pstmt.setString(7, memail);
-			pstmt.setString(8, mgender);
+			pstmt.setString(5, maddress_basic);
+			pstmt.setString(6, maddress_detail);
+			pstmt.setDate(7, mbirth);
+			pstmt.setString(8, memail);
+			pstmt.setString(9, mgender);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -126,43 +126,12 @@ public class Member_dao {
 		}
 		
 	}
-	public boolean joinMember(Member_dto member) {
-		boolean result = false;
-		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS,MBIRTH,MEMAIL,MGENDER,GNO) VALUES "
-				+ "(?,?,?,?,?,?,?,1)";
-		// mid, mpw, mname, mphone, maddress, mbirth, memail mgender
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, member.getMid());
-			pstmt.setString(2, member.getMpw());
-			pstmt.setString(3, member.getMname());
-			pstmt.setString(4, member.getMphone());
-			pstmt.setString(5, member.getMaddress());
-			pstmt.setDate(6, member.getMbirth());
-			pstmt.setString(7, member.getMemail());
-			pstmt.setString(8, member.getMgender());
-			result = pstmt.executeUpdate()==1;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				if(pstmt!=null) pstmt.close();
-				if(conn!=null) conn.close();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		return result;
-	}
 	
 	public Member_dto loginMember(String mid,String mpw) {
 		Member_dto member = null;
-		String sql = "SELECT M.*,a.ad_email,a.ad_phone,a.ad_call "
-				+ "FROM MEMBER M,AD A WHERE M.MID=A.MID AND M.MID=? AND M.MPW=?";
+		String sql = "SELECT M.*,A.AD_EMAIL,A.AD_PHONE,A.AD_CALL,G.GNAME FROM "
+				+ "MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.GNO = G.GNO "
+				+ "AND M.MID=? AND MPW=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -175,19 +144,19 @@ public class Member_dao {
 			if(rs.next()) {
 				String mname = rs.getString("mname");
 				String mphone = rs.getString("mphone");
-				String maddress = rs.getString("maddress");
+				String maddress_basic = rs.getString("maddress_basic");
+				String maddress_detail = rs.getString("maddress_detail");
 				Date mbirth = rs.getDate("mbirth");
 				String memail = rs.getString("memail");
 				String mgender = rs.getString("mgender");
 				int mpoint = rs.getInt("mpoint");
 				int mcumulative_buy = rs.getInt("mcumulative_buy");
 				Date mjoindate = rs.getDate("mjoindate");;
-				int gno = rs.getInt("gno");;
+				String gname = rs.getString("gname");;
 				int ad_email = rs.getInt("ad_email");;
 				int ad_phone = rs.getInt("ad_phone");;
 				int ad_call = rs.getInt("ad_call");;
-				
-				member = new Member_dto(mid, mpw, mname, mphone, maddress, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, gno, ad_email, ad_phone, ad_call);
+				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, gname, ad_email, ad_phone, ad_call);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -239,7 +208,7 @@ public class Member_dao {
 	}
 	
 	public void adModify(String mid,int ad_email,int ad_phone,int ad_call) {
-		String sql="UPDATE AD SET ad_email=?,ad_phone=?,ad_call=? WHERE MID=?";
+		String sql="UPDATE AD SET AD_EMAIL=?,AD_PHONE=?,AD_CALL=? WHERE MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -263,9 +232,9 @@ public class Member_dao {
 	}
 	
 	
-	public boolean memberModify(String mid,String mpw,String mname,String mphone,String maddress,Date mbirth,String memail,String mgender) {
+	public boolean memberModify(String mid,String mpw,String mname,String mphone,String maddress_basic,String maddress_detail,Date mbirth,String memail,String mgender) {
 		boolean result = false;
-		String sql="UPDATE MEMBER SET MPW=?,MNAME=?,MPHONE=?,MADDRESS=?,MBIRTH=?,MEMAIL=?,MGENDER=? WHERE MID=?";
+		String sql="UPDATE MEMBER SET MPW=?,MNAME=?,MPHONE=?,MADDRESS_BASIC=?,MADDRESS_DETAIL=?,MBIRTH=?,MEMAIL=?,MGENDER=? WHERE MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -274,12 +243,57 @@ public class Member_dao {
 			pstmt.setString(1, mpw);
 			pstmt.setString(2, mname);
 			pstmt.setString(3, mphone);
-			pstmt.setString(4, maddress);
-			pstmt.setDate(5, mbirth);
-			pstmt.setString(6, memail);
-			pstmt.setString(7, mgender);
-			pstmt.setString(8, mid);
+			pstmt.setString(4, maddress_basic);
+			pstmt.setString(5, maddress_detail);
+			pstmt.setDate(6, mbirth);
+			pstmt.setString(7, memail);
+			pstmt.setString(8, mgender);
+			pstmt.setString(9, mid);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	private void deleteAd(String mid) {
+		String sql="DELETE FROM AD WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	public boolean deleteMember(String mid) {
+		deleteAd(mid);
+		boolean result = false;
+		String sql="DELETE FROM MEMBER WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {

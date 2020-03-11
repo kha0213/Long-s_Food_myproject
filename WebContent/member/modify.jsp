@@ -16,7 +16,30 @@
 		}
 		if($('input[type="radio"]:eq(1)').val() == '${member.mgender}'){
 			$('input[type="radio"]:eq(1)').attr("checked", true);
+		} //radio 기존 정보 checked
+		
+		
+		$("#check_all").click(function(){
+		    var chk = $(this).is(":checked");//.attr('checked');
+		    if(chk){
+		       	$('input[type="checkbox"]').prop('checked', true);
+		    }else{
+		        $('input[type="checkbox"]').prop('checked', false);
+		    }
+		});//checkbox 전체선택
+
+
+		
+		
+		if($('input[type="checkbox"]:eq(0)').val() == '${member.ad_email}'){
+			$('input[type="checkbox"]:eq(0)').prop("checked", true);
 		}
+		if($('input[type="checkbox"]:eq(1)').val() == '${member.ad_phone}'){
+			$('input[type="checkbox"]:eq(1)').prop("checked", true);
+		}
+		if($('input[type="checkbox"]:eq(2)').val() == '${member.ad_call}'){
+			$('input[type="checkbox"]:eq(2)').prop("checked", true);
+		}//checkbox 기존 정보 checked
 		
 		$('input[type="password"]').keyup(function(event){
 			var mpw = $('input[name="mpw"]').val();
@@ -140,8 +163,8 @@
 					<tr>
 						<th scope="col">주소</th>
 						<td><input type="button" class="form-control btn-info btn mb-2" value="주소검색" onclick="daumMapApi()"><br>
-						<input type="text" class="form-control mb-1" name="maddress_basic" placeholder="기본주소" id="jibunAddress">
-						<input type="text" class="form-control" name="maddress_detail" placeholder="상세주소">
+						<input type="text" class="form-control mb-1" name="maddress_basic" placeholder="기본주소" id="jibunAddress" value="${member.maddress_basic }">
+						<input type="text" class="form-control" name="maddress_detail" placeholder="상세주소" value="${member.maddress_detail }">
 						</td>
 					</tr>
 					
@@ -163,9 +186,10 @@
 					<tr>
 						<th scope="col">광고</th>
 						<td>
-							<label><input type="checkbox" name="ad_email" value="1" checked="checked"> 메일 수신</label><br>
-							<label><input type="checkbox" name="ad_phone" value="1" checked="checked"> 문자 수신</label><br>
-							<label><input type="checkbox" name="ad_call" value="1" checked="checked"> 전화 수신</label><br>
+							<label><input type="checkbox" name="ad_email" value="1"> 메일 수신</label>
+							<label><input type="checkbox" name="ad_phone" value="1"> 문자 수신</label>
+							<label><input type="checkbox" name="ad_call" value="1"> 전화 수신</label><br>
+							<label><input type="checkbox" id="check_all"> 전체 선택</label><br>
 						</td>
 					</tr>
 					<tr class="text-center">
@@ -178,13 +202,6 @@
 			</table>
 		</form>
 	
-	<script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-		crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -12,8 +12,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-<script
-  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+
 <script>
 	$(function(){
 		$('.mylist').hover(function(){
@@ -23,7 +22,7 @@
 			$('#myContent').load('${conPath}/member/modifyPwChk.jsp');
 		});
 		$('#mDelete').click(function(){
-			$('#myContent').load('${conPath}/mDeleteView.do');
+			$('#myContent').load('${conPath}/member/mDelete.jsp');
 		});
 		
 	});
@@ -41,11 +40,11 @@
 </c:if>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
-			<div class="container mb-5">
+			<div class="container mb-5 mt-5">
 			<div class="row">
 				<div class="col text-center mb-5">
-					<h2>My Page</h2>
-					<span>고객등급 : VIP &nbsp; &nbsp; |  &nbsp; &nbsp; 배송중 상품 : 1개 &nbsp; &nbsp; | &nbsp; &nbsp; 사용가능한 쿠폰 : 0개  &nbsp; &nbsp;  </span>
+					<h2>${member.mname }님 My Page</h2>
+					<span>고객등급 : ${member.gname } &nbsp; &nbsp; |  &nbsp; &nbsp; 배송중 상품 : 1개 &nbsp; &nbsp; | &nbsp; &nbsp; 사용가능한 쿠폰 : 0개  &nbsp; &nbsp;  </span>
 				</div>
 			
 			</div>
@@ -54,7 +53,7 @@
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">배송 확인</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">주문 목록</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">쿠폰 조회</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist">내 상세정보 보기</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist">상세정보</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mModify">정보 수정</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mDelete">회원 탈퇴</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">1:1문의</span>
@@ -71,7 +70,8 @@
 			<jsp:include page="../main/footer.jsp" />
 	
 
-
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"

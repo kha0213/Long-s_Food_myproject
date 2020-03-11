@@ -11,29 +11,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Myproject</title>
+<link rel="stylesheet" href="${conPath }/css/content.css"
+	type="text/css">
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-	crossorigin="anonymous">
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link
 	href="https://fonts.googleapis.com/css?family=Alata|Dancing+Script|Gochi+Hand|Indie+Flower|Kaushan+Script|Lobster|Lobster+Two|Nanum+Pen+Script|Roboto&display=swap"
 	rel="stylesheet">
 
-<!--다운받은 폰트목록
-       font-family: 'Dancing Script', cursive;
-        font-family: 'Gochi Hand', cursive;
-        font-family: 'Indie Flower', cursive;
-        font-family: 'Kaushan Script', cursive;
-        font-family: 'Lobster Two', cursive;
-        font-family: 'Lobster', cursive;
-        
-        font-family: 'Nanum Pen Script', cursive;
-        font-family: 'Roboto', sans-serif;
-        font-family: 'Alata', sans-serif;
-    -->
 
-<link rel="stylesheet" href="${conPath }/css/content.css"
-	type="text/css">
+
 
 </head>
 <c:if test="${joinResult eq true }">
@@ -101,11 +88,11 @@
 
 
 <body>
-		<jsp:include page="header.jsp" />
+	<jsp:include page="header.jsp" />
 	<div id="wrap" class="container">
 
-		<div id="content">
-			
+		<div>
+
 			<div id="carouselImage" class="carousel slide carousel-fade"
 				data-ride="carousel">
 				<div class="carousel-inner">
@@ -209,8 +196,7 @@
 
 	<jsp:include page="footer.jsp" />
 	<!--wrap-->
-	<script
-  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

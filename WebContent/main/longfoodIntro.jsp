@@ -13,7 +13,7 @@
 	
 
 </head>
-<body>
+<body style="background-color: #f5f3f6">
 	<div id="wrap" class="container-fluid">
 		<jsp:include page="header.jsp"/>
 	
@@ -29,8 +29,9 @@
 		
 	</div>
 	
-	
+	<div class="pl-5">
 	<h3>오시는 길</h3>
+	</div>
 	<div id="map" class="m-5" style="width:500px;height:400px;"></div>
 
 
