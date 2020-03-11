@@ -203,6 +203,9 @@ public class Member_dao {
 		return member;
 	}
 	
+	
+	
+	
 	public ArrayList<Orders_dto> getOrders(String mid) {
 		ArrayList<Orders_dto> result = new ArrayList<Orders_dto>();
 		String sql = "SELECT M.*,ONO,ODATE,PARRIVE_DATE,DNO FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=?";
@@ -235,5 +238,57 @@ public class Member_dao {
 		return result;
 	}
 	
+	public void adModify(String mid,int ad_email,int ad_phone,int ad_call) {
+		String sql="UPDATE AD SET ad_email=?,ad_phone=?,ad_call=? WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setInt(2, ad_email);
+			pstmt.setInt(3, ad_phone);
+			pstmt.setInt(4, ad_call);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
 	
+	public boolean memberModify(String mid,String mpw,String mname,String mphone,String maddress,Date mbirth,String memail,String mgender) {
+		boolean result = false;
+		String sql="UPDATE MEMBER SET MPW=?,MNAME=?,MPHONE=?,MADDRESS=?,MBIRTH=?,MEMAIL=?,MGENDER=? WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mpw);
+			pstmt.setString(2, mname);
+			pstmt.setString(3, mphone);
+			pstmt.setString(4, maddress);
+			pstmt.setDate(5, mbirth);
+			pstmt.setString(6, memail);
+			pstmt.setString(7, mgender);
+			pstmt.setString(8, mid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 }

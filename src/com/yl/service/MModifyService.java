@@ -4,15 +4,19 @@ import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.yl.dao.Member_dao;
 
-public class JoinService implements Service {
+public class MModifyService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		String mid = request.getParameter("mid");
 		String mpw = request.getParameter("mpw");
+		if(mpw == null || mpw.equals("")) {
+			mpw = request.getParameter("mpwSe");
+		}
 		String mname = request.getParameter("mname");
 		String mphone = request.getParameter("mphone");
 		String maddress_basic = request.getParameter("maddress_basic");
@@ -41,8 +45,9 @@ public class JoinService implements Service {
 		if(ad_call_str==null) ad_call = 0;
 		
 		Member_dao mDao = Member_dao.getInstance();
-		mDao.adMember(mid, ad_email, ad_phone, ad_call);
-		request.setAttribute("joinResult", mDao.joinMember(mid, mpw, mname, mphone, maddress, mbirth, memail, mgender));
+		
+		
+		
 	}
 
 }

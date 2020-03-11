@@ -77,6 +77,16 @@ public class Controller extends HttpServlet {
 			service = new LoginService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
+		}else if(command.equals("/mMypage.do")) {// 미완성
+			service = new MMypageViewService();
+			service.execute(request, response);
+			viewPage = "member/mypage.jsp";
+		}else if(command.equals("/mModify.do")) {// 정보수정
+			service = new MModifyService();
+			service.execute(request, response);
+			viewPage = "member/mypage.jsp";
+		}else if(command.equals("/mDeleteView.do")) {//미완성
+			viewPage = "member/mDelete.jsp";
 		}else if(command.equals("/logout.do")) {//session초기화
 			service = new LogoutService();
 			service.execute(request, response);

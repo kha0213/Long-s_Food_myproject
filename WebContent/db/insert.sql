@@ -37,5 +37,8 @@ SELECT * FROM customer_service;
 select * from ad;
 
 select * from member;
+UPDATE MEMBER SET MPW='',MNAME='',MPHONE='',MADDRESS='',MBIRTH=SYSDATE,MEMAIL='',MGENDER='';
+SELECT * FROM ad;
 
-SELECT * FROM PRODUCT;
+UPDATE AD SET ad_email=0,ad_phone=1,ad_call=0 WHERE MID='aaa';
+commit;

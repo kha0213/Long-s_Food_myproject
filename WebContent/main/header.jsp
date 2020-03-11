@@ -64,7 +64,7 @@
 					<!-- 고객 헤더 -->
 					<c:if test="${not empty member }">
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/mypage.do"><small>${member.mname }님</small></a></li>
+							href="${conPath }/mMypage.do"><small>${member.mname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
 						<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
@@ -107,7 +107,7 @@
 									Up</a>
 							</c:if>
 							<c:if test="${not empty member }">
-								<a class="dropdown-item" href="${conPath }/mypage.do">${member.mname }님</a>
+								<a class="dropdown-item" href="${conPath }/mMypage.do">${member.mname }님</a>
 								<a class="dropdown-item" href="#">My Page</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>

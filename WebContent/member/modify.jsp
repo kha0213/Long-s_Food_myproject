@@ -7,35 +7,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-	
+
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 <script>
 	
 	$(document).ready(function(){
-		$('input[name="mid"]').keyup(function(){
-			var mid = $('input[name="mid"]').val();
-			
-			$.ajax({
-				url : '${conPath}/idConfirm.do',
-				type : 'get',
-				dataType : 'html',
-				data : "mid="+mid,
-				success : function(data){
-					$('#idConfirmResult').html(data);
-					var id = $('#idConfirmResult').html().trim();
-					if(id == '중복된 아이디가 존재합니다.'){
-						$('#idConfirmResult').removeClass('alert-success').addClass('alert alert-danger');
-					}else{
-						$('#idConfirmResult').removeClass('alert-danger').addClass('alert alert-success');
-					}
-				}
-			});//ajax
 		
-			
-		});
-		$('input[type="password"]').keyup(function(){
+		$('input[type="password"]').keyup(function(event){
 			var mpw = $('input[name="mpw"]').val();
 			var mpwChk = $('input[name="mpwChk"]').val();
 			
@@ -45,20 +24,21 @@
 			}else{
 				$('#pwConfirmResult').removeClass('alert-success').addClass('alert').addClass('alert-danger').html('<small>비밀번호가 일치하지 않습니다.</small>');
 			}
+			
+			if ( event.keyCode === 8 ) {
+				if(mpw == '' && mpwChk==''){
+					$('#pwConfirmResult').removeClass('alert-danger').removeClass('alert').removeClass('alert-success').html('');
+				}
+			}
 		});
 		
 		
 		
-		
 		$('form').submit(function(){
-			var idConfirmResult = $('#idConfirmResult').text().trim();
+			
 			var pwConfirmResult =  $('#pwConfirmResult').text().trim();
-			if(idConfirmResult!='사용 가능한 아이디입니다.'){
-				alert('아이디를 확인해주세요');
-				$('input[name="mid"]').focus();
-				return false;
-			}
-			if(pwConfirmResult!='비밀번호가 일치합니다.'){
+			
+			if(pwConfirmResult=='비밀번호가 일치하지 않습니다.'){
 				alert('비밀번호를 확인해주세요');
 				$('input[name="mpwChk"]').focus();
 				return false;
@@ -111,43 +91,47 @@
   } ); 
   </script>
 </head>
+
+
 <body style="background-color: #f5f3f6">
-	<div id="wrap" class="container-fluid">
-		<form action="${conPath }/join.do" method="post" name="frm">
-	
+
+		<form action="${conPath }/mModify.do" method="post" name="frm">
+			<input type="hidden" name="mpwSe" value="${member.mpw }">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th colspan="2"><h1 class="text-center text-monospace">회원가입</h1></th>
+						<th colspan="2"><h3 class="text-center text-monospace">${member.mname }님 정보수정입니다.</h3></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<th scope="col">ID <span style="color:red">*</span></th>
-						<td class="text-center"><input type="text" class="form-control" name="mid" required="required">
+						<th scope="col">ID <span style="color:red">*</span><br>
+						<small class="text-muted">(ID는 변경 불가능합니다.)</small></th>
+						<td class="text-center"><input type="text" class="form-control" name="mid" readonly="readonly" value="${member.mid }">
 						<p class="h6 mt-1 text-left" role="alert" id="idConfirmResult"></p>
 						
 						</td>
 						
 					</tr>
 					<tr>
-						<th scope="col">비밀번호 <span style="color:red">*</span></th>
-						<td><input type="password" class="form-control" name="mpw" required="required"></td>
+						<th scope="col">변경 할 비밀번호 <span style="color:red">*</span><br>
+						<small class="text-muted">(미 입력시 기존비밀번호 그대로)</small></th>
+						<td><input type="password" class="form-control" name="mpw"></td>
 					
 					</tr>
 					<tr>
 						<th scope="col">비밀번호 확인 <span style="color:red">*</span></th>
-						<td><input type="password" class="form-control" name="mpwChk" required="required">
+						<td><input type="password" class="form-control" name="mpwChk">
 						<p role="alert" id="pwConfirmResult" class="h6 mt-1 text-left"></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="col">이름 <span style="color:red">*</span></th>
-						<td><input type="text" class="form-control" name="mname" required="required"></td>
+						<td><input type="text" class="form-control" name="mname" required="required" value="${member.mname }"></td>
 					</tr>
 					<tr>
 						<th scope="col">전화번호 <span style="color:red">*</span></th>
-						<td><input type="text" class="form-control" name="mphone" required="required"></td>
+						<td><input type="text" class="form-control" name="mphone" required="required" value="${member.mphone }"></td>
 					</tr>
 					<tr>
 						<th scope="col">주소</th>
@@ -159,11 +143,11 @@
 					
 					<tr>
 						<th scope="col">생일</th>
-						<td><input type="text" class="form-control" name="mbirth" id="datepicker"></td>
+						<td><input type="text" class="form-control" name="mbirth" id="datepicker" value="${member.mbirth }"></td>
 					</tr>
 					<tr>
 						<th scope="col">이메일</th>
-						<td><input type="email" class="form-control" name="memail"></td>
+						<td><input type="email" class="form-control" name="memail" value="${member.memail }"></td>
 					</tr>
 					<tr>
 						<th scope="col">성별</th>
@@ -175,28 +159,20 @@
 					<tr>
 						<th scope="col">광고</th>
 						<td>
-							<label><input type="checkbox" name="ad_email" value="1"> 메일 수신</label><br>
-							<label><input type="checkbox" name="ad_phone" value="1"> 문자 수신</label><br>
-							<label><input type="checkbox" name="ad_call" value="1"> 전화 수신</label><br>
+							<label><input type="checkbox" name="ad_email" value="1" checked="checked"> 메일 수신</label><br>
+							<label><input type="checkbox" name="ad_phone" value="1" checked="checked"> 문자 수신</label><br>
+							<label><input type="checkbox" name="ad_call" value="1" checked="checked"> 전화 수신</label><br>
 						</td>
 					</tr>
 					<tr class="text-center">
 						<th colspan="2">
-<input class="btn btn-outline-success" type="submit" value="회원가입">
+<input class="btn btn-outline-success" type="submit" value="정보수정">
 <input class="btn btn-outline-secondary" type="reset" value="초기화">
 						</th>
 					</tr>
 				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="2" class="text-right"><input type="button" onclick="location.href='${conPath}/mgjoinView.do'" class="btn btn-outline-dark btn-sm" value="관리자 등록">
-						</td>
-					</tr>
-				</tfoot>
 			</table>
 		</form>
-	</div>
-	<!--wrap-->
 	
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
