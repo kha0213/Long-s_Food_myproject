@@ -81,6 +81,10 @@ public class Controller extends HttpServlet {
 			service = new MMypageViewService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
+		}else if(command.equals("/mPoint.do")) {// 미완성
+			service = new MPointService();
+			service.execute(request, response);
+			viewPage = "member/mPoint.jsp";
 		}else if(command.equals("/mModify.do")) {
 			service = new MModifyService();
 			service.execute(request, response);
@@ -88,7 +92,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/mDelete.do")) {//미완성
 			service = new MDeleteService();
 			service.execute(request, response);
-			viewPage = "member/mypage.jsp";
+			viewPage = "main/mainpage.jsp";
 		}else if(command.equals("/logout.do")) {//session초기화
 			service = new LogoutService();
 			service.execute(request, response);
@@ -128,10 +132,23 @@ public class Controller extends HttpServlet {
 			service = new ProductAll();
 			service.execute(request, response);
 			viewPage = "board/productAll.jsp";
-		}else if(command.equals("/productDetail.do")) {//제품 상세 보기
+		}else if(command.equals("/productDetail.do")) {//제품 상세 보기 + 리뷰
 			service = new ProductDetail();
 			service.execute(request, response);
 			viewPage = "board/productDetail.jsp";
+		}else if(command.equals("/pBuyNow.do")) {//제품 바로 구매
+			service = new PBuyNowService();
+			service.execute(request, response);
+			viewPage = "productAll.do";
+		}else if(command.equals("/cartAddProduct.do")) {//장바구니 제품 구매
+			service = new CartAddProduct();
+			service.execute(request, response);
+			viewPage = "productAll.do";
+		}else if(command.equals("/rGoodPlus.do")) {//좋아요
+			System.out.println("들어");
+			service = new RGoodPlusService();
+			service.execute(request, response);
+			viewPage = "productAll.do";
 		}
 		
 		

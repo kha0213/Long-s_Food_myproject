@@ -12,11 +12,6 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-	
-
-
-
-
 </head>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
@@ -37,13 +32,13 @@
    	<tr>
      <td scope="row">주문번호<br><small class="text-muted">(주문 관련 문의만 선택해주세요)</small></td>
       <td scope="row">
-		<select class="custom-select">
+		<select class="custom-select" name="ono">
 			<option selected>이전 주문 보기</option>
   			<c:forEach var="order" items="${orders }">
 	  			<option value="${order.ono }">주문번호 : ${order.ono } | 주문일 : ${order.odate }</option>
   			</c:forEach>
 		</select>
-
+	
 	  </td>
     </tr>
     <tr>

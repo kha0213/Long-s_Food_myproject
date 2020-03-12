@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yl.dao.Customer_service_dao;
-import com.yl.dao.Manager_dao;
 
 public class CsBoardsListService implements Service {
 

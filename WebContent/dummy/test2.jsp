@@ -19,34 +19,12 @@
 </head>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
-<input type="button" onclick="daumMapApi()" value="우편번호 찾기"><br>
-<input type="text" id="jibunAddress" placeholder="지번주소">
-<span id="guide" style="color:#999;display:none"></span>
-<input type="text" id="detailAddress" placeholder="상세주소">
 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-    function daumMapApi() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                var roadAddr = data.roadAddress; // 도로명 주소 변수
-                var extraRoadAddr = ''; // 참고 항목 변수
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraRoadAddr += data.bname;
-                }
-                // 건물명이 있고, 공동주택일 경우 추가한다.
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById("jibunAddress").value = data.jibunAddress;
 
-                var guideTextBox = document.getElementById("guide");
-              
-            }
-        }).open();
-    }
-</script>
+<!-- Button trigger modal -->
+
+
+
 			<jsp:include page="../main/footer.jsp" />
 
 

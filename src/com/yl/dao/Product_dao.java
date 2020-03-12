@@ -9,11 +9,8 @@ import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.yl.dto.Manager_dto;
-import com.yl.dto.Member_dto;
 import com.yl.dto.Product_dto;
 
 public class Product_dao {
@@ -185,7 +182,7 @@ public class Product_dao {
 				product = new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count, mgname);
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("dd"+e.getMessage());
 		} finally {
 			try {
 				if(rs!=null) rs.close();
@@ -231,16 +228,17 @@ public class Product_dao {
 		return result;
 	}
 	
-	public boolean productStockMinus(String pcode) {
+	public boolean productStockMinus(String pcode,int pcnt) {
 		boolean result = false;
-		String sql = "UPDATE PRODUCT SET PSTOCK=PSTOCK-1 WHERE PCODE=?";
+		String sql = "UPDATE PRODUCT SET PSTOCK=PSTOCK-? WHERE PCODE=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, pcode);
+			pstmt.setInt(1, pcnt);
+			pstmt.setString(2, pcode);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -255,7 +253,7 @@ public class Product_dao {
 		return result;
 	}
 	
-	public boolean productStockPlus(String pcode,int count) {
+	public boolean productStockPlus(String pcode,int pcnt) {
 		boolean result = false;
 		String sql = "UPDATE PRODUCT SET PSTOCK=PSTOCK+? WHERE PCODE=?";
 		Connection conn = null;
@@ -264,7 +262,7 @@ public class Product_dao {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, count);
+			pstmt.setInt(1, pcnt);
 			pstmt.setString(2, pcode);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
@@ -304,6 +302,29 @@ public class Product_dao {
 		return result;
 	}
 	
-	
+	public boolean pcumulative_sales_plus(String pcode,int pcnt) {
+		boolean result = false;
+		String sql = "UPDATE PRODUCT SET PCUMULATIVE_SALES=PCUMULATIVE_SALES+? WHERE PCODE=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pcnt);
+			pstmt.setString(2, pcode);
+			result = pstmt.executeUpdate()==1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 	
 }

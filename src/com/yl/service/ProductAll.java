@@ -36,6 +36,7 @@ public class ProductAll implements Service {
 		request.setAttribute("startPage", startPage);
 		request.setAttribute("endPage", endPage);
 		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("currentPage", currentPage);
 
 	}
 

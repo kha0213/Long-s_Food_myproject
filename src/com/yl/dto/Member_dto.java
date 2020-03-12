@@ -15,6 +15,7 @@ public class Member_dto {
 	private int mpoint;
 	private int mcumulative_buy;
 	private Date mjoindate;
+	private boolean mstatus;
 	private String gname;
 	private int ad_email;
 	private int ad_phone;
@@ -24,11 +25,13 @@ public class Member_dto {
 	public Member_dto() {
 		super();
 	}
+	
+	
 
 
 	public Member_dto(String mid, String mpw, String mname, String mphone, String maddress_basic,
 			String maddress_detail, Date mbirth, String memail, String mgender, int mpoint, int mcumulative_buy,
-			Date mjoindate, String gname, int ad_email, int ad_phone, int ad_call) {
+			Date mjoindate, boolean mstatus, String gname, int ad_email, int ad_phone, int ad_call) {
 		super();
 		this.mid = mid;
 		this.mpw = mpw;
@@ -42,11 +45,28 @@ public class Member_dto {
 		this.mpoint = mpoint;
 		this.mcumulative_buy = mcumulative_buy;
 		this.mjoindate = mjoindate;
+		this.mstatus = mstatus;
 		this.gname = gname;
 		this.ad_email = ad_email;
 		this.ad_phone = ad_phone;
 		this.ad_call = ad_call;
 	}
+
+
+	
+
+	public String getGname() {
+		return gname;
+	}
+
+
+
+
+	public void setGname(String gname) {
+		this.gname = gname;
+	}
+
+
 
 
 	public String getMid() {
@@ -168,17 +188,6 @@ public class Member_dto {
 		this.mjoindate = mjoindate;
 	}
 
-
-	public String getGname() {
-		return gname;
-	}
-
-
-	public void setGname(String gname) {
-		this.gname = gname;
-	}
-
-
 	public int getAd_email() {
 		return ad_email;
 	}
@@ -208,8 +217,20 @@ public class Member_dto {
 		this.ad_call = ad_call;
 	}
 
-	
 
+
+	public boolean isMstatus() {
+		return mstatus;
+	}
+
+
+
+	public void setMstatus(boolean mstatus) {
+		this.mstatus = mstatus;
+	}
+
+	
+	
 	
 	
 	

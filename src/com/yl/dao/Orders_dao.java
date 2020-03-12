@@ -9,15 +9,13 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import com.yl.dto.Manager_dto;
-
-public class Manager_dao {
-	
-	private Manager_dao() {
+public class Orders_dao {
+private Orders_dao() {
+		
 	}
 	
-	private static Manager_dao instance = new Manager_dao();
-	public static Manager_dao getInstance() {
+	private static Orders_dao instance = new Orders_dao();
+	public static Orders_dao getInstance() {
 		return instance;
 	}
 	
@@ -33,21 +31,19 @@ public class Manager_dao {
 		}
 		return conn;
 	}
-	public boolean joinManager(String mgid,String mgpw,String mgname,String mgpartname) {
-		boolean result = false;
-		String sql = "INSERT INTO MANAGER (MGID,MGPW,MGNAME,MGPARTNAME) VALUES "
-				+ "(?,?,?,?)";
+	
+	
+	private void addOrdersPre(int dno,String mid) {
+		String sql = "INSERT INTO ORDERS VALUES(ONO_SEQ.NEXTVAL,SYSDATE,NULL,NULL,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mgid);
-			pstmt.setString(2, mgpw);
-			pstmt.setString(3, mgname);
-			pstmt.setString(4, mgpartname);
-			result = pstmt.executeUpdate()==1;
+			pstmt.setInt(1, dno);
+			pstmt.setString(2, mid);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -58,21 +54,20 @@ public class Manager_dao {
 				System.out.println(e.getMessage());
 			}
 		}
-		return result;
 	}
-	public boolean mgidConfirm(String mgid) {
-		boolean result = false;
-		String sql = "SELECT * FROM MANAGER WHERE MGID=?";
+	public int addOrders(int dno,String mid) {
+		addOrdersPre(dno, mid);
+		int ono = 0;
+		String sql = "SELECT MAX(ONO) FROM ORDERS";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mgid);
 			rs = pstmt.executeQuery();
-			result = rs.next();
+			if(rs.next())
+			ono = rs.getInt(1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -84,41 +79,63 @@ public class Manager_dao {
 				System.out.println(e.getMessage());
 			}
 		}
-		
-		return result;
+		return ono;
 	}
-	
-	public Manager_dto loginManager(String mgid,String mgpw) {
-		Manager_dto manager = null;
-		String sql = "SELECT * FROM MANAGER WHERE MGID=? AND MGPW=?";
+	private void set_purchase_amount(int ono,int purchase_amount) {
+		String sql = "UPDATE ORDERS SET PURCHASE_AMOUNT=? WHERE ONO=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mgid);
-			pstmt.setString(2, mgpw);
+			pstmt.setInt(1, purchase_amount);
+			pstmt.setInt(2, ono);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	
+	public int get_set_purchase_amount(int ono) {
+		int purchase_amount = 0;
+		String sql = "SELECT O.*,OD.PCNT,od.pprice FROM ORDERS O, ORDER_DETAIL OD WHERE O.ONO=OD.ONO AND O.ONO=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ono);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				String mgname = rs.getString("mgname");
-				String mgpartname = rs.getString("mgpartname");
-				manager = new Manager_dto(mgid, mgpw, mgname, mgpartname);
+			while(rs.next()) {
+				int pcnt = rs.getInt("pcnt");
+				int pprice = rs.getInt("pprice");
+				purchase_amount += pcnt*pprice;
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			try {
-				if(rs!=null) rs.close();
-				if(pstmt!=null) pstmt.close();
-				if(conn!=null) conn.close();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
+				try {
+					if(rs!=null) rs.close();
+					if(pstmt!=null) pstmt.close();
+					if(conn!=null) conn.close();
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			
 		}
-		return manager;
+		set_purchase_amount(ono, purchase_amount);
+		return purchase_amount;
 	}
-	
-	
 	
 }

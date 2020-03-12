@@ -86,7 +86,7 @@
 
 			<div class="col" id="header_nav_mob">
 				<ul class="nav justify-content-end">
-					<li class="nav-item"><a class="nav-link active" href="#">
+					<li class="nav-item"><a class="nav-link active" href="${conPath }/mMypage.do">
 							<img alt="user" src="${conPath }/image/user.png">
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="#"> <img
@@ -106,13 +106,12 @@
 								<a class="dropdown-item" href="${conPath }/joinView.do">Sign
 									Up</a>
 							</c:if>
-							<c:if test="${not empty member }">
-								<a class="dropdown-item" href="${conPath }/mMypage.do">${member.mname }님</a>
-								<a class="dropdown-item" href="#">My Page</a>
+							<c:if test="${not empty member && empty manager }">
+								<a class="dropdown-item" href="${conPath }/mMypage.do">My Page</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>
 							</c:if>
-							<c:if test="${not empty manager }">
+							<c:if test="${not empty manager && empty member }">
 								<a class="dropdown-item" href="${conPath }/registProductView.do">상품등록</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>
@@ -151,8 +150,7 @@
 		
 		
 	</div>
-	<script
-  src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

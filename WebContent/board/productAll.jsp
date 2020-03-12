@@ -40,7 +40,12 @@
 		</script>
 	</c:if>
 
-
+	<c:if test="${not empty pbuyNowResult }">
+		<script>
+			alert('${pbuyNowResult}');
+		</script>
+	</c:if>
+	
 
 
 
@@ -108,13 +113,24 @@
 						</a>
 					</c:if></li>
 				<c:forEach var="page" begin="${startPage }" end="${endPage }">
+					<c:if test="${page ne currentPage }">
 					<li class="page-item"><a class="page-link"
 						href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${page}">${page }</a></li>
+					</c:if>
+					<c:if test="${page eq currentPage }">
+					<li class="page-item"><span class="page-link text-danger"
+						>${page }</span></li>
+					</c:if>
 				</c:forEach>
-				<li class="page-item"><a class="page-link"
+				<li class="page-item">
+				<c:if test="${endPage ne totalPage }">
+				<a class="page-link"
 					href="${conPath }/productAll.do?sortingCriteria=${sortingCriteria}&pageNum=${endPage+1}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+					
+				</a>
+				</c:if>
+				</li>
 			</ul>
 		</nav>
 

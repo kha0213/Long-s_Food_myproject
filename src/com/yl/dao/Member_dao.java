@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.yl.dto.Member_dto;
+import com.yl.dto.NextGrade_dto;
 import com.yl.dto.Orders_dto;
 
 public class Member_dao {
@@ -72,7 +72,7 @@ public class Member_dao {
 			String maddress_detail,Date mbirth,String memail,String mgender) {
 		boolean result = false;
 		String sql = "INSERT INTO MEMBER (MID,MPW,MNAME,MPHONE,MADDRESS_BASIC,MADDRESS_DETAIL,MBIRTH" + 
-				",MEMAIL,MGENDER,GNO) VALUES (?,?,?,?,?,?,?,?,?,1)";
+				",MEMAIL,MGENDER) VALUES (?,?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -127,11 +127,59 @@ public class Member_dao {
 		
 	}
 	
+	public Member_dto getMember(String mid) {
+		Member_dto member = null;
+		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.* FROM MEMBER M,AD A,GRADES G WHERE "
+				+ "M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND "
+				+ "MSTATUS=0";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String mpw = rs.getString("mpw");
+				String mname = rs.getString("mname");
+				String mphone = rs.getString("mphone");
+				String maddress_basic = rs.getString("maddress_basic");
+				String maddress_detail = rs.getString("maddress_detail");
+				Date mbirth = rs.getDate("mbirth");
+				String memail = rs.getString("memail");
+				String mgender = rs.getString("mgender");
+				int mpoint = rs.getInt("mpoint");
+				int mcumulative_buy = rs.getInt("mcumulative_buy");
+				Date mjoindate = rs.getDate("mjoindate");
+				boolean mstatus = rs.getInt("mstatus")==0;
+				String gname = rs.getString("gname");
+				int ad_email = rs.getInt("ad_email");
+				int ad_phone = rs.getInt("ad_phone");
+				int ad_call = rs.getInt("ad_call");
+				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, ad_email, ad_phone, ad_call);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return member;
+	}
+	
+	
+	
 	public Member_dto loginMember(String mid,String mpw) {
 		Member_dto member = null;
-		String sql = "SELECT M.*,A.AD_EMAIL,A.AD_PHONE,A.AD_CALL,G.GNAME FROM "
-				+ "MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.GNO = G.GNO "
-				+ "AND M.MID=? AND MPW=?";
+		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.* FROM MEMBER M,AD A,GRADES G WHERE "
+				+ "M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND "
+				+ "MPW=? AND MSTATUS=0";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -151,12 +199,13 @@ public class Member_dao {
 				String mgender = rs.getString("mgender");
 				int mpoint = rs.getInt("mpoint");
 				int mcumulative_buy = rs.getInt("mcumulative_buy");
-				Date mjoindate = rs.getDate("mjoindate");;
-				String gname = rs.getString("gname");;
-				int ad_email = rs.getInt("ad_email");;
-				int ad_phone = rs.getInt("ad_phone");;
-				int ad_call = rs.getInt("ad_call");;
-				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, gname, ad_email, ad_phone, ad_call);
+				Date mjoindate = rs.getDate("mjoindate");
+				boolean mstatus = rs.getInt("mstatus")==0;
+				String gname = rs.getString("gname");
+				int ad_email = rs.getInt("ad_email");
+				int ad_phone = rs.getInt("ad_phone");
+				int ad_call = rs.getInt("ad_call");
+				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, ad_email, ad_phone, ad_call);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -177,7 +226,7 @@ public class Member_dao {
 	
 	public ArrayList<Orders_dto> getOrders(String mid) {
 		ArrayList<Orders_dto> result = new ArrayList<Orders_dto>();
-		String sql = "SELECT M.*,ONO,ODATE,PARRIVE_DATE,DNO FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=?";
+		String sql = "SELECT O.* FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -187,11 +236,12 @@ public class Member_dao {
 			pstmt.setString(1, mid);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				String ono = rs.getString("ono");
+				int ono = rs.getInt("ono");
 				Date odate = rs.getDate("odate");
 				Date parrive_date = rs.getDate("parrive_date");
-				String dno = rs.getString("dno");
-				result.add(new Orders_dto(ono, odate, parrive_date, dno, mid));
+				int purchase_amount = rs.getInt("purchase_amount");
+				int dno = rs.getInt("dno");
+				result.add(new Orders_dto(ono, odate, parrive_date,purchase_amount, dno, mid));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -262,15 +312,19 @@ public class Member_dao {
 		}
 		return result;
 	}
-	private void deleteAd(String mid) {
-		String sql="DELETE FROM AD WHERE MID=?";
+	
+	public boolean deleteMember(String mid,boolean status) {
+		boolean result = false;
+		int statusInt = status?0:1;
+		String sql="UPDATE MEMBER SET MSTATUS = ? WHERE MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mid);
-			pstmt.executeUpdate();
+			pstmt.setInt(1, statusInt);
+			pstmt.setString(2, mid);
+			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -281,18 +335,94 @@ public class Member_dao {
 				System.out.println(e.getMessage());
 			}
 		}
+		return result;
+	}
+	public NextGrade_dto getNextGrade(String mid, int mcumulative_buy) {
+		NextGrade_dto nextGrade = new NextGrade_dto();
+		String sql="SELECT gf.lowgrade,GF.GNAME FROM GRADES GF WHERE GNO = (SELECT G.GNO+1 FROM MEMBER M, GRADES G WHERE M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			nextGrade.setNextMoney(rs.getInt(1)-mcumulative_buy-1);
+			nextGrade.setNextGname(rs.getString("GNAME"));
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return nextGrade;
 	}
 	
-	public boolean deleteMember(String mid) {
-		deleteAd(mid);
+	
+	
+	public boolean mPointPlus(int mpoint,String mid) {
 		boolean result = false;
-		String sql="DELETE FROM MEMBER WHERE MID=?";
+		String sql="UPDATE MEMBER SET MPOINT=MPOINT+? WHERE MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mid);
+			pstmt.setInt(1, mpoint);
+			pstmt.setString(2, mid);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public boolean mPointMinus(int mpoint,String mid) {
+		boolean result = false;
+		String sql="UPDATE MEMBER SET MPOINT=MPOINT-? WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mpoint);
+			pstmt.setString(2, mid);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public boolean mcumulative_buy_plus(int mcumulative_buy,String mid) {
+		boolean result = false;
+		String sql="UPDATE MEMBER SET MCUMULATIVE_BUY=MCUMULATIVE_BUY+? WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mcumulative_buy);
+			pstmt.setString(2, mid);
 			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

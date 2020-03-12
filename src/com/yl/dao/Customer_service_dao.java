@@ -9,13 +9,9 @@ import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.yl.dto.Customer_service_dto;
-import com.yl.dto.Manager_dto;
-import com.yl.dto.Member_dto;
-import com.yl.dto.Product_dto;
 
 public class Customer_service_dao {
 	

@@ -21,8 +21,6 @@
 		$('.csBoard').mouseleave(function() {
 			$(this).removeClass('bg-info');
 		});
-		
-
 	});
 </script>
 </head>
