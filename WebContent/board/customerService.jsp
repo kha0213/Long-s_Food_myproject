@@ -80,7 +80,7 @@
 </div>
 	
 	
-		<nav aria-label="Page navigation example">
+		<nav aria-label="Page navigation">
 			<ul class="pagination justify-content-center mt-5 mb-5">
 				<li class="page-item"><c:if test="${startPage ne 1 }">
 						<a class="page-link" aria-label="Previous"

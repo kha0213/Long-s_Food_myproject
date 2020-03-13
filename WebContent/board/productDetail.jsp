@@ -11,12 +11,17 @@
 
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+
 <script>
-	
-	
-	$(function(){
+$(function(){
 			var pstock = ${product.pstock};
 			var mpoint = $();
+		if(pstock == 0){
+			$('#pBuy').attr('disabled', true);
+			$('#cart').attr('disabled', true);
+			$('#pcnt').attr('readonly', true);
+			$('#pBuy').html('품절');
+		}
 		$('#pBuy').click(function(){
 				var pcnt = $('#pcnt').val();
 			if(pstock<pcnt){
@@ -26,6 +31,19 @@
 				var mid = '${member.mid}';
 				location.href="${conPath}/pBuyNow.do?pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid;
 			}
+		});
+		$("#pcnt").on("propertychange change keyup paste input", function() {
+			var pcnt = $('#pcnt').val();
+		 	if(pstock<pcnt){
+		 		alert('재고 보다 많은 양을 입력 할 수 없습니다.');
+		 		$('#pcnt').val('1');
+		 	}else if(pcnt>20){
+		 		alert("구매는 한 번에 20개까지만 가능합니다.");
+		 		$('#pcnt').val('1');
+		 	}else if(pcnt<1){
+		    	alert("최소구매수량은 한개 입니다.");
+		    	$('#pcnt').val('1');
+		 	}
 		});
 		
 		$('#cart').click(function(){
@@ -40,37 +58,83 @@
 		});
 		
 		
-		$('.rGoodBtn').click({
-			var rno = $(this).children('.rno').html();
-			$.ajax({ 
-				url: '${conPath}/rGoodPlus.do', 
-				data: "mid="+${member.mid}+"&rno="+rno,
-				dataType: "html",
-				success: function(data){
-					if(${rGoodResult eq true}){
-						alert('성공');
-					}else{
-						alert('실패');
+		$('.rGoodBtn').click(function(){
+			if('${member.mid}'==''){
+				alert('좋아요는 로그인 이후에 가능합니다.');
+			}else{
+				var rno = $(this).parent().children('.rno').html();
+				var message = $(this).next();
+				$.ajax({ 
+					url: '${conPath}/rGoodPlus.do', 
+					data: "mid="+"${member.mid}"+"&rno="+rno,
+					dataType: "html",
+					success: function(data){
+						message.html(data);
+						message.toast('show');
 					}
+								
+				});
+				function reload(){  
+				      setTimeout('location.reload()',1000); 
 				}
-							
-			});
+				reload();
+			}
+		});
+		
+		$('.mgReviewCommentWriteBtn').click(function(){
+			var btnName = $(this).html().trim();
+			if(btnName == '관리자 댓글 작성'){
+				$(this).parent().parent().next().removeClass('d-none');
+				$(this).html('작성취소');
+			}else{
+				$(this).parent().parent().next().addClass('d-none');
+				$(this).html('관리자 댓글 작성');
+			}
 			
-
+		});
+		
+		$('.rcView').click(function(){
+			var btnName = $(this).html().trim();
+			var rcDiv = $(this).parent().parent().next().next();
+			if(btnName == '댓글보기'){
+				var rno = $(this).parent().children('.rno').html();
+				$(this).html('댓글닫기');
+				rcDiv.removeClass('d-none');
+				$.ajax({ 
+					url: '${conPath}/rCommentView.do', 
+					data: "rno="+rno,
+					dataType: "html",
+					success: function(data){
+						rcDiv.html(data);
+							}
+				});
+			}else{
+				$(this).html('댓글보기');
+				rcDiv.addClass('d-none');
+			}
+			
+		});
+		
+		$('.rWriteView').click(function(){
+			$('.rWriteDo').removeClass('d-none');
 		});
 		
 		
+		
 	});
-	
-	
-
 </script> 
-
-
 </head>
 <body style="background-color: #f5f3f6;">
-
-
+	<c:if test="${not empty rcWriteResult }">
+		<script>
+		alert('${rcWriteResult}');
+		</script>
+	</c:if>
+	<c:if test="${not empty reviewWriteResult }">
+		<script>
+		alert('${reviewWriteResult}');
+		</script>
+	</c:if>
 
 
 
@@ -135,12 +199,16 @@
 
 			</div>
 		</div>
+		<c:if test="${empty manager }"> <!-- 회원 & 비회원일때 -->
 		<div class="row mt-5 mb-5 justify-content-center">
 			<div class="input-group input-group-lg col-3">
+			
+			
+			
   <div class="input-group-prepend mb-5">
     <span class="input-group-text bg-dark text-white">수량</span>
   </div>
-  <input type="number" class="form-control" id="pcnt" aria-label="Sizing input" aria-describedby="inputGroup-sizing-lg" value="1"  min="0" max="10">
+  <input type="number" class="form-control" id="pcnt" aria-label="Sizing input" aria-describedby="inputGroup-sizing-lg" value="1" min="0" max="10">
 </div>
 		<div class="col-2">
 			<button type="button" class="btn btn-primary btn-lg btn-block" id="pBuy">바로 구매</button>
@@ -150,18 +218,74 @@
 		</div>
 		
 		</div>
+		</c:if> 
+		
+		
 		<div class="row mt-5 mb-3 ml-5">
 			<div class="col bd-highlight">
- 				<h2><strong>구매후기</strong></h2>
+ 				<span class="h2"><strong>구매후기 | </strong></span><a href="#" class="btn btn-success">좋아요 순</a> &nbsp; <a href="#" class="btn btn-warning text-white">최신순</a> &nbsp;
+ 				<br><br>
+ 				<c:if test="${not empty reviewWriteCheck}">
+ 				<button class="btn btn-secondary btn-lg btn-block rWriteView">구매 후기 작성</button>
+ 				</c:if>
+ 				
 			</div>
 		</div>
+		<div class="d-none rWriteDo">
+		<form action="${conPath }/rWrite.do" method="post" enctype="multipart/form-data"> 
+			<input type="hidden" name="pcode" value="${product.pcode }">
+			<input type="hidden" name="mid" value="${member.mid }">
+	<table class="table table-dark table-borderless ml-5">
+    <tr>
+      <th scope="row">상품명</th>
+      <td><input type="text" value="${product.pname }" readonly="readonly" class="form-control"></td>
+    </tr>
+    <tr>
+      <th scope="row">별점<br><small class="text-muted">(별점은 0~10점만 가능합니다)</small></th>
+      <td><input type="number" name="rstar" value="0" class="form-control" min="0" max="10" required="required"></td>
+    </tr>
+    <tr>
+      <th scope="row">리뷰내용</th>
+      <td><textarea class="form-control" name="rcontent" rows="8"></textarea></td>
+    </tr>
+    </table>
+    <table class="table table-borderless ml-5">
+    <thead>
+    	<tr>
+    	<th colspan="2" class="h4 text-center">*파일첨부는 3개까지만 가능합니다.</th>
+    	</tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th scope="row">첨부파일1</th>
+      <td><input type="file" name="rimage1" class="form-control"></td>
+    </tr>
+    <tr>
+      <th scope="row">첨부파일2</th>
+      <td><input type="file" name="rimage2" class="form-control"></td>
+    </tr>
+    <tr>
+      <th scope="row">첨부파일3</th>
+      <td><input type="file" name="rimage3" class="form-control"></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="text-center">
+      	<input type="submit" class="btn btn-lg btn-primary" value="후기 작성">
+      	<input type="reset" class="btn btn-lg btn-secondary" value="초기화">
+      </td>
+    </tr>
+      </tbody>
+</table>
+</form>
+		</div>
 		
-		<hr class="col">
+		<!-- 리뷰 보이기 -->
 		<c:forEach var="review" items="${reviews }">
 			<div class="row mt-2 mb-2 ml-5">
-				<div class="col-3">
-					<p>${review.mid }님</p>
-					<p>${review.rstar }별</p>
+				<div class="col-4">
+					<p class="h4 font-weight-bold">${review.mid }님 리뷰</p>
+					<p><c:forEach begin="1" end="${review.rstar/2 }"><img src="${conPath }/image/icon/star.png" alt="별 이미지"></c:forEach><c:if test="${review.rstar%2 eq 1 }"><img src="${conPath }/image/icon/half-star.png" alt="별반 이미지"></c:if>
+					<strong class="text-danger">(${review.rstar }점)</strong></p>
 					<p>${review.rdate }</p>
 				</div>
 			</div>
@@ -191,15 +315,78 @@
 				</div>
 			</div>
 			<div class="row mt-2 mb-2 ml-5">
-				<div class="col text-center">
+				<div class="col">
+					<span class="d-none rno">${review.rno }</span>
 					<button type="button" class="btn btn-primary rGoodBtn">
   						좋아요 <span class="badge badge-light">${review.rgood }</span>
-  						<span class="d-none rno">${review.rno }</span>
 					</button>
+  					<div class="toast position-absolute"></div>
+  					<c:if test="${review.rcexist eq true}">
+					<button type="button" class="btn btn-success rcView">
+  						댓글보기
+					</button>	
+					</c:if>	
+  					<c:if test="${not empty manager }">
+  					<button type="button" class="btn btn-secondary mgReviewCommentWriteBtn">
+  						관리자 댓글 작성
+					</button>
+  					</c:if>
 				</div>
-			</div>			
+			</div>
+			<div class="row mt-4 mb-2 ml-5 rCommentWrite d-none">
+				<div class="col bg-secondary">
+					<form action="${conPath }/rCommentWrite.do" method="post">
+  					<input type="hidden" name=rno value="${review.rno }">
+  					<input type="hidden" name=mgid value="${manager.mgid }">
+  					<input type="hidden" name=pcode value="${param.pcode }">
+
+					<div class="form-group">
+						<p>관리자 [${manager.mgname }]님 댓글</p>
+    					<textarea class="form-control" rows="3" name="rccontent"></textarea>
+  					</div>
+  					<button type="submit" class="btn btn-warning mb-2 text-white">입력</button>
+  					</form>
+				</div>
+			</div>	
+			
+			<div class="row mt-4 mb-2 ml-5 rCommentView d-none">
+				<div class="col">
+					
+					
+				</div>
+			</div>	
 			<hr class="col">
 		</c:forEach>
+		
+		<!-- paging -->
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center mt-5 mb-5">
+				<li class="page-item">
+					<c:if test="${startPage ne 1 }">
+						<a class="page-link" aria-label="Previous"
+							href="${conPath }/productDetail.do?pcode=${param.pcode }&pageNum=${startPage-1}">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</c:if></li>
+				<c:forEach var="page" begin="${startPage }" end="${endPage }">
+					<c:if test="${currentPage eq page }">
+						<li class="page-item disabled"><a class="page-link"
+						href="${conPath }/productDetail.do?pcode=${param.pcode }&pageNum=${page}">${page }</a></li>
+					</c:if>
+					<c:if test="${currentPage ne page }">
+						<li class="page-item"><a class="page-link"
+						href="${conPath }/productDetail.do?pcode=${param.pcode }&pageNum=${page}">${page }</a></li>
+					</c:if>
+				</c:forEach>
+					<c:if test="${endPage ne totalPage }">
+				<li class="page-item"><a class="page-link"
+					href="${conPath }/productDetail.do?pcode=${param.pcode }&pageNum=${endPage+1}"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+					</c:if>
+			</ul>
+		</nav>
+		
 		
 		
 		

@@ -145,10 +145,23 @@ public class Controller extends HttpServlet {
 			service.execute(request, response);
 			viewPage = "productAll.do";
 		}else if(command.equals("/rGoodPlus.do")) {//좋아요
-			System.out.println("들어");
 			service = new RGoodPlusService();
 			service.execute(request, response);
-			viewPage = "productAll.do";
+			viewPage = "board/pRGoodMessage.jsp";
+		}
+		//
+		else if(command.equals("/rCommentWrite.do")) {//관리자 리뷰 작성
+			service = new RCommentWriteService();
+			service.execute(request, response);
+			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
+		}else if(command.equals("/rCommentView.do")) {//리뷰 댓글 보기
+			service = new RCommentViewService();
+			service.execute(request, response);
+			viewPage = "board/pRcMessage.jsp";
+		}else if(command.equals("/rWrite.do")) {//리뷰쓰기
+			service = new RWriteService();
+			service.execute(request, response);
+			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
 		}
 		
 		

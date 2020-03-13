@@ -14,9 +14,21 @@
 	crossorigin="anonymous">
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+ <link href="../toast/jquery.toast.min.css" rel="stylesheet">
+ <script
+  src="../toast/jquery.toast.min.js"></script> 
+
+  
 <script>
+//Sticky version
+
 	$(function(){
-		
+		$("#test1").click(function(){
+			$.toast('Here you can put the text of the toast')
+			
+            
+});
+
 		
 	});
 
@@ -25,19 +37,9 @@
 </head>
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
-<div class="dropdown show">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown link
-  </a>
 
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-
-
+<button id="test1">토스트버튼</button>
+	
 
 			<jsp:include page="../main/footer.jsp" />
 

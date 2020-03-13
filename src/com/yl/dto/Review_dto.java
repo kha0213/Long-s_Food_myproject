@@ -14,14 +14,14 @@ public class Review_dto {
 	private int rstar;
 	private String rcontent;
 	private Date rdate;
+	private boolean rcexist;
 	public Review_dto() {
 		super();
 	}
 	
 	
-	
 	public Review_dto(int rno, String pcode, String pname, String mid, String rimage1, String rimage2, String rimage3,
-			int rgood, int rstar, String rcontent, Date rdate) {
+			int rgood, int rstar, String rcontent, Date rdate, boolean rcexist) {
 		super();
 		this.rno = rno;
 		this.pcode = pcode;
@@ -34,17 +34,9 @@ public class Review_dto {
 		this.rstar = rstar;
 		this.rcontent = rcontent;
 		this.rdate = rdate;
+		this.rcexist = rcexist;
 	}
 
-
-
-	public String getPname() {
-		return pname;
-	}
-
-	public void setPname(String pname) {
-		this.pname = pname;
-	}
 
 	public int getRno() {
 		return rno;
@@ -57,6 +49,12 @@ public class Review_dto {
 	}
 	public void setPcode(String pcode) {
 		this.pcode = pcode;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
 	}
 	public String getMid() {
 		return mid;
@@ -103,10 +101,21 @@ public class Review_dto {
 	public Date getRdate() {
 		return rdate;
 	}
-	public void setrdate(Date rdate) {
+	public void setRdate(Date rdate) {
 		this.rdate = rdate;
+	}
+	public boolean isRcexist() {
+		return rcexist;
+	}
+	public void setRcexist(boolean rcexist) {
+		this.rcexist = rcexist;
 	}
 	
 	
+	
+
+	
+
+
 	
 }
