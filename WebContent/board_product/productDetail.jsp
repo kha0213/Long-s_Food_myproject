@@ -87,8 +87,15 @@ $(function(){
 					data: "pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid+"&pprice="+pprice,
 					dataType: "html",
 					success: function(data){
-						message.html(data);
-						message.toast('show');
+						var message = html(data);
+						swal({
+							  text: message,
+							  buttons : {
+								  confirm : {
+									  text : '확인',
+								  }
+							  }
+							});
 					}
 								
 				});
@@ -209,7 +216,7 @@ $(function(){
 						</tr>
 						<tr>
 							<th scope="col">평점</th>
-							<td scope="col" class="text-danger font-weight-bold font-italic"><ins>${product.prating }점</ins></td>
+							<td scope="col" class="text-danger font-weight-bold font-italic"><ins>${product.prating eq -1? "아직 평점이 등록되지 않았습니다":product.prating  }</ins></td>
 							<th scope="col">상품등록일</th>
 							<td>${product.pregist }</td>
 						</tr>

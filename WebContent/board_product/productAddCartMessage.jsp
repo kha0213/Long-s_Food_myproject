@@ -9,7 +9,7 @@
 </head>
 <body>
 	<c:if test="${not empty cartAddProductResult}">
-		<p>${cartAddProductResult }</p>
+		${cartAddProductResult }
 	</c:if>
 </body>
 </html>
