@@ -68,6 +68,9 @@ private Review_dao() {
 	}
 	
 	public boolean reviewWrite(String pcode,String mid,String rimage1,String rimage2,String rimage3,int rstar,String rcontent) {
+		Product_dao pDao = Product_dao.getInstance();
+		pDao.modifyPRating(pcode);
+		pDao.PReview_count_plus(pcode);
 		boolean result = false;
 		String sql = "INSERT INTO REVIEW (RNO,PCODE,MID,RIMAGE1,RIMAGE2,RIMAGE3,RSTAR,"
 				+ "RCONTENT) VALUES (RNO_SEQ.NEXTVAL,?,?,?,?,?,?,?)";

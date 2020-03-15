@@ -88,8 +88,9 @@ public class Product_dao {
 				Date pregist = rs.getDate("pregist");
 				int pcumulative_sales= rs.getInt("pcumulative_sales");
 				int preview_count= rs.getInt("preview_count");
+				double prating = rs.getDouble("prating");
 				String mgname= rs.getString("mgname");
-				products.add(new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count,mgname));
+				products.add(new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, prating, preview_count, mgname));
 			}
 		} catch (SQLException e) {
 			System.out.println("getProductListDesc오류 :"+e.getMessage());
@@ -178,8 +179,9 @@ public class Product_dao {
 				Date pregist = rs.getDate("pregist");
 				int pcumulative_sales = rs.getInt("pcumulative_sales");
 				int preview_count = rs.getInt("preview_count");
+				double prating = rs.getDouble("prating");
 				String mgname = rs.getString("mgname");
-				product = new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, preview_count, mgname);
+				product = new Product_dto(pcode, pname, pprice, pimage, pstock, pdescription, pdiscount, pregist, pcumulative_sales, prating, preview_count, mgname);
 			}
 		} catch (SQLException e) {
 			System.out.println("dd"+e.getMessage());
@@ -313,6 +315,106 @@ public class Product_dao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pcnt);
 			pstmt.setString(2, pcode);
+			result = pstmt.executeUpdate()==1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	public boolean modifyProductDiscount(int pdiscount,String mgid) {
+		boolean result = false;
+		String sql = "UPDATE PRODUCT SET PDISCOUNT = ? WHERE MGID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pdiscount);
+			pstmt.setString(2, mgid);
+			result = pstmt.executeUpdate()==1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public double getPRating(String pcode) {
+		double result = 0.0;
+		String sql = "SELECT NVL(ROUND(AVG(RSTAR),1),-1) FROM REVIEW R,PRODUCT P WHERE R.PCODE=P.PCODE AND P.PCODE=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pcode);
+			rs = pstmt.executeQuery();
+			rs.next();
+			result = rs.getDouble(1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	public boolean modifyPRating(String pcode) {
+		double prating = getPRating(pcode);
+		boolean result = false;
+		String sql = "UPDATE PRODUCT SET PRATING=? WHERE PCODE=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1, prating);
+			pstmt.setString(2, pcode);
+			result = pstmt.executeUpdate()==1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public boolean PReview_count_plus(String pcode) {
+		boolean result = false;
+		String sql = "UPDATE PRODUCT SET REVIEW_COUNT=REVIEW_COUNT+1 WHERE PCODE=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pcode);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

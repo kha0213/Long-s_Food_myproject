@@ -10,13 +10,13 @@
 <body>
 
 	<c:if test="${rGoodResult eq true}">
-		<span class="alert alert-success m-0 p-3 h5" role="alert">
-  			<img src="${conPath }/image/icon/heart.png" alt="좋아요">성공
-		</span>
+		<div class="alert alert-success m-0 p-3 h5" role="alert">
+  			<img src="${conPath }/image/icon/heart.png" alt="좋아요">
+		</div>
 	</c:if>
 	<c:if test="${rGoodResult eq false}">
 		<div class="alert alert-danger m-0 p-3 h5" role="alert">
-  			이미 <strong>좋아요</strong> 하셨어요
+  			이미 <img src="${conPath }/image/icon/heart.png" alt="좋아요"> 하셨어요
 		</div>
 	</c:if>
 </body>

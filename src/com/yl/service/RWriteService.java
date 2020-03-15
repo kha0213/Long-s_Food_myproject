@@ -14,12 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Customer_service_dao;
+import com.yl.dao.Product_dao;
 import com.yl.dao.Review_dao;
 
 public class RWriteService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 1.리뷰 작성 2.상품 평점수정 3.상품 리뷰수 수정
 		String filepath = request.getRealPath("image/review");
 		int maxSize = 1024*1024*10;
 		String[] rimage = new String[3];
@@ -42,6 +45,7 @@ public class RWriteService implements Service {
 			String rimage1 = rimage[0];
 			String rimage2 = rimage[1];
 			String rimage3 = rimage[2];
+			//리뷰 작성 reviewWrite안에 상품 평균별점 수정, 리뷰 cnt+ 가 들어가있음
 			if(rDao.reviewWrite(pcode, mid, rimage1, rimage2, rimage3, rstar, rcontent)) {
 				request.setAttribute("reviewWriteResult", mid+"님 리뷰작성에 성공하셨습니다.");
 			}else {

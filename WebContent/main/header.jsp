@@ -78,7 +78,7 @@
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
 					</c:if>
-					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/csBoardsListService.do">C.S</a></li>
+					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/csBoardsListService.do">Support</a></li>
 
 				</ul>
 			</div>
@@ -117,7 +117,7 @@
 									out</a>
 							</c:if>
 							<a class="dropdown-item" href="#">Cart</a> <a
-								class="dropdown-item" href="${conPath }/csBoardsListService.do">Service Center</a>
+								class="dropdown-item" href="${conPath }/csBoardsListService.do">Support</a>
 						</div></li>
 				</ul>
 			</div>

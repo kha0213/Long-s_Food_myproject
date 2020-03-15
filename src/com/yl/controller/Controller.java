@@ -89,7 +89,7 @@ public class Controller extends HttpServlet {
 			service = new MModifyService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
-		}else if(command.equals("/mDelete.do")) {//미완성
+		}else if(command.equals("/mDelete.do")) {
 			service = new MDeleteService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
@@ -131,33 +131,38 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/productAll.do")) {//전체 제품 보기
 			service = new ProductAll();
 			service.execute(request, response);
-			viewPage = "board/productAll.jsp";
+			viewPage = "board_product/productAll.jsp";
 		}else if(command.equals("/productDetail.do")) {//제품 상세 보기 + 리뷰
 			service = new ProductDetail();
 			service.execute(request, response);
-			viewPage = "board/productDetail.jsp";
-		}else if(command.equals("/pBuyNow.do")) {//제품 바로 구매
+			viewPage = "board_product/productDetail.jsp";
+		}else if(command.equals("/pBuyNow.do")) {//제품 바로 구매 - 구매페이지로
 			service = new PBuyNowService();
 			service.execute(request, response);
 			viewPage = "productAll.do";
-		}else if(command.equals("/cartAddProduct.do")) {//장바구니 제품 구매
+		}else if(command.equals("/cartAddProduct.do")) {//장바구니 제품 추가
 			service = new CartAddProduct();
 			service.execute(request, response);
-			viewPage = "productAll.do";
-		}else if(command.equals("/rGoodPlus.do")) {//좋아요
+			viewPage = "board_product/productAddCartMessage.jsp";
+		}else if(command.equals("/productPurchaseConfirm.do")) {//장바구니 제품 구매
+			service = new ProductPurchaseConfirm(); //미완성
+			service.execute(request, response);
+			viewPage = "productAll.do";// 결제로 가야해
+		}
+		
+		//리뷰
+		else if(command.equals("/rGoodPlus.do")) {//좋아요
 			service = new RGoodPlusService();
 			service.execute(request, response);
-			viewPage = "board/pRGoodMessage.jsp";
-		}
-		//
-		else if(command.equals("/rCommentWrite.do")) {//관리자 리뷰 작성
+			viewPage = "board_review/pRGoodMessage.jsp";
+		}else if(command.equals("/rCommentWrite.do")) {//관리자 리뷰 댓글 작성
 			service = new RCommentWriteService();
 			service.execute(request, response);
 			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
 		}else if(command.equals("/rCommentView.do")) {//리뷰 댓글 보기
 			service = new RCommentViewService();
 			service.execute(request, response);
-			viewPage = "board/pRcMessage.jsp";
+			viewPage = "board_review/pRcMessage.jsp";
 		}else if(command.equals("/rWrite.do")) {//리뷰쓰기
 			service = new RWriteService();
 			service.execute(request, response);
@@ -170,11 +175,11 @@ public class Controller extends HttpServlet {
 		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트
 			service = new CsBoardsListService();
 			service.execute(request, response);
-			viewPage = "board/customerService.jsp";
+			viewPage = "board_cs/customerService.jsp";
 		}else if(command.equals("/csBoardWriteView.do")) {//고객센터글쓰기 ono추가
 			service = new CsBoardWriteView();
 			service.execute(request, response);
-			viewPage = "board/customerServiceWrite.jsp";
+			viewPage = "board_cs/customerServiceWrite.jsp";
 		}else if(command.equals("/csBoardWrite.do")) {//고객센터글쓰기
 			service = new CsBoardWrite();
 			service.execute(request, response);
@@ -182,15 +187,15 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/csBoardsSecretCheck.do")) {//비밀글 확인
 			service = new CsBoardsSecretCheckService();
 			service.execute(request, response);
-			viewPage = "board/csBoardsSecretCheck.jsp";
+			viewPage = "board_cs/csBoardsSecretCheck.jsp";
 		}else if(command.equals("/csBoardsDetail.do")) {//cs글 상세보기
 			service = new CsBoardsDetailService();
 			service.execute(request, response);
-			viewPage = "board/csBoardsDetail.jsp";
+			viewPage = "board_cs/csBoardsDetail.jsp";
 		}else if(command.equals("/csBoardModifyView.do")) {//수정화면
 			service = new CsBoardsModifyViewService();
 			service.execute(request, response);
-			viewPage = "board/csBoardsModify.jsp";
+			viewPage = "board_cs/csBoardsModify.jsp";
 		}else if(command.equals("/csBoardModify.do")) {//수정실행
 			service = new CsBoardsModifyService();
 			service.execute(request, response);

@@ -11,6 +11,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Myproject</title>
+ 
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet" href="${conPath }/css/content.css"
 	type="text/css">
 <link rel="stylesheet"
@@ -18,14 +20,31 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Alata|Dancing+Script|Gochi+Hand|Indie+Flower|Kaushan+Script|Lobster|Lobster+Two|Nanum+Pen+Script|Roboto&display=swap"
 	rel="stylesheet">
-
+<style>
+ .swal-footer{
+ 	text-align: center;
+ }
+ </style>
 
 
 
 </head>
 <c:if test="${joinResult eq true }">
 	<script>
-		alert('회원가입에 성공하셨습니다. 로그인 이후에 서비스이용해주세요');
+	function swalMsg(){
+		swal({
+			  text: "회원가입에 성공하셨습니다. 로그인 이후에 서비스이용해주세요",
+			  icon: "success",
+			  buttons : {
+				  confirm : {
+					  text : '확인',
+					  className : 'btn-btn-outline-primary'
+				  }
+			  }
+			});
+	};
+	swalMsg();
+	
 		window.close();
 	</script>
 </c:if>
@@ -38,14 +57,39 @@
 
 <c:if test="${loginResult eq true }">
 	<script>
-		alert('로그인 성공');
+	function swalMsg(){
+		swal({
+			title: "로그인 성공!",
+			  icon: "success",
+			  buttons : {
+				  confirm : {
+					  text : '확인',
+					  className : 'btn-btn-outline-primary'
+				  }
+			  }
+			});
+	}
+	swalMsg();
+	
 		opener.location.href = "${conPath}/main.do"
 		window.close();
 	</script>
 </c:if>
 <c:if test="${loginResult eq false }">
 	<script>
-		alert('로그인 실패 아이디와 비밀번호를 확인해주세요');
+	(function(){
+		swal({
+			text: "로그인 실패 아이디와 비밀번호를 확인해주세요!",
+			  icon: "error",
+			  buttons : {
+				  confirm : {
+					  text : '확인',
+					  className : 'btn-btn-outline-primary'
+				  }
+			  }
+			});
+	}());
+	
 		history.back();
 	</script>
 </c:if>

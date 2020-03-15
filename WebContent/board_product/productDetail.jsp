@@ -8,10 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<style>
+ .swal-footer{
+ 	text-align: center;
+ }
+ </style>
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 $(function(){
 			var pstock = ${product.pstock};
@@ -25,7 +29,18 @@ $(function(){
 		$('#pBuy').click(function(){
 				var pcnt = $('#pcnt').val();
 			if(pstock<pcnt){
-				alert('죄송합니다. 재고 부족으로 주문할 수 없습니다. 빠른 시일내에 입고하도록 하겠습니다.');
+				swal({
+					  text: "죄송합니다. 재고 부족으로 주문할 수 없습니다. 주문 수량을 확인해주세요. 빠른 시일내에 입고하도록 하겠습니다.",
+					  icon: "warning",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
+			}else if(pcnt<1){
+				alert("최소구매수량은 한개 입니다.");
+		    	$('#pcnt').val('1');
 			}else{
 				var pcode = '${product.pcode}';
 				var mid = '${member.mid}';
@@ -34,33 +49,56 @@ $(function(){
 		});
 		$("#pcnt").on("propertychange change keyup paste input", function() {
 			var pcnt = $('#pcnt').val();
-		 	if(pstock<pcnt){
-		 		alert('재고 보다 많은 양을 입력 할 수 없습니다.');
+		 	if(pcnt>20){
+		 		swal({
+					  text: "구매는 한번에 20개까지만 가능합니다.",
+					  icon: "info",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
 		 		$('#pcnt').val('1');
-		 	}else if(pcnt>20){
-		 		alert("구매는 한 번에 20개까지만 가능합니다.");
-		 		$('#pcnt').val('1');
-		 	}else if(pcnt<1){
-		    	alert("최소구매수량은 한개 입니다.");
-		    	$('#pcnt').val('1');
+		 	}else{
+		    	
 		 	}
 		});
 		
 		$('#cart').click(function(){
-				var pcnt = $('#pcnt').val();
+			var pcnt = $('#pcnt').val();
 			if(pstock<pcnt){
-				alert('죄송합니다. 재고 부족으로 주문할 수 없습니다. 빠른 시일내에 입고하도록 하겠습니다.');
+				swal({
+					  text: "죄송합니다. 재고 부족으로 장바구니에 담을 수 없습니다. 주문 수량을 확인해주세요. 빠른 시일내에 입고하도록 하겠습니다.",
+					  icon: "warning",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
 			}else{
 				var pcode = '${product.pcode}';
 				var mid = '${member.mid}';
-				location.href="${conPath}/cartAddProduct?pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid;
+				var pprice = '${product.pprice*(100-product.pdiscount)/100}';
+				var message = $('#cartAddProductResult');
+				$.ajax({ 
+					url: '${conPath}/cartAddProduct.do', 
+					data: "pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid+"&pprice="+pprice,
+					dataType: "html",
+					success: function(data){
+						message.html(data);
+						message.toast('show');
+					}
+								
+				});
 			}
 		});
 		
 		
 		$('.rGoodBtn').click(function(){
 			if('${member.mid}'==''){
-				alert('좋아요는 로그인 이후에 가능합니다.');
+				swal('좋아요는 로그인 이후에 가능합니다.');
 			}else{
 				var rno = $(this).parent().children('.rno').html();
 				var message = $(this).next();
@@ -149,7 +187,15 @@ $(function(){
 					<thead>
 						<tr>
 							<th scope="col" colspan="4">
-								<!-- hit이미지 big sale 이미지  highly recommended-->
+							<c:if test="${product.pdiscount>=30 }">
+								<img alt="sale" src="${conPath }/image/icon/sale.png">
+							</c:if>
+							<c:if test="${product.pcumulative_sales>=100 }">
+		<img alt="best2" src="${conPath }/image/icon/best2.png" >
+							</c:if>
+							<c:if test="${product.prating>=8 }">
+		<img alt="highRating" src="${conPath }/image/icon/highRating.png" >
+							</c:if>
 							</th>
 						</tr>
 
@@ -157,9 +203,15 @@ $(function(){
 					<tbody>
 						<tr>
 							<th scope="col">상품명</th>
-							<td scope="col">${product.pname }<!-- hit이미지 big sale 이미지  highly recommended--></td>
+							<td scope="col">${product.pname }</td>
 							<th scope="col">담당MD</th>
 							<td>${product.mgname }</td>
+						</tr>
+						<tr>
+							<th scope="col">평점</th>
+							<td scope="col" class="text-danger font-weight-bold font-italic"><ins>${product.prating }점</ins></td>
+							<th scope="col">상품등록일</th>
+							<td>${product.pregist }</td>
 						</tr>
 						<tr>
 							<th scope="col">누적판매량</th>
@@ -171,11 +223,11 @@ $(function(){
 							<th scope="col">판매가(개당)</th>
 							<td colspan="3">${product.pdiscount }%할인 &nbsp; <del>
 									<fmt:formatNumber value="${product.pprice}"
-										currencySymbol="true" />
+										pattern="###,###" />
 									원
 								</del> <br> <strong class="text-danger"><fmt:formatNumber
 										value="${product.pprice*(100-product.pdiscount)/100}"
-										currencySymbol="true" />원</strong>
+										pattern="###,###" />원</strong>
 							</td>
 						</tr>
 						<tr>
@@ -218,13 +270,16 @@ $(function(){
 		</div>
 		
 		</div>
+		<div id="cartAddProductResult"></div>
 		</c:if> 
 		
 		
 		<div class="row mt-5 mb-3 ml-5">
 			<div class="col bd-highlight">
  				<span class="h2"><strong>구매후기 | </strong></span><a href="#" class="btn btn-success">좋아요 순</a> &nbsp; <a href="#" class="btn btn-warning text-white">최신순</a> &nbsp;
- 				<br><br>
+ 				<br>
+ 				<small class="text-muted">구매후기는 구입 후 2주내에 작성 가능합니다.</small>
+ 				<br>
  				<c:if test="${not empty reviewWriteCheck}">
  				<button class="btn btn-secondary btn-lg btn-block rWriteView">구매 후기 작성</button>
  				</c:if>
@@ -318,7 +373,7 @@ $(function(){
 				<div class="col">
 					<span class="d-none rno">${review.rno }</span>
 					<button type="button" class="btn btn-primary rGoodBtn">
-  						좋아요 <span class="badge badge-light">${review.rgood }</span>
+  						리뷰가 좋아요 <span class="badge badge-light">${review.rgood }</span>
 					</button>
   					<div class="toast position-absolute"></div>
   					<c:if test="${review.rcexist eq true}">
@@ -355,6 +410,7 @@ $(function(){
 					
 				</div>
 			</div>	
+			<br><br><br>
 			<hr class="col">
 		</c:forEach>
 		
