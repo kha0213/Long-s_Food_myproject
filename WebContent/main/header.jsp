@@ -67,7 +67,7 @@
 							href="${conPath }/mMypage.do"><small>${member.mname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
-						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/cartView.do?mid=${member.mid}">Cart<span class="font-weight-bold text-primary"><c:if test="${member.cart_cnt ne 0}">(${member.cart_cnt}개)</c:if></span></a></li>
 					</c:if>
 					<!-- 관리자 헤더 -->
 					<c:if test="${not empty manager }">

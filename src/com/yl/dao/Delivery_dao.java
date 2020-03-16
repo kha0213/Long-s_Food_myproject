@@ -36,19 +36,21 @@ private Delivery_dao() {
 	}
 	
 	
-	private void addDeliveryPre(int dprice,String dcompany,String daddress) {
-		String sql = "INSERT INTO DELIVERY (DNO,DPRICE,DCOMPANY,DADDRESS) VALUES (DNO_SEQ.NEXTVAL,?,?,?)";
+	private void addDeliveryPre(String dname, String dphone, int dprice,String dcompany,String daddress) {
+		String sql = "INSERT INTO DELIVERY (DNO,DNAME,DPHONE,DPRICE,DCOMPANY,DADDRESS) VALUES (DNO_SEQ.NEXTVAL,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dprice);
-			pstmt.setString(2, dcompany);
-			pstmt.setString(3, daddress);
+			pstmt.setString(1, dname);
+			pstmt.setString(2, dphone);
+			pstmt.setInt(3, dprice);
+			pstmt.setString(4, dcompany);
+			pstmt.setString(5, daddress);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("addDeliveryPre오류:"+e.getMessage());
 		} finally {
 			try {
 				if(pstmt!=null) pstmt.close();
@@ -59,10 +61,10 @@ private Delivery_dao() {
 		}
 	}
 	
-	public int addDelivery(int dprice,String dcompany,String daddress) {
+	public int addDelivery(String dname, String dphone, int dprice,String dcompany,String daddress) {
 		int result = 0;
-		addDeliveryPre(dprice, dcompany,daddress);
-		String sql = "SELECT MAX(DNO) FROM DELIVERY";
+		addDeliveryPre(dname, dphone, dprice, dcompany, daddress);
+		String sql = "SELECT NVL(MAX(DNO),0) FROM DELIVERY";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -81,7 +83,7 @@ private Delivery_dao() {
 				if(pstmt!=null) pstmt.close();
 				if(conn!=null) conn.close();
 			} catch (SQLException e) {
-				System.out.println(e.getMessage());
+				System.out.println("addDelivery오류"+e.getMessage());
 			}
 		}
 		return result;
@@ -148,11 +150,13 @@ private Delivery_dao() {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				int dprice = rs.getInt("dprice");
+				String dname = rs.getString("dname");
+				String dphone = rs.getString("dphone");
 				String dcompany = rs.getString("dcompany");
 				String daddress = rs.getString("daddress");
 				Date odate = rs.getDate("odate");
 				Date parrive_date = rs.getDate("parrive_date");
-				delivery = new Delivery_dto(dno, dprice, dcompany,daddress, odate, parrive_date);
+				delivery = new Delivery_dto(dno, dname, dphone, dprice, dcompany, daddress, odate, parrive_date);
 				
 			}
 		} catch (Exception e) {

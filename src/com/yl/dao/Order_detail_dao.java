@@ -31,9 +31,9 @@ private Order_detail_dao() {
 		return conn;
 	}
 	
-	public boolean addOrderDetail(int ono,String pcode,int pcnt,int pprice) {
+	public boolean addOrderDetail(int ono,String pcode,int pcnt) {
 		boolean result = false;
-		String sql = "INSERT INTO ORDER_DETAIL (ODNO,ONO,PCODE,PCNT,PPRICE) VALUES (ODNO_SEQ.NEXTVAL,?,?,?,?)";
+		String sql = "INSERT INTO ORDER_DETAIL (ODNO,ONO,PCODE,PCNT) VALUES (ODNO_SEQ.NEXTVAL,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -43,7 +43,6 @@ private Order_detail_dao() {
 			pstmt.setInt(1, ono);
 			pstmt.setString(2, pcode);
 			pstmt.setInt(3, pcnt);
-			pstmt.setInt(4, pprice);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

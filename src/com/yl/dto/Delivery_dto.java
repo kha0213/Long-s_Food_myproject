@@ -4,6 +4,8 @@ import java.sql.Date;
 
 public class Delivery_dto {
 	private int dno;
+	private String dname;
+	private String dphone;
 	private int dprice;
 	private String dcompany;
 	private String daddress;
@@ -11,10 +13,14 @@ public class Delivery_dto {
 	private Date parrive_date;
 	
 	
-	
-	public Delivery_dto(int dno, int dprice, String dcompany, String daddress, Date odate, Date parrive_date) {
+
+
+	public Delivery_dto(int dno, String dname, String dphone, int dprice, String dcompany, String daddress, Date odate,
+			Date parrive_date) {
 		super();
 		this.dno = dno;
+		this.dname = dname;
+		this.dphone = dphone;
 		this.dprice = dprice;
 		this.dcompany = dcompany;
 		this.daddress = daddress;
@@ -28,6 +34,26 @@ public class Delivery_dto {
 	}
 	
 	
+	public String getDphone() {
+		return dphone;
+	}
+
+
+	public void setDphone(String dphone) {
+		this.dphone = dphone;
+	}
+
+
+	public String getDname() {
+		return dname;
+	}
+
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+
 	public String getDaddress() {
 		return daddress;
 	}

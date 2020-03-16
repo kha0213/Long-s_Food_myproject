@@ -129,9 +129,7 @@ public class Member_dao {
 	
 	public Member_dto getMember(String mid) {
 		Member_dto member = null;
-		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.* FROM MEMBER M,AD A,GRADES G WHERE "
-				+ "M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND "
-				+ "MSTATUS=0";
+		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.*,(SELECT COUNT(*) FROM CART C, MEMBER M WHERE C.MID=M.MID) CART_CNT FROM MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND MSTATUS=0";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -154,10 +152,11 @@ public class Member_dao {
 				Date mjoindate = rs.getDate("mjoindate");
 				boolean mstatus = rs.getInt("mstatus")==0;
 				String gname = rs.getString("gname");
+				int cart_cnt = rs.getInt("cart_cnt");
 				int ad_email = rs.getInt("ad_email");
 				int ad_phone = rs.getInt("ad_phone");
 				int ad_call = rs.getInt("ad_call");
-				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, ad_email, ad_phone, ad_call);
+				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, cart_cnt, ad_email, ad_phone, ad_call);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -177,9 +176,7 @@ public class Member_dao {
 	
 	public Member_dto loginMember(String mid,String mpw) {
 		Member_dto member = null;
-		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.* FROM MEMBER M,AD A,GRADES G WHERE "
-				+ "M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND "
-				+ "MPW=? AND MSTATUS=0";
+		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.*,(SELECT COUNT(*) FROM CART C, MEMBER M WHERE C.MID=M.MID) CART_CNT FROM MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=? AND MPW=? AND MSTATUS=0";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -202,10 +199,11 @@ public class Member_dao {
 				Date mjoindate = rs.getDate("mjoindate");
 				boolean mstatus = rs.getInt("mstatus")==0;
 				String gname = rs.getString("gname");
+				int cart_cnt = rs.getInt("cart_cnt");
 				int ad_email = rs.getInt("ad_email");
 				int ad_phone = rs.getInt("ad_phone");
 				int ad_call = rs.getInt("ad_call");
-				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, ad_email, ad_phone, ad_call);
+				member = new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, cart_cnt, ad_email, ad_phone, ad_call);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -339,7 +337,7 @@ public class Member_dao {
 	}
 	public NextGrade_dto getNextGrade(String mid, int mcumulative_buy) {
 		NextGrade_dto nextGrade = new NextGrade_dto();
-		String sql="SELECT gf.lowgrade,GF.GNAME FROM GRADES GF WHERE GNO = (SELECT G.GNO+1 FROM MEMBER M, GRADES G WHERE M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=?)";
+		String sql="SELECT GF.LOWGRADE,GF.GNAME FROM GRADES GF WHERE GNO = (SELECT G.GNO+1 FROM MEMBER M, GRADES G WHERE M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE AND M.MID=?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -436,4 +434,5 @@ public class Member_dao {
 		}
 		return result;
 	}
+	
 }

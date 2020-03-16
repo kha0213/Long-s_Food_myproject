@@ -136,18 +136,32 @@ public class Controller extends HttpServlet {
 			service = new ProductDetail();
 			service.execute(request, response);
 			viewPage = "board_product/productDetail.jsp";
-		}else if(command.equals("/pBuyNow.do")) {//제품 바로 구매 - 구매페이지로
-			service = new PBuyNowService();
-			service.execute(request, response);
-			viewPage = "productAll.do";
 		}else if(command.equals("/cartAddProduct.do")) {//장바구니 제품 추가
 			service = new CartAddProduct();
 			service.execute(request, response);
 			viewPage = "board_product/productAddCartMessage.jsp";
-		}else if(command.equals("/productPurchaseConfirm.do")) {//장바구니 제품 구매
-			service = new ProductPurchaseConfirm(); //미완성
+		}
+		
+		// 카트
+		else if(command.equals("/cartView.do")) {//카트보기
+			service = new CartViewService();
 			service.execute(request, response);
-			viewPage = "board_product/productPurchaseConfirm.jsp";// 결제로 가야해
+			viewPage = "cart/cartView.jsp";
+		}else if(command.equals("/cartDelProduct.do")) {//카트에서 물품 삭제
+			service = new CartDelProductService();
+			service.execute(request, response);
+			viewPage = "cartView.do";
+		}else if(command.equals("/cartBuyProduct.do")) {//카트에서 물품 구매
+			service = new CartBuyProductService();
+			service.execute(request, response);
+			viewPage = "board_product/productPurchaseConfirm.jsp";
+		}
+		
+		//결제
+		else if(command.equals("/payment.do")) {//결제
+			service = new PaymentService();
+			service.execute(request, response);
+			viewPage = "main.do";
 		}
 		
 		//리뷰
@@ -169,12 +183,7 @@ public class Controller extends HttpServlet {
 			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
 		}
 		
-		// 카트
-		else if(command.equals("/cartView.do")) {//카트보기
-			service = new CartViewService();
-			service.execute(request, response);
-			viewPage = "cart/cartView.jsp";
-		}
+		
 		
 		//csBoards
 		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트

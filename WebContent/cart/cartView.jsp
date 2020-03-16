@@ -19,19 +19,113 @@
 	.input_small{
 		width:50px;
 	}
+	.pSelectCartAll, .pSelectCart{
+		width:36px;
+		height:36px;
+	}
+	
+	
 </style>
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+		function calCart(){
+			var ppriceAll = 0;
+			var pdiscount = 0;
+			$('.pSelectCart').each(function(index,item){
+				if($(item).is(":checked")){
+					ppriceAll += Number($(item).parent().next().next().next().children('.cart_pprice').html());
+					pdiscount += Math.round(Number($(item).parent().next().next().next().children('.cart_discount').html()));
+				}
+			})
+				$('#ppriceAll').html(ppriceAll);
+				$('#pdiscount').html(pdiscount);
+				$('#ppriceResult').html(Number($('#ppriceAll').html())-Number($('#pdiscount').html())+2500);
+		}
 	$(function(){
+		$('.cart_pcnt').on("propertychange change keyup paste input",function(){
+			var pprice = Number($(this).next().html());
+			var pcnt = $(this).val();
+			var pdiscount = Number($(this).next().next().next().html());
+			$(this).next().next().html(pcnt);
+			$(this).parent().next().children('.cart_pprice').html(pcnt*pprice);
+			$(this).parent().next().children('.cart_discount').html(Math.round(pcnt*pprice*(pdiscount)/100));
+			calCart();
+		});
+		$('.pSelectCartAll').click(function(){
+			if($('.pSelectCartAll').is(":checked")){
+				$('.pSelectCart').prop("checked",true);
+			}else{
+				$('.pSelectCart').prop("checked",false);
+			}
+			calCart();
+		});
+		$('.pSelectCart').change(calCart);
 		
 		
+		
+		
+		
+		$('#selectProductDrop').click(function(){
+			if($('.pSelectCart').is(":checked")){
+			var pcodeStr = '';
+			$('.pSelectCart').each(function(index,item){
+				if($(item).is(":checked")){
+					pcodeStr += 'pcode='+$(this).next().html()+'&';
+				}
+				location.href='${conPath}/cartDelProduct.do?mid=${member.mid}&'+pcodeStr;
+			})
+			}else{
+					swal({
+						title: "한 개 이상의 제품을 선택하세요",
+						  icon: "error",
+						  buttons : {
+							  confirm : {
+								  text : '확인',
+								  className : 'btn-btn-outline-primary'
+							  }
+						  }
+						});
+			}
+		});
+		$('#selectProductBuy').click(function(){
+			if($('.pSelectCart').is(":checked")){
+			var ppriceAll = Number($('#ppriceAll').html());
+			var pdiscount = Number($('#pdiscount').html());
+			var pcodeStr = '';
+			$('.pSelectCart').each(function(index,item){
+				if($(item).is(":checked")){
+					pcodeStr += 'pcode='+$(this).next().html()+'&';
+				}
+				location.href='${conPath}/cartBuyProduct.do?ppriceAll='+ppriceAll+'&pdiscount='+pdiscount+'&mid=${member.mid}&'+pcodeStr;
+			})
+			}else{
+				swal({
+					  title: "한 개 이상의 제품을 선택하세요",
+					  icon: "error",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+							  className : 'btn-btn-outline-primary'
+						  }
+					  }
+					});
+			}
+		});
 	});
 
 </script> 
  
 </head>
 <body style="background-color: #f5f3f6">
+	<c:if test="${not empty cartDelProductResult}">
+		<script>
+		
+			swal("${cartDelProductResult}", "", "success");
+		
+		</script>
+	</c:if>
 			<jsp:include page="../main/header.jsp" />
 		<div class="container">
 			<div class="row mt-5 mb-5">
@@ -51,7 +145,7 @@
 				<table class="table table-hover">
   <thead>
     <tr>
-      <th><input type="checkbox" name="pOutCartAll"></th>
+      <th><input type="checkbox" class="pSelectCartAll"></th>
       <th>상품정보</th>
       <th>수량</th>
       <th>상품금액(할인금액)</th>
@@ -60,22 +154,34 @@
   <tbody>
 			<c:forEach var="cart" items="${carts }">
     <tr>
-      <td><input type="checkbox" name="pOutCart"></td>
+      <td><input type="checkbox" class="pSelectCart" name="pSelectCart" value="${cart.pcode }">
+      <span class="d-none">${cart.pcode }</span>
+      </td>
       <td><img src="${conPath }/image/product/${cart.pimage}" alt="pimage" width="50">${cart.pname } </td>
-      <td><input type="number" min="0" value="${cart.pcnt }" class="input_small">개</td>
-      <td>${cart.pprice*cart.pcnt }원 <img src="${conPath }/image/icon/minus_only.png" alt="-"> <span class="text-danger"><fmt:parseNumber value="${cart.pprice*cart.pcnt*cart.pdiscount/100 }" integerOnly="true"/>원 할인!!</span></td>
+      <td><input type="number" min="0" value="${cart.pcnt }" class="input_small cart_pcnt">개
+      <span class="d-none pprice">${cart.pprice }</span>
+      	<span class="d-none pcnt">${cart.pcnt }</span>
+      	<span class="d-none pdiscount">${cart.pdiscount }</span></td>
+      <td><span class="cart_pprice">${cart.pprice*cart.pcnt }</span>원 <img src="${conPath }/image/icon/minus_only.png" alt="-"> <span class="text-danger cart_discount">${cart.pprice*cart.pcnt*cart.pdiscount/100 }</span>원 할인!!</td>
     </tr>
 			</c:forEach>
   </tbody>
 </table>
+	<div class="row justify-content-center">
+		<button type="button" class="btn btn-outline-success btn-lg" id="selectProductDrop">선택상품 삭제</button> &nbsp;
+<button type="button" class="btn btn-outline-info btn-lg" id="selectProductBuy">선택 제품 구매</button>
+	</div>
+
+
   <div class="text-center m-5 h3">
-  		 상품가격 <span id="ppriceAll"></span> 
+  		<p> 상품가격 <span id="ppriceAll">0</span> 원
   			<img src="${conPath }/image/icon/minus.png" alt="-">
-  			할인금액 <span id="pdiscount"></span>
+  			할인금액 <span id="pdiscount">0</span>원
   			<img src="${conPath }/image/icon/plus.png" alt="+"> 
   			배송비 : 2500원 
-  			<img src="${conPath }/image/icon/equal.png" alt="="> 
-  			총 주문금액 <span id="ppriceResult"></span>
+  			</p>
+  			<div class="shadow-lg p-3 mt-4 mb-5 rounded font-weight-bold"><img src="${conPath }/image/icon/equal.png" alt="="> 
+  			총 주문금액 <span id="ppriceResult">2500</span>원</div>
   		
   </div>
   <div class="m-5">&nbsp;</div>

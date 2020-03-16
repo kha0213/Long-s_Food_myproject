@@ -27,9 +27,9 @@ mgDao.joinManager("admin", "11", "관리자롱", "상품MD");
 		String pcode = "testPcode"+i;
 		String mgid = "admin";
 		String pname = "testPname"+i;
-		int pprice = (int)(Math.random()*100000);
+		int pprice = (int)(Math.random()*1000)*100;
 		String pimage = ((i%20)+1)+".jpg";
-		int pstock = (int)(Math.random()*100);
+		int pstock = (int)(Math.random()*30);
 		String pdescription = i+"번 test 제품 설명";
 		pDao.registProduct(pcode,mgid, pname, pprice, pimage, pstock, pdescription);
 		

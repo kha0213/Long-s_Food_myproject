@@ -33,16 +33,17 @@ private Orders_dao() {
 	}
 	
 	
-	private void addOrdersPre(int dno,String mid) {
-		String sql = "INSERT INTO ORDERS VALUES(ONO_SEQ.NEXTVAL,SYSDATE,NULL,NULL,?,?)";
+	private void addOrdersPre(int purchase_amount,int dno,String mid) {
+		String sql = "INSERT INTO ORDERS VALUES(ONO_SEQ.NEXTVAL,SYSDATE,NULL,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dno);
-			pstmt.setString(2, mid);
+			pstmt.setInt(1, purchase_amount);
+			pstmt.setInt(2, dno);
+			pstmt.setString(3, mid);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -55,8 +56,8 @@ private Orders_dao() {
 			}
 		}
 	}
-	public int addOrders(int dno,String mid) {
-		addOrdersPre(dno, mid);
+	public int addOrders(int purchase_amount,int dno,String mid) {
+		addOrdersPre(purchase_amount,dno, mid);
 		int ono = 0;
 		String sql = "SELECT MAX(ONO) FROM ORDERS";
 		Connection conn = null;
@@ -80,62 +81,6 @@ private Orders_dao() {
 			}
 		}
 		return ono;
-	}
-	private void set_purchase_amount(int ono,int purchase_amount) {
-		String sql = "UPDATE ORDERS SET PURCHASE_AMOUNT=? WHERE ONO=?";
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, purchase_amount);
-			pstmt.setInt(2, ono);
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				if(pstmt!=null) pstmt.close();
-				if(conn!=null) conn.close();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}
-	
-	
-	public int get_set_purchase_amount(int ono) {
-		int purchase_amount = 0;
-		String sql = "SELECT O.*,OD.PCNT,od.pprice FROM ORDERS O, ORDER_DETAIL OD WHERE O.ONO=OD.ONO AND O.ONO=?";
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, ono);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				int pcnt = rs.getInt("pcnt");
-				int pprice = rs.getInt("pprice");
-				purchase_amount += pcnt*pprice;
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-				try {
-					if(rs!=null) rs.close();
-					if(pstmt!=null) pstmt.close();
-					if(conn!=null) conn.close();
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-			
-		}
-		set_purchase_amount(ono, purchase_amount);
-		return purchase_amount;
 	}
 	
 }

@@ -52,7 +52,8 @@ $(function(){
 			}else{
 				var pcode = '${product.pcode}';
 				var mid = '${member.mid}';
-				location.href="${conPath}/pBuyNow.do?pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid;
+				
+				location.href="${conPath}/cartBuyProduct.do?pBuyNow=1&pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid;
 			}
 		});
 		$("#pcnt").on("propertychange change keyup paste input", function() {
@@ -105,6 +106,9 @@ $(function(){
 								  }
 							  }
 							});
+						setTimeout(function(){
+							location.reload();
+							},2000);
 					}
 								
 				});
