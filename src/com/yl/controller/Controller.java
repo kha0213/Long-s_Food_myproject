@@ -147,7 +147,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/productPurchaseConfirm.do")) {//장바구니 제품 구매
 			service = new ProductPurchaseConfirm(); //미완성
 			service.execute(request, response);
-			viewPage = "productAll.do";// 결제로 가야해
+			viewPage = "board_product/productPurchaseConfirm.jsp";// 결제로 가야해
 		}
 		
 		//리뷰
@@ -169,7 +169,12 @@ public class Controller extends HttpServlet {
 			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
 		}
 		
-		
+		// 카트
+		else if(command.equals("/cartView.do")) {//카트보기
+			service = new CartViewService();
+			service.execute(request, response);
+			viewPage = "cart/cartView.jsp";
+		}
 		
 		//csBoards
 		else if(command.equals("/csBoardsListService.do")) {//고객센터리스트

@@ -59,7 +59,7 @@
 							href="${conPath }/loginView.do">Login</a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/joinView.do">Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a></li>
 					</c:if>
 					<!-- 고객 헤더 -->
 					<c:if test="${not empty member }">
@@ -67,7 +67,7 @@
 							href="${conPath }/mMypage.do"><small>${member.mname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
-						<li class="nav-item"><a class="nav-link text-dark" href="#">Cart</a></li>
+						<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a></li>
 					</c:if>
 					<!-- 관리자 헤더 -->
 					<c:if test="${not empty manager }">
@@ -89,13 +89,13 @@
 					<li class="nav-item"><a class="nav-link active" href="${conPath }/mMypage.do">
 							<img alt="user" src="${conPath }/image/user.png">
 					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
+					<li class="nav-item"><a class="nav-link" href="${conPath }/cartView.do?mid=${member.mid}"> <img
 							alt="cart" src="${conPath }/image/cart.png">
 					</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 						role="button" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false"> <img alt="cart"
+						aria-expanded="false"> <img alt="menu"
 							src="${conPath }/image/menu.png">
 					</a>
 						<div class="dropdown dropdown-menu dropdown-menu-right"
@@ -116,7 +116,7 @@
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>
 							</c:if>
-							<a class="dropdown-item" href="#">Cart</a> <a
+							<a class="dropdown-item" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a> <a
 								class="dropdown-item" href="${conPath }/csBoardsListService.do">Support</a>
 						</div></li>
 				</ul>

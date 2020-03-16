@@ -17,6 +17,7 @@ public class Member_dto {
 	private Date mjoindate;
 	private boolean mstatus;
 	private String gname;
+	private int cartCnt;
 	private int ad_email;
 	private int ad_phone;
 	private int ad_call;

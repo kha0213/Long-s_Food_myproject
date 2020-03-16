@@ -407,7 +407,7 @@ public class Product_dao {
 	}
 	public boolean PReview_count_plus(String pcode) {
 		boolean result = false;
-		String sql = "UPDATE PRODUCT SET REVIEW_COUNT=REVIEW_COUNT+1 WHERE PCODE=?";
+		String sql = "UPDATE PRODUCT SET PREVIEW_COUNT=PREVIEW_COUNT+1 WHERE PCODE=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		

@@ -39,7 +39,15 @@ $(function(){
 					  }
 					});
 			}else if(pcnt<1){
-				alert("최소구매수량은 한개 입니다.");
+				swal({
+					  text: "최소구매수량은 한 개 입니다.",
+					  icon: "error",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
 		    	$('#pcnt').val('1');
 			}else{
 				var pcode = '${product.pcode}';
@@ -80,16 +88,17 @@ $(function(){
 			}else{
 				var pcode = '${product.pcode}';
 				var mid = '${member.mid}';
-				var pprice = '${product.pprice*(100-product.pdiscount)/100}';
-				var message = $('#cartAddProductResult');
+				var message = $(this).next();
 				$.ajax({ 
 					url: '${conPath}/cartAddProduct.do', 
-					data: "pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid+"&pprice="+pprice,
+					data: "pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid,
 					dataType: "html",
 					success: function(data){
-						var message = html(data);
+						message.html(data);
+						var outMessage = message.html().trim();
 						swal({
-							  text: message,
+							  title: outMessage,
+							  icon: "info",
 							  buttons : {
 								  confirm : {
 									  text : '확인',
@@ -274,10 +283,11 @@ $(function(){
 		</div>
 		<div class="col-2">
 			<button type="button" class="btn btn-info btn-lg btn-block" id="cart">장바 구니</button>
+			<div class="d-none"></div>
 		</div>
 		
 		</div>
-		<div id="cartAddProductResult"></div>
+		
 		</c:if> 
 		
 		
@@ -304,7 +314,7 @@ $(function(){
     </tr>
     <tr>
       <th scope="row">별점<br><small class="text-muted">(별점은 0~10점만 가능합니다)</small></th>
-      <td><input type="number" name="rstar" value="0" class="form-control" min="0" max="10" required="required"></td>
+      <td><input type="number" name="rstar" value="10" class="form-control" min="0" max="10" required="required"></td>
     </tr>
     <tr>
       <th scope="row">리뷰내용</th>

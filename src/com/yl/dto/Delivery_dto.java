@@ -6,22 +6,38 @@ public class Delivery_dto {
 	private int dno;
 	private int dprice;
 	private String dcompany;
+	private String daddress;
 	private Date odate;
 	private Date parrive_date;
 	
-	public Delivery_dto(int dno, int dprice, String dcompany, Date odate, Date parrive_date) {
+	
+	
+	public Delivery_dto(int dno, int dprice, String dcompany, String daddress, Date odate, Date parrive_date) {
 		super();
 		this.dno = dno;
 		this.dprice = dprice;
 		this.dcompany = dcompany;
+		this.daddress = daddress;
 		this.odate = odate;
 		this.parrive_date = parrive_date;
 	}
+
 
 	public Delivery_dto() {
 		super();
 	}
 	
+	
+	public String getDaddress() {
+		return daddress;
+	}
+
+
+	public void setDaddress(String daddress) {
+		this.daddress = daddress;
+	}
+
+
 	public int getDno() {
 		return dno;
 	}

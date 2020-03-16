@@ -17,14 +17,14 @@ public class PBuyNowService implements Service {
 		int pcnt = Integer.parseInt(request.getParameter("pcnt"));
 		String pcode = request.getParameter("pcode");
 		String mid = request.getParameter("mid");
-		
+		String daddress = request.getParameter("daddress");
 		Product_dao pDao = Product_dao.getInstance();
 		int pprice = pDao.productDetail(pcode).getPprice();
 		int mpoint = pprice/20*pcnt;
 		
 		
 		Delivery_dao dDao = Delivery_dao.getInstance();
-		int dno = dDao.addDelivery(2500, "한진택배"); // 1.delivery 생성
+		int dno = dDao.addDelivery(2500, "한진택배",daddress); // 1.delivery 생성
 		Orders_dao oDao = Orders_dao.getInstance();
 		int ono = oDao.addOrders(dno, mid); // 2.orders생성
 		Order_detail_dao odDao = Order_detail_dao.getInstance();
