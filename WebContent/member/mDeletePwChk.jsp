@@ -11,7 +11,6 @@
 		var mpw = ${member.mpw}
 		if($('#mpw').val() == mpw){
 			$('#modalBtn').click();
-			/* $('#myContent').load('${conPath}/mDelete.do'); */
 		}else{
 			alert('비밀번호가 일치하지 않습니다.');
 		}

@@ -12,7 +12,7 @@ public class CsBoardWriteView implements Service {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		String mid = request.getParameter("mid");
 		Member_dao mDao = Member_dao.getInstance();
-		request.setAttribute("orders", mDao.getOrders(mid));
+		request.setAttribute("orders", mDao.getOrdersAll(mid));
 	}
 
 }

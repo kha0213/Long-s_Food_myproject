@@ -14,7 +14,6 @@ public class MPointService implements Service {
 		int mcumulative_buy = Integer.parseInt(request.getParameter("mcumulative_buy"));
 		Member_dao mDao = Member_dao.getInstance();
 		NextGrade_dto nextGrade = mDao.getNextGrade(mid,mcumulative_buy);
-		
 		request.setAttribute("nextGrade", nextGrade);
 		
 	}

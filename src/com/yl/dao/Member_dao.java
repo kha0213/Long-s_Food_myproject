@@ -220,11 +220,10 @@ public class Member_dao {
 	}
 	
 	
-	
-	
-	public ArrayList<Orders_dto> getOrders(String mid) {
+	public ArrayList<Orders_dto> getOrdersAll(String mid) {
 		ArrayList<Orders_dto> result = new ArrayList<Orders_dto>();
-		String sql = "SELECT O.* FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=?";
+		String sql = "SELECT O.*,(SELECT P.PNAME FROM ORDER_DETAIL ODF,PRODUCT P WHERE ODF.ONO=O.ONO AND P.PCODE=ODF.PCODE AND ROWNUM=1) PNAME,"
+				+ "(SELECT P.PIMAGE FROM ORDER_DETAIL ODF,PRODUCT P WHERE ODF.ONO=O.ONO AND P.PCODE=ODF.PCODE AND ROWNUM=1) PIMAGE FROM ORDERS O WHERE MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -239,7 +238,49 @@ public class Member_dao {
 				Date parrive_date = rs.getDate("parrive_date");
 				int purchase_amount = rs.getInt("purchase_amount");
 				int dno = rs.getInt("dno");
-				result.add(new Orders_dto(ono, odate, parrive_date,purchase_amount, dno, mid));
+				String pname = rs.getString("pname");
+				String pimage = rs.getString("pimage");
+				result.add(new Orders_dto(ono, odate, parrive_date, pname, pimage, purchase_amount, dno, mid));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	public ArrayList<Orders_dto> getOrdersPaging(String mid,int startRow,int endRow) {
+		ArrayList<Orders_dto> result = new ArrayList<Orders_dto>();
+		String sql = "SELECT * FROM (SELECT ROWNUM RN,A.* FROM (SELECT O.*,(SELECT P.PNAME FROM ORDER_DETAIL ODF,"
+				+ "PRODUCT P WHERE ODF.ONO=O.ONO AND P.PCODE=ODF.PCODE AND ROWNUM=1) PNAME,"
+				+ "(SELECT P.PIMAGE FROM ORDER_DETAIL ODF,PRODUCT P WHERE ODF.ONO=O.ONO AND P.PCODE=ODF.PCODE AND ROWNUM=1) "
+				+ "PIMAGE FROM MEMBER M, ORDERS O WHERE M.MID=O.MID AND M.MID=? ORDER BY ODATE DESC) A) WHERE RN BETWEEN ? AND ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int ono = rs.getInt("ono");
+				Date odate = rs.getDate("odate");
+				Date parrive_date = rs.getDate("parrive_date");
+				int purchase_amount = rs.getInt("purchase_amount");
+				int dno = rs.getInt("dno");
+				String pname = rs.getString("pname");
+				String pimage = rs.getString("pimage");
+				result.add(new Orders_dto(ono, odate, parrive_date, pname, pimage, purchase_amount, dno, mid));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -346,9 +387,10 @@ public class Member_dao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			rs = pstmt.executeQuery();
-			rs.next();
-			nextGrade.setNextMoney(rs.getInt(1)-mcumulative_buy-1);
-			nextGrade.setNextGname(rs.getString("GNAME"));
+			if(rs.next()) {
+				nextGrade.setNextGname(rs.getString("GNAME"));
+				nextGrade.setNextMoney(rs.getInt(1)-mcumulative_buy-1);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -434,5 +476,31 @@ public class Member_dao {
 		}
 		return result;
 	}
-	
+	public int getTotalOrders(String mid) {
+		int result = 0;
+		String sql="SELECT COUNT(*) FROM ORDERS WHERE MID=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 }

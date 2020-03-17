@@ -28,6 +28,13 @@
 		$('#mPoint').click(function(){
 			$('#myContent').load('${conPath}/mPoint.do?mid=${member.mid}&mcumulative_buy=${member.mcumulative_buy}');
 		});
+		$('#mBuyHistory').click(function(){
+			$('#myContent').load('${conPath}/mBuyHistory.do?mid=${member.mid}');
+		});
+		$('#mDelivery').click(function(){
+			$('#myContent').load('${conPath}/mDelivery.do');
+		});
+		
 	});
 
 </script> 
@@ -41,13 +48,17 @@
 		alert('${mModifyResult}');
 	</script>
 </c:if>
-
-
+<c:if test="${not empty finishDeliveryToday }">
+	<script>
+		alert('${finishDeliveryToday}');
+		$('#mDelivery').trigger("click");
+	</script>
+</c:if>
 
 
 <body style="background-color: #f5f3f6">
 			<jsp:include page="../main/header.jsp" />
-			<div class="container mb-5 mt-5">
+			<div class="container-fluid mb-5 mt-5">
 			<div class="row">
 				<div class="col text-center mb-5">
 					<h2>${member.mname }님 My Page</h2>
@@ -55,10 +66,10 @@
 				</div>
 			
 			</div>
-			<div class="row mb-5 mt-5">
+			<div class="row ml-5 mb-5 mt-5">
 <div class="list-group col-2">
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist">배송 확인</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist">주문 목록</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mDelivery">배송 확인</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mBuyHistory">주문 목록</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">쿠폰 조회</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mPoint">포인트정보</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mModify">정보 수정</span>

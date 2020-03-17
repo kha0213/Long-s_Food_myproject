@@ -77,7 +77,10 @@ public class Controller extends HttpServlet {
 			service = new LoginService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
-		}else if(command.equals("/mMypage.do")) {// 미완성
+		}
+		
+		// member mypage
+		else if(command.equals("/mMypage.do")) {// 미완성
 			service = new MMypageViewService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
@@ -97,6 +100,22 @@ public class Controller extends HttpServlet {
 			service = new LogoutService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
+		}else if(command.equals("/mBuyHistory.do")) {
+			service = new MBuyHistoryService();
+			service.execute(request, response);
+			viewPage = "member/mBuyHistory.jsp";
+		}else if(command.equals("/mBuyDetail.do")) {// 구매 상세
+			service = new MBuyDetailService();
+			service.execute(request, response);
+			viewPage = "member/mBuyDetail.jsp";
+		}else if(command.equals("/mDelivery.do")) {
+			service = new MDeliveryService();
+			service.execute(request, response);
+			viewPage = "member/mDelivery.jsp";
+		}else if(command.equals("/mDeliveryArrive.do")) {
+			service = new MDeliveryArriveService();
+			service.execute(request, response);
+			viewPage = "member/mypage.jsp";
 		}
 		
 		
@@ -158,7 +177,7 @@ public class Controller extends HttpServlet {
 		}
 		
 		//결제
-		else if(command.equals("/payment.do")) {//결제
+		else if(command.equals("/payment.do")) {//결제 이동페이지 안만듬
 			service = new PaymentService();
 			service.execute(request, response);
 			viewPage = "main.do";
@@ -172,7 +191,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/rCommentWrite.do")) {//관리자 리뷰 댓글 작성
 			service = new RCommentWriteService();
 			service.execute(request, response);
-			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
+			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode").toString();
 		}else if(command.equals("/rCommentView.do")) {//리뷰 댓글 보기
 			service = new RCommentViewService();
 			service.execute(request, response);
@@ -180,7 +199,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/rWrite.do")) {//리뷰쓰기
 			service = new RWriteService();
 			service.execute(request, response);
-			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode");
+			viewPage = "productDetail.do?pcode="+(String)request.getAttribute("pcode").toString();
 		}
 		
 		
@@ -214,6 +233,14 @@ public class Controller extends HttpServlet {
 			service = new CsBoardsModifyService();
 			service.execute(request, response);
 			viewPage = "csBoardsListService.do";
+		}else if(command.equals("/csBoardsDelete.do")) {//삭제실행
+			service = new CsBoardsDeleteService();
+			service.execute(request, response);
+			viewPage = "csBoardsListService.do";
+		}else if(command.equals("/cmCommentWrite.do")) {//관리자 코멘트작성
+			service = new CmCommentWriteService();
+			service.execute(request, response);
+			viewPage = "csBoardsDetail.do?cno="+(String)request.getAttribute("cno").toString();
 		}
 		
 		

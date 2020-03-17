@@ -15,13 +15,15 @@ public class Customer_service_dto {
 	private int cgroup_outnum;
 	private int cindent;
 	private Date crdate;
+	private boolean cmexist;
 	private String ono;
 
 	
 
 
 	public Customer_service_dto(int cno, String mid, String mname, String csubject, String ccontent, int csecret,
-			String cimage, int chit, int cgroup, int cgroup_outnum, int cindent, Date crdate, String ono) {
+			String cimage, int chit, int cgroup, int cgroup_outnum, int cindent, Date crdate, boolean cmexist,
+			String ono) {
 		super();
 		this.cno = cno;
 		this.mid = mid;
@@ -35,11 +37,20 @@ public class Customer_service_dto {
 		this.cgroup_outnum = cgroup_outnum;
 		this.cindent = cindent;
 		this.crdate = crdate;
+		this.cmexist = cmexist;
 		this.ono = ono;
 	}
 
 	public Customer_service_dto() {
 		super();
+	}
+
+	public boolean isCmexist() {
+		return cmexist;
+	}
+
+	public void setCmexist(boolean cmexist) {
+		this.cmexist = cmexist;
 	}
 
 	public int getCno() {

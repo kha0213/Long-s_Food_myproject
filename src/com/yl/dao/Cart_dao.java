@@ -83,6 +83,31 @@ public class Cart_dao {
 		}
 		return result;
 	}
+	public boolean cartPcntModify(String mid,String pcode,int pcnt) {
+		boolean result = false;
+		String sql = "UPDATE CART SET PCNT=? WHERE MID=? AND PCODE=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pcnt);
+			pstmt.setString(2, mid);
+			pstmt.setString(3, pcode);
+			result = pstmt.executeUpdate()==1;
+		} catch (Exception e) {
+			System.out.println("cartPcntModify오류: "+e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 	public ArrayList<Cart_dto> getCart(String mid) {
 		ArrayList<Cart_dto> cart = new ArrayList<Cart_dto>();
 		String sql = "SELECT C.*,P.PSTOCK,P.PDISCOUNT,P.PPRICE,P.PNAME,P.PIMAGE FROM CART C,PRODUCT P,MEMBER M WHERE M.MID=C.MID AND P.PCODE=C.PCODE AND M.MID=?";

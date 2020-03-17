@@ -15,7 +15,7 @@ public class CsBoardsModifyViewService implements Service {
 		String mid = request.getParameter("mid");
 		Customer_service_dao csDao = Customer_service_dao.getInstance();
 		Member_dao mDao = Member_dao.getInstance();
-		request.setAttribute("orders", mDao.getOrders(mid));
+		request.setAttribute("orders", mDao.getOrdersAll(mid));
 		request.setAttribute("csBoard", csDao.getCsBoard(cno));
 	}
 

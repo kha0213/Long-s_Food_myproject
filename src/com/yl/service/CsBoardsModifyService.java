@@ -34,7 +34,11 @@ public class CsBoardsModifyService implements Service {
 			}
 			int cno = Integer.parseInt(mRequest.getParameter("cno"));
 			String csubject = mRequest.getParameter("csubject");
-			String ono = mRequest.getParameter("ono");
+			int ono = 0;
+			String tempOno = mRequest.getParameter("ono");
+			if(!tempOno.equals("이전 주문 보기")) {
+				ono = Integer.parseInt(tempOno);
+			}
 			String ccontent = mRequest.getParameter("ccontent");
 			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null);
 			

@@ -61,8 +61,9 @@ public class Customer_service_dao {
 				int cgroup_outnum = rs.getInt("cgroup_outnum");
 				int cindent = rs.getInt("cindent");
 				Date crdate = rs.getDate("crdate");
+				boolean cmexist = rs.getInt("cmexist")==1;
 				String ono = rs.getString("ono");
-				csboards.add(new Customer_service_dto(cno, mid,mname,csubject, ccontent, csecret,cimage, chit, cgroup, cgroup_outnum, cindent, crdate, ono));
+				csboards.add(new Customer_service_dto(cno, mid, mname, csubject, ccontent, csecret, cimage, chit, cgroup, cgroup_outnum, cindent, crdate, cmexist, ono));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -104,8 +105,9 @@ public class Customer_service_dao {
 				int cgroup_outnum = rs.getInt("cgroup_outnum");
 				int cindent = rs.getInt("cindent");
 				Date crdate = rs.getDate("crdate");
+				boolean cmexist = rs.getInt("cmexist")==1;
 				String ono = rs.getString("ono");
-				csboard = new Customer_service_dto(cno, mid,mname,csubject, ccontent, csecret,cimage, chit, cgroup, cgroup_outnum, cindent, crdate, ono);
+				csboard = new Customer_service_dto(cno, mid, mname, csubject, ccontent, csecret, cimage, chit, cgroup, cgroup_outnum, cindent, crdate, cmexist, ono);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -152,7 +154,7 @@ public class Customer_service_dao {
 	
 	// 글 수정 (수정 후 조회수 0)
 	
-	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String cimage, String ono) {
+	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String cimage, int ono) {
 		boolean result = false;
 		String sql = "UPDATE CUSTOMER_SERVICE SET CSUBJECT=?,CCONTENT=?,CSECRET=?,CIMAGE=?,CHIT=0,CRDATE=SYSDATE,ONO=? WHERE CNO=?";
 		Connection conn = null;
@@ -164,7 +166,7 @@ public class Customer_service_dao {
 			pstmt.setString(2, ccontent);
 			pstmt.setInt(3, csecret==true?1:0);
 			pstmt.setString(4, cimage);
-			pstmt.setString(5, ono);
+			pstmt.setInt(5, ono);
 			pstmt.setInt(6, cno);
 			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
@@ -179,7 +181,7 @@ public class Customer_service_dao {
 		}
 		return result;
 	}
-	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String ono) {
+	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, int ono) {
 		boolean result = false;
 		String sql = "UPDATE CUSTOMER_SERVICE SET CSUBJECT=?,CCONTENT=?,CSECRET=?, CHIT=0,CRDATE=SYSDATE,ONO=? WHERE CNO=?";
 		Connection conn = null;
@@ -190,11 +192,35 @@ public class Customer_service_dao {
 			pstmt.setString(1, csubject);
 			pstmt.setString(2, ccontent);
 			pstmt.setInt(3, csecret==true?1:0);
-			pstmt.setString(4, ono);
+			pstmt.setInt(4, ono);
 			pstmt.setInt(5, cno);
 			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("modifyCsBoardMember오류:"+e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	public boolean existCsComment(int cno,boolean cmexist) {
+		boolean result = false;
+		String sql = "UPDATE CUSTOMER_SERVICE SET CMEXIST=? WHERE CNO=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cmexist?1:0);
+			pstmt.setInt(2, cno);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println("modifyCsBoardMember오류:"+e.getMessage());
 		} finally {
 			try {
 				if(pstmt!=null) pstmt.close();
@@ -240,8 +266,9 @@ public class Customer_service_dao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			rs.next();
-			result = rs.getInt(1);
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -255,6 +282,5 @@ public class Customer_service_dao {
 		}
 		return result;
 	}
-	
 	
 }

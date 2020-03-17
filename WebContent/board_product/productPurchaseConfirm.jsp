@@ -41,6 +41,10 @@
 						}
 					});
 				} else {
+					if(usePointAmount>finalPay){
+						usePointAmount = finalPay;
+					}
+					$(this).prev().val(usePointAmount);
 					$('#usemp').html(usePointAmount);
 					$('#finalPay').html(finalPay - usePointAmount);
 				}
@@ -48,10 +52,13 @@
 			}
 		});
 		$('#usePointBtnAll').click(function(){
-			
-			$(this).prev().prev().val(memberPoint);
-			$('#usemp').html(memberPoint);
-			$('#finalPay').html(finalPay - memberPoint);
+			var usePointAmount = memberPoint;
+			if(usePointAmount>finalPay){
+				usePointAmount = finalPay;
+			}
+			$(this).prev().prev().val(usePointAmount);
+			$('#usemp').html(usePointAmount);
+			$('#finalPay').html(finalPay - usePointAmount);
 		});
 		$('form').submit(function(){
 			var finalPayNow = Number($('#finalPay').html());
@@ -227,8 +234,8 @@ th {
 						<button type="button" class="btn btn-info" id="usePointBtn">포인트사용</button>
 						<button type="button" class="btn btn-warning" id="usePointBtnAll">모든포인트사용</button></td>
 				</tr>
-				<tr class="text-center h5">
-					<th rowspan="2">결제금액</th>
+				<tr class="text-center">
+					<th class="text-left" rowspan="2">결제금액</th>
 					<td>구매금액</td>
 					<td>할인금액</td>
 					<td>사용포인트</td>

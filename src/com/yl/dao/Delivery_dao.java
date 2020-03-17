@@ -125,7 +125,7 @@ private Delivery_dao() {
 			pstmt.setInt(1, dno);
 			result = pstmt.executeUpdate()==1;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("finishDelivery오류:"+e.getMessage());
 		} finally {
 			try {
 				if(pstmt!=null) pstmt.close();
@@ -172,5 +172,6 @@ private Delivery_dao() {
 		}
 		return delivery;
 	}
+	
 	
 }

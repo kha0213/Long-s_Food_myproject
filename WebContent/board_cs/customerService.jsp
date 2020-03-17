@@ -12,9 +12,11 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 	$(function() {
+		$('[data-toggle="tooltip"]').tooltip();
 		$('.csBoard').mouseenter(function() {
 			$(this).css('cursor', 'pointer').addClass('bg-info');
 		});
@@ -34,6 +36,11 @@
 	<c:if test="${not empty csBoardModifyResult }">
 		<script>
 			alert('${csBoardModifyResult}');
+		</script>
+	</c:if>
+	<c:if test="${not empty csBoardsDeleteResult }">
+		<script>
+			alert('${csBoardsDeleteResult}');
 		</script>
 	</c:if>
 
@@ -64,12 +71,14 @@
       <div class="col text-left p-1 pl-3">
       
       <c:if test="${csBoard.csecret eq 1 }">
-     	<img src="${conPath }/image/icon/lock.png" alt="자물쇠">비밀글입니다.
+     	<img src="${conPath }/image/icon/lock.png" alt="자물쇠" data-toggle="tooltip" title="비밀글입니다.">비밀글입니다.
       </c:if>
       <c:if test="${csBoard.csecret ne 1 }">
 	   	  ${csBoard.csubject}
       </c:if>
-      
+      <c:if test="${csBoard.cmexist eq true }">
+     	<img src="${conPath }/image/icon/comment.png" alt="comment" data-toggle="tooltip" title="관리자가 답변한 글입니다.">
+      </c:if>
       </div>
       <div class="col-1 p-1 mname">${csBoard.mname}</div>
       <div class="col-2 p-1"><fmt:formatDate value="${csBoard.crdate}" pattern="yy-MM-dd"/><br>
@@ -104,12 +113,6 @@
 				</a></li>
 			</ul>
 		</nav>
-	
-	
-	
-	
-	
-	
 	
 	
 </div>

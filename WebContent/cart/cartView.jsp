@@ -94,13 +94,15 @@
 			var ppriceAll = Number($('#ppriceAll').html());
 			var pdiscount = Number($('#pdiscount').html());
 			var pcodeStr = '';
+			var pcntStr = '';
 			$('.pSelectCart').each(function(index,item){
 				if($(item).is(":checked")){
 					pcodeStr += 'pcode='+$(this).next().html()+'&';
+					pcntStr += 'pcnt='+$(this).parent().next().next().children('.cart_pcnt').val()+'&';
+					}
+				location.href='${conPath}/cartBuyProduct.do?ppriceAll='+ppriceAll+'&pdiscount='+pdiscount+'&mid=${member.mid}&'+pcodeStr+pcntStr;
 				}
-				location.href='${conPath}/cartBuyProduct.do?ppriceAll='+ppriceAll+'&pdiscount='+pdiscount+'&mid=${member.mid}&'+pcodeStr;
-			})
-			}else{
+			)}else{
 				swal({
 					  title: "한 개 이상의 제품을 선택하세요",
 					  icon: "error",

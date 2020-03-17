@@ -4,19 +4,43 @@ public class Order_detail_dto {
 	private int odno;
 	private int ono;
 	private String pcode;
+	private String pname;
+	private String pimage;
 	private int pcnt;
 	private int pprice;
 	public Order_detail_dto() {
 		super();
 	}
-	public Order_detail_dto(int odno, int ono, String pcode, int pcnt, int pprice) {
+	
+	
+	public Order_detail_dto(int odno, int ono, String pcode, String pname, String pimage, int pcnt, int pprice) {
 		super();
 		this.odno = odno;
 		this.ono = ono;
 		this.pcode = pcode;
+		this.pname = pname;
+		this.pimage = pimage;
 		this.pcnt = pcnt;
 		this.pprice = pprice;
 	}
+
+
+	public String getPname() {
+		return pname;
+	}
+
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+
+	public String getPimage() {
+		return pimage;
+	}
+
+	public void setPimage(String pimage) {
+		this.pimage = pimage;
+	}
+
 	public int getOdno() {
 		return odno;
 	}
