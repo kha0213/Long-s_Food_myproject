@@ -86,14 +86,14 @@ public class Controller extends HttpServlet {
 			service = new MMypageViewService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
-		}else if(command.equals("/mPoint.do")) {// 미완성
+		}else if(command.equals("/mPoint.do")) {
 			service = new MPointService();
 			service.execute(request, response);
 			viewPage = "member/mPoint.jsp";
 		}else if(command.equals("/mModify.do")) {
 			service = new MModifyService();
 			service.execute(request, response);
-			viewPage = "member/mypage.jsp";
+			viewPage = "mMypage.do";
 		}else if(command.equals("/mDelete.do")) {
 			service = new MDeleteService();
 			service.execute(request, response);
@@ -117,7 +117,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/mDeliveryArrive.do")) {
 			service = new MDeliveryArriveService();
 			service.execute(request, response);
-			viewPage = "member/mypage.jsp";
+			viewPage = "mMypage.do";
 		}
 		
 		
@@ -139,13 +139,17 @@ public class Controller extends HttpServlet {
 			service = new MgloginService();
 			service.execute(request, response);
 			viewPage = "main/mainpage.jsp";
+		}else if(command.equals("/mgPage.do")) {
+			service = new MgPageService();
+			service.execute(request, response);
+			viewPage = "manager/mgPage.jsp";
+		}else if(command.equals("/registProductView.do")) {// 매니저 상품등록
+			viewPage = "manager/registProduct.jsp";
 		}
 		
 		
 		//Product
-		else if(command.equals("/registProductView.do")) {
-			viewPage = "manager/registProduct.jsp";
-		}else if(command.equals("/registProduct.do")) {
+		else if(command.equals("/registProduct.do")) {
 			service = new RegistProduct();
 			service.execute(request, response);
 			viewPage = "productAll.do";

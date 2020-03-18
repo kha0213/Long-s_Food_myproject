@@ -72,9 +72,9 @@
 					<!-- 관리자 헤더 -->
 					<c:if test="${not empty manager }">
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/main.do"><small>${manager.mgname }님</small></a></li>
+							href="${conPath }/mgPage.do"><small>${manager.mgname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/registProductView.do">상품등록</a></li>
+							href="${conPath }/mgPage.do">관리자페이지</a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
 					</c:if>
@@ -92,8 +92,13 @@
 							<img alt="user" src="${conPath }/image/user.png">
 					</a>
 					</c:if>
-					<c:if test="${not empty member || not empty manager }">
+					<c:if test="${not empty member && empty manager }">
 					<a class="nav-link active" href="${conPath }/mMypage.do">
+							<img alt="user" src="${conPath }/image/user.png">
+					</a>
+					</c:if>
+					<c:if test="${empty member && not empty manager }">
+					<a class="nav-link active" href="${conPath }/mgPage.do">
 							<img alt="user" src="${conPath }/image/user.png">
 					</a>
 					</c:if>
@@ -121,7 +126,7 @@
 									out</a>
 							</c:if>
 							<c:if test="${not empty manager && empty member }">
-								<a class="dropdown-item" href="${conPath }/registProductView.do">상품등록</a>
+								<a class="dropdown-item" href="${conPath }/mgPage.do">관리자 페이지</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>
 							</c:if>
