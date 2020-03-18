@@ -73,13 +73,13 @@
 			</button>
 			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 				<a class="dropdown-item"
-					href="${conPath }/productAll.do?sortingCriteria=preview_count">리뷰
+					href="${conPath }/productAll.do?sortingCriteria=preview_count&searchPname=${param.searchPname}">리뷰
 					많은 순</a> <a class="dropdown-item"
-					href="${conPath }/productAll.do?sortingCriteria=lowprice">낮은
+					href="${conPath }/productAll.do?sortingCriteria=lowprice&searchPname=${param.searchPname}">낮은
 					가격순</a> <a class="dropdown-item"
-					href="${conPath }/productAll.do?sortingCriteria=highprice">높은
+					href="${conPath }/productAll.do?sortingCriteria=highprice&searchPname=${param.searchPname}">높은
 					가격 순</a> <a class="dropdown-item"
-					href="${conPath }/productAll.do?sortingCriteria=pregist">상품 등록일 순</a>
+					href="${conPath }/productAll.do?sortingCriteria=pregist&searchPname=${param.searchPname}">상품 등록일 순</a>
 			</div>
 		</div>
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
@@ -124,14 +124,14 @@
 			<ul class="pagination justify-content-center mt-5 mb-5">
 				<li class="page-item"><c:if test="${startPage ne 1 }">
 						<a class="page-link" aria-label="Previous"
-							href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${startPage-1}">
+							href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${startPage-1}&searchPname=${param.searchPname}">
 							<span aria-hidden="true">&laquo;</span>
 						</a>
 					</c:if></li>
 				<c:forEach var="page" begin="${startPage }" end="${endPage }">
 					<c:if test="${page ne currentPage }">
 					<li class="page-item"><a class="page-link"
-						href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${page}">${page }</a></li>
+						href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${page}&searchPname=${param.searchPname}">${page }</a></li>
 					</c:if>
 					<c:if test="${page eq currentPage }">
 					<li class="page-item"><span class="page-link text-danger"
@@ -141,7 +141,7 @@
 				<li class="page-item">
 				<c:if test="${endPage ne totalPage }">
 				<a class="page-link"
-					href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${endPage+1}"
+					href="${conPath }/productAll.do?sortingCriteria=${param.sortingCriteria}&pageNum=${endPage+1}&searchPname=${param.searchPname}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 					
 				</a>

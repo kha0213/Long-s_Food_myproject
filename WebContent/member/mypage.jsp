@@ -19,19 +19,19 @@
 		$('.mylist').hover(function(){
 			$(this).css('cursor', 'pointer');
 		});
-		$('#mModify').click(function(){
+		$('.mModify').click(function(){
 			$('#myContent').load('${conPath}/member/modifyPwChk.jsp');
 		});
-		$('#mDelete').click(function(){
+		$('.mDelete').click(function(){
 			$('#myContent').load('${conPath}/member/mDeletePwChk.jsp');
 		});
-		$('#mPoint').click(function(){
+		$('.mPoint').click(function(){
 			$('#myContent').load('${conPath}/mPoint.do?mid=${member.mid}&mcumulative_buy=${member.mcumulative_buy}');
 		});
-		$('#mBuyHistory').click(function(){
+		$('.mBuyHistory').click(function(){
 			$('#myContent').load('${conPath}/mBuyHistory.do?mid=${member.mid}');
 		});
-		$('#mDelivery').click(function(){
+		$('.mDelivery').click(function(){
 			$('#myContent').load('${conPath}/mDelivery.do');
 		});
 		
@@ -51,7 +51,7 @@
 <c:if test="${not empty finishDeliveryToday }">
 	<script>
 		alert('${finishDeliveryToday}');
-		$('#mDelivery').trigger("click");
+		$('.mDelivery').trigger("click");
 	</script>
 </c:if>
 
@@ -61,23 +61,42 @@
 			<div class="container-fluid mb-5 mt-5">
 			<div class="row">
 				<div class="col text-center mb-5">
-					<h2>${member.mname }님 My Page</h2>
-					<span>고객등급 : ${member.gname } &nbsp; &nbsp; |  &nbsp; &nbsp; 배송중 상품 : 1개 &nbsp; &nbsp; | &nbsp; &nbsp; 사용가능한 쿠폰 : 0개  &nbsp; &nbsp; | &nbsp; &nbsp; 내포인트 : ${member.mpoint }점 </span>
+					<h2>${member.mname }님 My Page입니다.</h2>
 				</div>
 			
 			</div>
 			<div class="row ml-5 mb-5 mt-5">
 <div class="list-group col-2">
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mDelivery">배송 확인</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mBuyHistory">주문 목록</span>
+  <a class="list-group-item list-group-item-action list-group-item-primary mylist" href="${conPath }/mMypage.do">마이페이지</a>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist mDelivery">배송 확인</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist mBuyHistory">주문 목록</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">쿠폰 조회</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mPoint">포인트정보</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mModify">정보 수정</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist" id="mDelete">회원 탈퇴</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist mPoint">포인트정보</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist mModify">정보 수정</span>
+  <span class="list-group-item list-group-item-action list-group-item-primary mylist mDelete">회원 탈퇴</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist">1:1문의</span>
 </div>
 <div class="col mb-5 overflow-hidden" id="myContent">
-	마이페이지
+	<div class="row text-center">
+		<div class="col">
+		<img src="${conPath }/image/icon/mgrade.png" alt="등급이미지">
+		<h3>고객등급</h3>
+		<h3 class="text-primary">${member.gname }</h3>
+		</div>
+		<div class="col">
+		<img src="${conPath }/image/icon/mdelivery.png" alt="배송이미지">
+		<h3>배송 중 상품</h3>
+		<h3 class="text-primary">${member.gname }</h3>
+		</div>
+		<div class="col">
+		<img src="${conPath }/image/icon/mcoupon.png" alt="쿠폰이미지">
+		<h3>보유쿠폰</h3>
+		</div>
+		<div class="col">
+		<img src="${conPath }/image/icon/mpoint.png" alt="포인트이미지">
+		<h3>포인트</h3>
+		</div>
+	</div>
 
 	
 </div>

@@ -31,9 +31,9 @@
 		$('#replyManager').click(function() {
 			$('#replyView').removeClass('d-none');
 		});
-		/* $('#replyDo').click(function() {
-			$('#replyView').removeClass('d-none');
-		}); */
+		$('#replyDo').click(function() {
+			location.href='${conPath}/csBoardsReplyView.do?pageNum=${param.pageNum}&cno=${param.cno}';
+		});
 
 	});
 </script>
@@ -112,7 +112,7 @@
 		</div>
 
 		<div class="text-right mb-5 mt-4">
-			<c:if test="${not empty member && member.mid ne csBoard.mid }">
+			<c:if test="${not empty member }">
 				<button class="btn btn-outline-warning" id="replyDo">답변</button>
 			</c:if>
 			<c:if test="${not empty manager }">

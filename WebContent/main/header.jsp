@@ -86,9 +86,18 @@
 
 			<div class="col" id="header_nav_mob">
 				<ul class="nav justify-content-end">
-					<li class="nav-item"><a class="nav-link active" href="${conPath }/mMypage.do">
+					<li class="nav-item">
+					<c:if test="${empty member && empty manager }">
+					<a class="nav-link active" href="${conPath }/loginView.do">
 							<img alt="user" src="${conPath }/image/user.png">
-					</a></li>
+					</a>
+					</c:if>
+					<c:if test="${not empty member || not empty manager }">
+					<a class="nav-link active" href="${conPath }/mMypage.do">
+							<img alt="user" src="${conPath }/image/user.png">
+					</a>
+					</c:if>
+					</li>
 					<li class="nav-item"><a class="nav-link" href="${conPath }/cartView.do?mid=${member.mid}"> <img
 							alt="cart" src="${conPath }/image/cart.png">
 					</a></li>
@@ -136,10 +145,10 @@
 				</div>
 
 				<div class="col">
-					<form class="form-inline justify-content-end" action="#"
+					<form class="form-inline justify-content-end" action="${conPath }/productAll.do"
 						method="get">
 						<input class="form-control mr-2 " type="search" placeholder="제품 검색"
-							name="search">
+							name="searchPname">
 						<button class="btn btn-link" type="submit">
 							<img src="${conPath }/image/search.png" alt="검색">
 						</button>

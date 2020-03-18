@@ -41,7 +41,7 @@ mgDao.joinManager("admin", "11", "관리자롱", "상품MD");
 	
 	Customer_service_dao csDao = Customer_service_dao.getInstance();
 	for(int i=1;i<209;i++){
-		csDao.writeCsBoardMember("aaa", "test"+i, "content"+i, true, ((i%12)+1)+".jpg", null);
+		csDao.writeCsBoardMember("aaa", "test"+i, "content"+i, true, ((i%12)+1)+".jpg", 0);
 	}
 	Review_dao rDao = Review_dao.getInstance();
 	for(int i=1;i<200;i++){

@@ -62,9 +62,11 @@
 		});
 		$('form').submit(function(){
 			var finalPayNow = Number($('#finalPay').html());
+			var discount = Number($('#discount').html());
 			var usemp = Number($('#usemp').html());
 			var finalPayInput = $("<input>").attr("type", "hidden").attr("name", "finalPay").val(finalPayNow);
 			var usempInput = $("<input>").attr("type", "hidden").attr("name", "usemp").val(usemp);
+			var discountInput = $("<input>").attr("type", "hidden").attr("name", "discount").val(discount);
 			$('form').append(finalPayInput).append(usempInput);
 		});
 	});
@@ -244,7 +246,7 @@ th {
 				</tr>
 				<tr class="text-center h5">
 					<td>${ppriceAll}원</td>
-					<td class="text-danger">${pdiscountAll}원</td>
+					<td class="text-danger"><span id="discount">${pdiscountAll}</span>원</td>
 					<td class="text-danger"><span id="usemp">0</span>포인트</td>
 					<td>2500원</td>
 					<td class="text-primary font-weight-bold"><strong

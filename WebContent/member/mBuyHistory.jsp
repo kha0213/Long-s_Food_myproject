@@ -40,6 +40,7 @@
       <div class="row ml-5"><h2>주문목록</h2></div>
 		
   	<c:forEach var="order" items="${orders }" >
+  	<c:if test="${not empty order.pimage }">
 	<table class="table goODetail mt-5 mb-5" data-toggle="tooltip" title="클릭시 주문 상세보기">
     <tr>
       <th>주문일</th>
@@ -52,12 +53,13 @@
       <td><img alt="상품이미지" src="${conPath }/image/product/${order.pimage}" width="50"> ${order.pname } </td>
       <td>${order.purchase_amount }원</td>
       <td>
-      	<c:if test="${empty order.parrive_date }"><strong class="text-danger">배송중</strong></c:if>
-      	<c:if test="${not empty order.parrive_date }"><strong class="text-info">${order.parrive_date } 도착</strong></c:if>
+      	<c:if test="${empty order.parrive_date }"><strong class="text-danger">&nbsp; &nbsp; 배송중  &nbsp; &nbsp;</strong></c:if>
+      	<c:if test="${not empty order.parrive_date }"><strong class="text-info">${order.parrive_date }도착</strong></c:if>
       </td>
     </tr>
 </table>
 <span class="d-none">${order.ono }</span>
+</c:if>
   	</c:forEach>
 	
 	<nav aria-label="Page navigation">

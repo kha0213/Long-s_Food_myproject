@@ -49,6 +49,13 @@
 	<div class="row mt-5 mb-3">
 	<span class="h3 mb-5">고객센터  &nbsp; | &nbsp; <span class="text-muted h6">고객문의 게시판입니다.</span></span>
 	</div>
+	<p class="text-right">
+	<img src="${conPath }/image/icon/reply.png" alt="reply" width="30" data-toggle="tooltip" title="답변글입니다.">
+	<img src="${conPath }/image/icon/lock.png" alt="자물쇠" data-toggle="tooltip" title="비밀글입니다." width="30">
+	<img src="${conPath }/image/icon/comment.png" alt="comment" data-toggle="tooltip" title="관리자가 답변한 글입니다." width="30">
+	<img src="${conPath }/image/icon/imageAttach.png" alt="imageAttach" data-toggle="tooltip" title="이미지 첨부 글입니다." width="30">
+	</p>
+	
 	<c:if test="${not empty member || not empty manager }">
 	<p class="m-4 text-right"><a href="${conPath }/csBoardWriteView.do?pageNum=${param.pageNum}&mid=${member.mid}" class="btn btn-dark">글쓰기</a></p>
 	</c:if>
@@ -69,15 +76,25 @@
     <div class="csBoard row text-center" onclick="location.href='${conPath}/csBoardsSecretCheck.do?pageNum=${param.pageNum }&cno=${csBoard.cno }'">
       <div class="col-1 border-right border-dark p-1 cno">${csBoard.cno} </div>
       <div class="col text-left p-1 pl-3">
-      
+	  <c:forEach var="i" begin="1" end="${csBoard.cindent }">
+	  	<c:if test="${i ne csBoard.cindent }">
+	  		&nbsp; &nbsp; &nbsp;
+	  	</c:if>
+	  	<c:if test="${i eq csBoard.cindent }">
+	  		&nbsp; &nbsp; &nbsp; <img src="${conPath }/image/icon/reply.png" alt="reply" width="20">
+	  	</c:if>
+	  </c:forEach>      
       <c:if test="${csBoard.csecret eq 1 }">
      	<img src="${conPath }/image/icon/lock.png" alt="자물쇠" data-toggle="tooltip" title="비밀글입니다.">비밀글입니다.
       </c:if>
       <c:if test="${csBoard.csecret ne 1 }">
 	   	  ${csBoard.csubject}
       </c:if>
+      <c:if test="${not empty csBoard.cimage }">
+     	<img src="${conPath }/image/icon/imageAttach.png" alt="imageAttach" data-toggle="tooltip" title="이미지 첨부 글입니다." width="40">
+      </c:if>
       <c:if test="${csBoard.cmexist eq true }">
-     	<img src="${conPath }/image/icon/comment.png" alt="comment" data-toggle="tooltip" title="관리자가 답변한 글입니다.">
+     	<img src="${conPath }/image/icon/comment.png" alt="comment" data-toggle="tooltip" title="관리자가 답변한 글입니다." width="40">
       </c:if>
       </div>
       <div class="col-1 p-1 mname">${csBoard.mname}</div>

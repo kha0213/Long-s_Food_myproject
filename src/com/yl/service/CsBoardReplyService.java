@@ -15,11 +15,11 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Customer_service_dao;
 
-public class CsBoardWrite implements Service {
+public class CsBoardReplyService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		String filepath = request.getRealPath("image/customer_service");
 		int maxSize = 1024*1024*10;
 		String cimage = null;
@@ -40,13 +40,17 @@ public class CsBoardWrite implements Service {
 				ono = Integer.parseInt(onoStr);
 			}
 			String ccontent = mRequest.getParameter("ccontent");
-			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null);
+			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null && mRequest.getParameter("csecretCheckbox").length()!=0);
+			int cgroup = Integer.parseInt(mRequest.getParameter("cgroup"));
+			int cgroup_outnum = Integer.parseInt(mRequest.getParameter("cgroup_outnum"));
+			int cindent = Integer.parseInt(mRequest.getParameter("cindent"));
+			
 			
 			Customer_service_dao csDao = Customer_service_dao.getInstance();
-			if(csDao.writeCsBoardMember(mid, csubject, ccontent, csecret, cimage, ono)) {
-				request.setAttribute("writeCsResult", "글쓰기 성공");
+			if(csDao.csReplyStepB(mid, csubject, ccontent, csecret, cimage, cgroup, cgroup_outnum, cindent, ono)) {
+				request.setAttribute("replyCsResult", "답글 쓰기 성공");
 			}else {
-				request.setAttribute("writeCsResult", "글쓰기 실패");
+				request.setAttribute("replyCsResult", "답글 쓰기 실패");
 			}
 			
 			
@@ -80,5 +84,7 @@ public class CsBoardWrite implements Service {
 				}
 			}
 		}
+
 	}
+
 }

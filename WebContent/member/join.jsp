@@ -25,10 +25,10 @@
 				success : function(data){
 					$('#idConfirmResult').html(data);
 					var id = $('#idConfirmResult').html().trim();
-					if(id == '중복된 아이디가 존재합니다.'){
-						$('#idConfirmResult').removeClass('alert-success').addClass('alert alert-danger');
-					}else{
+					if(id == '<small>사용 가능한 아이디입니다.</small>'){
 						$('#idConfirmResult').removeClass('alert-danger').addClass('alert alert-success');
+					}else{
+						$('#idConfirmResult').removeClass('alert-success').addClass('alert alert-danger');
 					}
 				}
 			});//ajax
@@ -125,8 +125,7 @@
 					<tr>
 						<th scope="col">ID <span style="color:red">*</span></th>
 						<td class="text-center"><input type="text" class="form-control" name="mid" required="required">
-						<p class="h6 mt-1 text-left" role="alert" id="idConfirmResult"></p>
-						
+						<p role="alert" id="idConfirmResult" class="h6 mt-1 text-left" ></p>
 						</td>
 						
 					</tr>

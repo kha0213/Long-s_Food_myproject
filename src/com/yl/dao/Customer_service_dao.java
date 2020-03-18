@@ -123,7 +123,7 @@ public class Customer_service_dao {
 		return csboard;
 	}
 	
-	public boolean writeCsBoardMember(String mid,String csubject, String ccontent, boolean csecret,String cimage, String ono) {
+	public boolean writeCsBoardMember(String mid,String csubject, String ccontent, boolean csecret,String cimage, int ono) {
 		boolean result = false;
 		String sql = "INSERT INTO customer_service (CNO,MID,CSUBJECT,CCONTENT,CSECRET,CIMAGE,CGROUP,ONO) VALUES " + 
 				"(CNO_SEQ.NEXTVAL,?,?,?,?,?,CNO_SEQ.CURRVAL,?)";
@@ -137,7 +137,7 @@ public class Customer_service_dao {
 			pstmt.setString(3, ccontent);
 			pstmt.setInt(4, csecret==true?1:0);
 			pstmt.setString(5, cimage);
-			pstmt.setString(6, ono);
+			pstmt.setInt(6, ono);
 			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -153,6 +153,28 @@ public class Customer_service_dao {
 	}
 	
 	// 글 수정 (수정 후 조회수 0)
+	public boolean hitup(int cno) {
+		boolean result = false;
+		String sql = "UPDATE CUSTOMER_SERVICE SET CHIT=CHIT+1 WHERE CNO=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cno);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 	
 	public boolean modifyCsBoardMember(int cno,String csubject, String ccontent, boolean csecret, String cimage, int ono) {
 		boolean result = false;
@@ -274,6 +296,60 @@ public class Customer_service_dao {
 		} finally {
 			try {
 				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	private void preReplyStepA(int cgroup,int cgroup_outnum) {
+		String sql = "UPDATE customer_service SET CGROUP_OUTNUM=CGROUP_OUTNUM+1 WHERE CGROUP=? AND CGROUP_OUTNUM>?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cgroup);
+			pstmt.setInt(2, cgroup_outnum);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("preReplyStepA오류:"+e.getMessage());
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	public boolean csReplyStepB(String mid,String csubject,String ccontent,boolean csecret,String cimage,int cgroup,int cgroup_outnum,int cindent,int ono) {
+		preReplyStepA(cgroup, cgroup_outnum);
+		boolean result = false;
+		String sql = "INSERT INTO customer_service (CNO,MID,CSUBJECT,CCONTENT,CSECRET,CIMAGE,CGROUP,"
+				+ "CGROUP_OUTNUM,CINDENT,CRDATE,ONO) VALUES (CNO_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,SYSDATE,?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, csubject);
+			pstmt.setString(3, ccontent);
+			pstmt.setInt(4, csecret?1:0);
+			pstmt.setString(5, cimage);
+			pstmt.setInt(6, cgroup);
+			pstmt.setInt(7, cgroup_outnum+1);
+			pstmt.setInt(8, cindent+1);
+			pstmt.setInt(9, ono);
+			result = pstmt.executeUpdate()==1;
+		} catch (SQLException e) {
+			System.out.println("csReplyStepB오류:"+e.getMessage());
+		} finally {
+			try {
 				if(pstmt!=null) pstmt.close();
 				if(conn!=null) conn.close();
 			} catch (SQLException e) {

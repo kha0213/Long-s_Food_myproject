@@ -16,7 +16,9 @@ public class CsBoardsDetailService implements Service {
 		
 		Customer_service_dao csDao = Customer_service_dao.getInstance();
 		Customer_service_dto csBoard = csDao.getCsBoard(cno);
-		request.setAttribute("csBoard", csBoard);
+		if(csDao.hitup(cno)) {
+			request.setAttribute("csBoard", csBoard);
+		}
 		if(csBoard.isCmexist()) {
 			request.setAttribute("csComment", cmDao.getCsComment(cno));
 		}

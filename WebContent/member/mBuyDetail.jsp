@@ -42,10 +42,10 @@
 				</c:if>
 			</div>
 				<c:forEach var="odetail" items="${ods }">
-					<div class="order_detail w-100 row border border-dark mt-5 mb-5">
+					<div class="order_detail row border border-dark mt-5 mb-5">
 							<div class="m-5 row text-center">
 								<div class="col-3">
-								<img alt="상품이미지" src="${conPath }/image/product/${odetail.pimage }" width="60%">
+								<img alt="상품이미지" src="${conPath }/image/product/${odetail.pimage }" width="70%">
 								</div>
 								<div class="col-3">
 								<p class="h3">${odetail.pname }</p>
@@ -83,7 +83,7 @@
 				</tr>
 				<tr>
 					<th>배송비</th>
-					<td>${delivery.dprice }</td>
+					<td>${delivery.dprice }원</td>
 				</tr>
 			</table>
 			<div class="w-100 mt-5 mb-5">

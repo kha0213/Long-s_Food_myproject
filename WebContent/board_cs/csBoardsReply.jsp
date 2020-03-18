@@ -17,27 +17,23 @@
 			<jsp:include page="../main/header.jsp" />
 	<div class="container">
 	<div class="row mt-5 mb-3 ml-2">
-	<span class="h3">고객센터 글 작성 </span>
+	<span class="h3">${csBoard.csubject }의 답글 작성 </span>
 	</div>
-	<form action="${conPath }/csBoardWrite.do" method="post" enctype="multipart/form-data">
+	<form action="${conPath }/csBoardsReply.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="mid" value="${member.mid}">
+		<input type="hidden" name="cgroup" value="${csBoard.cgroup}">
+		<input type="hidden" name="cgroup_outnum" value="${csBoard.cgroup_outnum}">
+		<input type="hidden" name="cindent" value="${csBoard.cindent}">
 		<table class="table table-borderless">
     
   <tbody>
     <tr>
-      <td scope="row">글 제목</td>
+      <td scope="row">답글 제목</td>
       <td scope="row"><input type="text" name="csubject" class="form-control" required="required"></td>
     </tr>
    	<tr>
-      <td scope="row">주문번호<br><small class="text-muted">(주문 관련 문의만 선택해주세요)</small></td>
-      <td scope="row">
-		<select class="custom-select">
-			<option selected>이전 주문 보기</option>
-  			<c:forEach var="order" items="${orders }">
-	  			<option value="${order.ono }">주문번호 : ${order.ono } | 주문일 : ${order.odate }</option>
-  			</c:forEach>
-		</select>
-
+      <td scope="row">원글 주문번호</td>
+      <td scope="row"><input type="text" readonly="readonly" name="ono" value="${csBoard.ono }" class="form-control">
 	  </td>
     </tr>
     <tr>
@@ -46,18 +42,18 @@
     </tr>
     <tr>
       <td scope="row">본문</td>
-      <td scope="row"><textarea class="form-control" name="ccontent" required="required" rows="8"></textarea></td>
+      <td scope="row"><textarea class="form-control" name="ccontent" rows="8" required="required"></textarea></td>
     </tr>
     <tr>
 
     <td scope="row" colspan="2" class="custom-control custom-checkbox">
-    
-    <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="customCheck1" name="csecretCheckbox" value="1">
-  <label class="custom-control-label" for="customCheck1">비밀글 설정</label>
-</div>
-    
-    
+    <c:if test="${csBoard.csecret eq 1 }">
+    	<span class="text-primary">원글에 의해 비밀글로 설정되었습니다.</span>
+    	<input type="hidden" name="csecret" value="1" >
+    </c:if>
+    <c:if test="${csBoard.csecret eq 0 }">
+    	<span class="text-primary">원글에 의해 공개글로 설정되었습니다.</span>
+    </c:if>
    </td>
     </tr>
     <tr>

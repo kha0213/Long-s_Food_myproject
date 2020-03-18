@@ -14,6 +14,8 @@ public class ProductAll implements Service {
 
 		String pageNum = request.getParameter("pageNum");
 		String sortingCriteria = request.getParameter("sortingCriteria");
+		String searchPname = request.getParameter("searchPname");
+		if(searchPname == null) searchPname="";
 		if (sortingCriteria == null || sortingCriteria.equals(""))
 			sortingCriteria = "preview_count";
 		if (pageNum == null || pageNum.equals(""))
@@ -24,10 +26,10 @@ public class ProductAll implements Service {
 		int endRow = startRow + PAGESIZE - 1;
 
 		Product_dao pDao = Product_dao.getInstance();
+		
+		request.setAttribute("products", pDao.getProductListSort(startRow, endRow, sortingCriteria,searchPname));
 
-		request.setAttribute("products", pDao.getProductListSort(startRow, endRow, sortingCriteria));
-
-		int totalPage = (pDao.getTotalNumber("product") - 1) / PAGESIZE + 1;
+		int totalPage = (pDao.getTotalNumberProductSearch(searchPname) - 1) / PAGESIZE + 1;
 		int startPage = (currentPage - 1) / BLOCKSIZE * BLOCKSIZE + 1;
 		int endPage = Math.min(startPage + BLOCKSIZE - 1, totalPage);
 

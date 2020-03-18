@@ -92,12 +92,10 @@
 
 
 
-<body>
+<body style="background-color: #f5f3f6">
 	<jsp:include page="header.jsp" />
 	<div id="wrap" class="container">
-
-		<div>
-
+		<div class="m-5">
 			<div id="carouselImage" class="carousel slide carousel-fade"
 				data-ride="carousel">
 				<div class="carousel-inner">
@@ -142,57 +140,23 @@
 			</div>
 
 			<!-- top3 -->
-			<div
-				class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-3 card-deck">
-				<div class="col mb-4">
+			<div class="mt-5 mb-5">&nbsp;</div>
+			<p class="display-4">판매량 TOP4</p>
+			<div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 mt-5 card-deck">
+				<c:forEach items="${products }" var="product">
+				<div class="col mb-4 ">
 					<div class="card mh-100">
 						<div class="bg-warning">
-							<img src="${conPath }/image/food/yogurt.jpg" class="card-img-top"
-								alt="yogurt">
+							<img src="${conPath }/image/product/${product.pimage}" class="card-img-top"
+								alt="상품이미지">
 						</div>
 						<div class="card-body">
-							<h5 class="card-title text-center">TOP1</h5>
-							<p class="card-text">This is a longer card with supporting
-								text below as a natural lead-in to additional content. This
-								content is a little bit longer.</p>
+							<h5 class="card-title text-center">${product.pname }</h5>
+							<p class="card-text">${product.pdescription }</p>
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
-					<div class="card">
-						<img src="${conPath }/image/food/hotcake.jpg" class="card-img-top"
-							alt="hotcake">
-						<div class="card-body">
-							<h5 class="card-title text-center">TOP2</h5>
-							<p class="card-text">This is a longer card with supporting
-								text below as a natural lead-in to additional content. This
-								content is a little bit longer.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-4">
-					<div class="card">
-						<img src="${conPath }/image/food/blueberry_icecream.jpg"
-							class="card-img-top" alt="blueberry_icecream">
-						<div class="card-body">
-							<h5 class="card-title text-center">TOP3</h5>
-							<p class="card-text">This is a longer card with supporting
-								text below as a natural lead-in to additional content.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col mb-4">
-					<div class="card">
-						<img src="${conPath }/image/food/avocado.jpg" class="card-img-top"
-							alt="avoado">
-						<div class="card-body">
-							<h5 class="card-title text-center">TOP4</h5>
-							<p class="card-text">This is a longer card with supporting
-								text below as a natural lead-in to additional content.</p>
-						</div>
-					</div>
-				</div>
-
+				</c:forEach>
 			</div>
 
 			<div id="ad_side">ad_side</div>

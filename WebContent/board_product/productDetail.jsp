@@ -20,7 +20,7 @@
 $(function(){
 			var pstock = ${product.pstock};
 			var mpoint = $();
-		if(pstock == 0){
+		if(pstock <= 0){
 			$('#pBuy').attr('disabled', true);
 			$('#cart').attr('disabled', true);
 			$('#pcnt').attr('readonly', true);
@@ -297,10 +297,8 @@ $(function(){
 		
 		<div class="row mt-5 mb-3 ml-5">
 			<div class="col bd-highlight">
- 				<span class="h2"><strong>구매후기 | </strong></span><a href="#" class="btn btn-success">좋아요 순</a> &nbsp; <a href="#" class="btn btn-warning text-white">최신순</a> &nbsp;
- 				<br>
- 				<small class="text-muted">구매후기는 구입 후 2주내에 작성 가능합니다.</small>
- 				<br>
+ 				<span class="h2"><strong>구매후기</strong></span>
+ 				<small class="text-muted">구매후기는 구입 후 2주내에 작성 가능합니다.</small><br>&nbsp;<br>
  				<c:if test="${not empty reviewWriteCheck}">
  				<button class="btn btn-secondary btn-lg btn-block rWriteView">구매 후기 작성</button>
  				</c:if>

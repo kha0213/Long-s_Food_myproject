@@ -29,10 +29,10 @@
     <tr>
       <th>등급</th>
       <td><c:if test="${member.gname eq 'VVIP' }">
-      현재등급 : ${member.gname } | 최고등급입니다.
+      현재등급 : <strong class="text-primary">${member.gname }</strong> | 최고등급입니다.
       </c:if>
       <c:if test="${member.gname ne 'VVIP' }">
-      현재등급 : ${member.gname } | 다음등급(${nextGrade.nextGname })까지 더 필요한 금액(${nextGrade.nextMoney })
+      현재등급 : <strong class="text-primary">${member.gname }</strong> | 다음등급 <strong class="text-success">${nextGrade.nextGname }</strong>까지 더 필요한 구매 금액 <strong class="text-danger">${nextGrade.nextMoney }</strong>원
       </c:if></td>
     </tr>
     <tr>

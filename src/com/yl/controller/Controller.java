@@ -50,6 +50,8 @@ public class Controller extends HttpServlet {
 		
 		//Main
 		if(command.equals("/main.do")) {
+			service = new MainService();
+			service.execute(request, response);
 			viewPage="main/mainpage.jsp";
 		}else if(command.equals("/longfoodIntro.do")) {// longfood 소개
 //			service = new ProductAll();
@@ -180,7 +182,7 @@ public class Controller extends HttpServlet {
 		else if(command.equals("/payment.do")) {//결제 이동페이지 안만듬
 			service = new PaymentService();
 			service.execute(request, response);
-			viewPage = "main.do";
+			viewPage = "board_product/productPurchaseAfter.jsp";
 		}
 		
 		//리뷰
@@ -241,6 +243,14 @@ public class Controller extends HttpServlet {
 			service = new CmCommentWriteService();
 			service.execute(request, response);
 			viewPage = "csBoardsDetail.do?cno="+(String)request.getAttribute("cno").toString();
+		}else if(command.equals("/csBoardsReplyView.do")) {
+			service = new CsBoardReplyViewService();
+			service.execute(request, response);
+			viewPage = "board_cs/csBoardsReply.jsp";
+		}else if(command.equals("/csBoardsReply.do")) {//답변 실행
+			service = new CsBoardReplyService();
+			service.execute(request, response);
+			viewPage = "csBoardsListService.do";
 		}
 		
 		
