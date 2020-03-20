@@ -11,7 +11,8 @@
 </head>
 
 <body style="background-color: #f5f3f6">
-	<table class="table table-striped mt-5">
+
+	<table class="table table-striped mt-5 mb-5">
   <thead>
     <tr>
       <th colspan="2"><h3>${member.mname }님의 포인트정보</h3></th>
@@ -42,6 +43,35 @@
   </tbody>
 </table>
 		
+      <h3 class="mt-5">각 등급별 정보</h3>
+<table class="table table-bordered">
+  <thead class="thead-dark">
+     <tr>
+    </tr>
+    <tr>
+      <th>등급</th>
+      <th>승급조건</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-light">
+      <td>NORMAL</td>
+      <td>누적 구매금액 100만원 이상</td>
+    </tr>
+    <tr class="table-warning">
+      <td>GOLD</td>
+      <td>누적 구매금액 1000만원 이상</td>
+    </tr>
+    <tr class="table-info">
+      <td>VIP</td>
+      <td>누적 구매금액 1억원 이상</td>
+    </tr>
+    <tr class="table-danger">
+      <td>VVIP</td>
+      <td>최고등급</td>
+    </tr>
+  </tbody>
+</table>
 			
 
 </body>

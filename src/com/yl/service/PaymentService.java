@@ -5,10 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.yl.dao.Cart_dao;
+import com.yl.dao.Coupon_dao;
 import com.yl.dao.Delivery_dao;
 import com.yl.dao.Member_dao;
 import com.yl.dao.Order_detail_dao;
 import com.yl.dao.Orders_dao;
+import com.yl.dao.Payment_dao;
 import com.yl.dao.Product_dao;
 
 public class PaymentService implements Service {
@@ -31,6 +33,7 @@ public class PaymentService implements Service {
 			pcntIntArr[i]=Integer.parseInt(pcntArr[i]);
 		}
 		
+		int product_all_pay = Integer.parseInt(request.getParameter("purchaseMoney"));
 		int purchase_amount = Integer.parseInt(request.getParameter("finalPay"));
 		String usempStr = request.getParameter("usemp");
 		int usemp = 0;
@@ -38,8 +41,13 @@ public class PaymentService implements Service {
 		int mpoint = purchase_amount/20;
 		int discount = 0;
 		String discountStr = request.getParameter("discount");
-		if(discountStr!=null) discount = Integer.parseInt(usempStr);
-		
+		if(discountStr!=null) discount = Integer.parseInt(discountStr);
+		int couponDiscount=0;
+		String conoStr = request.getParameter("cono");
+		int cono=-1;
+		if(!conoStr.equals("") && !conoStr.equals("NaN")) cono = Integer.parseInt(conoStr);
+		String couponDiscountStr = request.getParameter("couponDiscount");
+		if(!couponDiscountStr.equals("") && !couponDiscountStr.equals("NaN")) couponDiscount = Integer.parseInt(couponDiscountStr);
 		
 		String mid = request.getParameter("mid");
 		Product_dao pDao = Product_dao.getInstance();
@@ -67,21 +75,23 @@ public class PaymentService implements Service {
 			}
 		}
 		Member_dao mDao = Member_dao.getInstance();
+		Coupon_dao coDao = Coupon_dao.getInstance();
+		Payment_dao paDao = Payment_dao.getInstance();
 		boolean mcumulative_buy_plus = mDao.mcumulative_buy_plus(purchase_amount, mid); // 7.member에 누적구매금액 증가
 		boolean mPointMinus = mDao.mPointMinus(usemp, mid); //8.쓴 포인트 마이너스
 		boolean mPointPlus = mDao.mPointPlus(mpoint, mid); // 9.member에 포인트적립
-		 // 10.member 등급 정리 - 자동
+		coDao.deleteCoupon(cono); // 10. 쓴 쿠폰 삭제
+		paDao.addPayment(ono, product_all_pay, discount, couponDiscount, usemp, purchase_amount); //결제정보등록
+		 // 11.member 등급 정리 - 자동
 		if(productPurchase && mPointMinus && mcumulative_buy_plus && mPointPlus) {
 			request.setAttribute("pbuyNowResult", "주문 성공하셨습니다. 주문금액 : "+purchase_amount+"원 포인트 "+mpoint+"점 적립되었습니다.");
 			HttpSession session = request.getSession();
 			session.setAttribute("member", mDao.getMember(mid));
 			request.setAttribute("order_detail", odDao.getOrderDetail(ono));
 			request.setAttribute("delivery", dDao.getDelivery(dno));
-			request.setAttribute("usemp", usemp);
+			request.setAttribute("payment", paDao.getPaymentOno(ono));
 			request.setAttribute("addmp", mpoint);
-			request.setAttribute("finalpay", purchase_amount);
-			request.setAttribute("discount", discount);
-			request.setAttribute("productPay", purchase_amount+usemp+2500+discount);
+			
 		}else {
 			request.setAttribute("pbuyNowResult", "품절로 인한 주문 실패하셨습니다. 주문 목록을 확인하여주세요");
 		}

@@ -54,16 +54,13 @@ public class Controller extends HttpServlet {
 			service.execute(request, response);
 			viewPage="main/mainpage.jsp";
 		}else if(command.equals("/longfoodIntro.do")) {// longfood 소개
-//			service = new ProductAll();
-//			service.execute(request, response);
 			viewPage = "main/longfoodIntro.jsp";
 		}
-		
 		
 		//Member
 		else if(command.equals("/joinView.do")) {
 			request.setAttribute("joinView", true);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/idConfirm.do")) {
 			service = new MidDuplicationCheckService();
 			service.execute(request, response);
@@ -74,15 +71,15 @@ public class Controller extends HttpServlet {
 			viewPage = "index.jsp";
 		}else if(command.equals("/loginView.do")) {
 			request.setAttribute("loginView", true);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/login.do")) {
 			service = new LoginService();
 			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}
 		
 		// member mypage
-		else if(command.equals("/mMypage.do")) {// 미완성
+		else if(command.equals("/mMypage.do")) {
 			service = new MMypageViewService();
 			service.execute(request, response);
 			viewPage = "member/mypage.jsp";
@@ -97,11 +94,11 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/mDelete.do")) {
 			service = new MDeleteService();
 			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/logout.do")) {//session초기화
 			service = new LogoutService();
 			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/mBuyHistory.do")) {
 			service = new MBuyHistoryService();
 			service.execute(request, response);
@@ -118,6 +115,10 @@ public class Controller extends HttpServlet {
 			service = new MDeliveryArriveService();
 			service.execute(request, response);
 			viewPage = "mMypage.do";
+		}else if(command.equals("/mCouponView.do")) {
+			service = new MCouponViewService();
+			service.execute(request, response);
+			viewPage = "member/mCoupon.jsp";
 		}
 		
 		
@@ -128,7 +129,7 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/mgjoin.do")) {
 			service = new MgJoinService();
 			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/mgidConfirm.do")) {
 			service = new MgidDuplicationCheckService();
 			service.execute(request, response);
@@ -138,22 +139,47 @@ public class Controller extends HttpServlet {
 		}else if(command.equals("/mglogin.do")) {
 			service = new MgloginService();
 			service.execute(request, response);
-			viewPage = "main/mainpage.jsp";
+			viewPage = "main.do";
 		}else if(command.equals("/mgPage.do")) {
 			service = new MgPageService();
 			service.execute(request, response);
 			viewPage = "manager/mgPage.jsp";
 		}else if(command.equals("/registProductView.do")) {// 매니저 상품등록
 			viewPage = "manager/registProduct.jsp";
-		}
-		
-		
-		//Product
-		else if(command.equals("/registProduct.do")) {
+		}else if(command.equals("/registProduct.do")) {
 			service = new RegistProduct();
 			service.execute(request, response);
 			viewPage = "productAll.do";
-		}else if(command.equals("/productAll.do")) {//전체 제품 보기
+		}else if(command.equals("/mgAddStockProduct.do")) {//재고추가
+			service = new MgAddStockProductService();
+			service.execute(request, response);
+			viewPage = "manager/mgAddStockProductMessage.jsp";
+		}else if(command.equals("/mgCouponView.do")) {//쿠폰추가뷰
+			viewPage = "manager/mgCouponView.jsp";
+		}else if(command.equals("/mgCoupon.do")) {//쿠폰추가
+			service = new MgCouponService();
+			service.execute(request, response);
+			viewPage = "manager/mgPage.jsp";
+		}else if(command.equals("/mgCalendarView.do")) {//매출조회달력
+			service = new MgCalendarService();
+			service.execute(request, response);
+			viewPage = "manager/mgSalesinquiry.jsp";
+		}else if(command.equals("/memberInquiry.do")) {//멤버조회
+			service = new MemberLookUpService();
+			service.execute(request, response);
+			viewPage = "manager/memberInquiry.jsp";
+		}else if(command.equals("/mgModifyView.do")) {//매니저 정보수정
+			service = new MgModifyViewService();
+			service.execute(request, response);
+			viewPage = "manager/mgModify.jsp";
+		}else if(command.equals("/mgModify.do")) {//매니저 정보수정
+			service = new MgModifyService();
+			service.execute(request, response);
+			viewPage = "manager/mgPage.jsp";
+		}
+		
+		//Product
+		else if(command.equals("/productAll.do")) {//전체 제품 보기
 			service = new ProductAll();
 			service.execute(request, response);
 			viewPage = "board_product/productAll.jsp";
@@ -165,6 +191,14 @@ public class Controller extends HttpServlet {
 			service = new CartAddProduct();
 			service.execute(request, response);
 			viewPage = "board_product/productAddCartMessage.jsp";
+		}else if(command.equals("/modifyProductView.do")) { //상품수정뷰
+			service = new ProductModifyViewService();
+			service.execute(request, response);
+			viewPage = "board_product/productModify.jsp";
+		}else if(command.equals("/modifyProduct.do")) { //상품수정
+			service = new ProductModifyService();
+			service.execute(request, response);
+			viewPage = "productAll.do";
 		}
 		
 		// 카트
@@ -183,7 +217,7 @@ public class Controller extends HttpServlet {
 		}
 		
 		//결제
-		else if(command.equals("/payment.do")) {//결제 이동페이지 안만듬
+		else if(command.equals("/payment.do")) {//결제 이동페이지
 			service = new PaymentService();
 			service.execute(request, response);
 			viewPage = "board_product/productPurchaseAfter.jsp";
@@ -256,9 +290,6 @@ public class Controller extends HttpServlet {
 			service.execute(request, response);
 			viewPage = "csBoardsListService.do";
 		}
-		
-		
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
 	

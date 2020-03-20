@@ -39,17 +39,19 @@ public class Cart_dao {
 		String sql = "SELECT * FROM CART WHERE MID=? AND PCODE=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+		ResultSet rs = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			pstmt.setString(2, pcode);
-			result = pstmt.executeUpdate()==1;
+			rs = pstmt.executeQuery();
+			result = rs.next();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
 			try {
+				if(rs!=null) rs.close();
 				if(pstmt!=null) pstmt.close();
 				if(conn!=null) conn.close();
 			} catch (SQLException e) {

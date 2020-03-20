@@ -36,9 +36,9 @@ public class Product_dao {
 		return conn;
 	}
 	
-	public boolean registProduct(String pcode,String mgid, String pname, int pprice, String pimage,int pstock,String pdescription) {
+	public boolean registProduct(String pcode,String mgid, String pname, int pprice, String pimage,int pstock,String pdescription,int pdiscount) {
 		boolean result = false;
-		String sql = "INSERT INTO PRODUCT (PCODE,MGID,PNAME,PPRICE,PIMAGE,PSTOCK,PDESCRIPTION) VALUES (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PRODUCT (PCODE,MGID,PNAME,PPRICE,PIMAGE,PSTOCK,PDESCRIPTION,PDISCOUNT) VALUES (?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -51,9 +51,10 @@ public class Product_dao {
 			pstmt.setString(5, pimage);
 			pstmt.setInt(6, pstock);
 			pstmt.setString(7, pdescription);
+			pstmt.setInt(8, pdiscount);
 			result = pstmt.executeUpdate()==1;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("registProduct오류:"+e.getMessage());
 		} finally {
 			try {
 				if(pstmt!=null) pstmt.close();

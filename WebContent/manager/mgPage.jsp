@@ -12,9 +12,11 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
+
 <style>
-.mylist:hover {
+.mglist:hover {
 	cursor: pointer;
+	border: 1px solid blue;
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -23,7 +25,25 @@
 		$('.registProduct').click(function(){
 			$('#mgContent').load('${conPath }/registProductView.do');
 		});
+		$('.modifyProduct').click(function(){
+			alert('재고추가, 상품정보수정은 상품 상세페이지에서 가능합니다.');
+			location.href="${conPath}/productAll.do";
+		});
+		$('.mgCouponView').click(function(){
+			$('#mgContent').load('${conPath }/mgCouponView.do');
+		});
+		$('.mgModifyView').click(function(){
+			$('#mgContent').load('${conPath }/mgModifyView.do?mgid=${manager.mgid}');
+		});
+		$('.salesInquiry').click(function(){
+			$('#mgContent').load('${conPath }/mgCalendarView.do');
+		});
+		$('.memberInquiry').click(function(){
+			$('#mgContent').load('${conPath }/memberInquiry.do');
+		});
+		
 	});
+	
 </script>
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -33,6 +53,16 @@
 
 
 <body style="background-color: #f5f3f6">
+<c:if test="${not empty addCouponResult }">
+	<script>
+	alert('${addCouponResult }');
+	</script>
+</c:if>
+<c:if test="${not empty mgModifyResult }">
+	<script>
+	alert('${mgModifyResult }');
+	</script>
+</c:if>
 	<jsp:include page="../main/header.jsp" />
 	<div class="container-fluid mb-5 mt-5 pr-5">
 		<div class="row">
@@ -42,35 +72,43 @@
 		</div>
 		
 	<div class="row text-center">
-		<div class="col mPoint mylist">
+		<div class="col mglist registProduct">
 		<img src="${conPath }/image/manager/registProduct.png" alt="상품등록">
 		<h3>상품등록</h3>
 		</div>
-		<div class="col mglist">
+		<div class="col mglist mgCouponView">
 		<img src="${conPath }/image/icon/mcoupon.png" alt="쿠폰이미지">
 		<h3>쿠폰발행</h3>
 		</div>
-		<div class="col mglist">
+		<div class="col mglist modifyProduct">
 		<img src="${conPath }/image/manager/newProduct.png" alt="재고추가">
 		<h3>재고추가</h3>
 		</div>
-		<div class="col mglist" data-toggle="tooltip" title="등록일 최신,누적판매량 0으로 초기화">
+		<div class="col mglist modifyProduct" data-toggle="tooltip" title="등록일 최신,누적판매량 0으로 초기화">
+		<img src="${conPath }/image/manager/modifyProduct.png" alt="상품수정">
 		<h3>상품수정</h3>
 		</div>
-		<div class="col mglist">
-		<img src="${conPath }/image/manager/modifyManager.png" alt="상품수정">
+		<div class="col mglist mgModifyView">
+		<img src="${conPath }/image/manager/modifyManager.png" alt="정보수정">
 		<h3>정보수정</h3>
 		</div>
-		<div class="col mglist">
+		<div class="col mglist salesInquiry">
+		<img src="${conPath }/image/manager/salesInquiry.png" alt="매출조회">
 		<h3>매출조회</h3>
 		</div>
-		<div class="col mglist">
+		<div class="col mglist memberInquiry">
+		<img src="${conPath }/image/manager/memberInquiry.png" alt="고객정보조회">
 		<h3>고객정보조회</h3>
 		</div>
 	</div>
 	
 	
-	<div class="col mb-5 overflow-hidden mr-5" id="mgContent"></div>
+	<div class="col mb-5 overflow-hidden mr-5" id="mgContent">
+	<div class="m-5 p-5">&nbsp;</div>
+	
+	</div>
+	
+	
 	</div>
 
 

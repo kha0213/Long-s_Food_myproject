@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -162,7 +163,7 @@ private Orders_dao() {
 		}
 		return result;
 	}
-	public int getDao(int ono) {
+	public int getDno(int ono) {
 		int dno = 0;
 		String sql = "SELECT DNO FROM ORDERS WHERE ONO=?";
 		Connection conn = null;
@@ -187,5 +188,110 @@ private Orders_dao() {
 			}
 		}
 		return dno;
+	}
+	public int salesDate(int year,int month,int date) {
+		String dateStr = year+"-"+month+"-"+date;
+		return salesDate(dateStr);
+	}
+	public int salesDate(String date) {
+		int result = 0;
+		String sql = "SELECT SUM(PURCHASE_AMOUNT) FROM ORDERS WHERE ODATE BETWEEN TO_DATE(?,'YY-MM-DD') AND TO_DATE(?,'YY-MM-DD')+1";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, date);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println("salesDate오류:"+e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public int salesMonth(int year,int month) {
+		int result = 0;
+		String preMonth = year+"-"+month+"-01";
+		String nextMonth = "";
+		if(month==12) {
+			nextMonth = year+"-"+month+"-01";
+		}else {
+			nextMonth = year+1+"-01-01";
+		}
+		String sql = "SELECT SUM(PURCHASE_AMOUNT) FROM ORDERS WHERE ODATE BETWEEN TO_DATE(?,'YY-MM-DD') AND TO_DATE(?,'YY-MM-DD')+1";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, preMonth);
+			pstmt.setString(2, nextMonth);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println("salesDate오류:"+e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	public ArrayList<Orders_dto> getDateOrders(int year,int month,int date) {
+		String dateStr = year+"-"+month+"-"+date;
+		return getDateOrders(dateStr);
+	}
+	public ArrayList<Orders_dto> getDateOrders(String date) {
+		ArrayList<Orders_dto> orders = new ArrayList<Orders_dto>();
+		String sql = "SELECT * FROM ORDERS WHERE ODATE BETWEEN TO_DATE(?,'YY-MM-DD') AND TO_DATE(?,'YY-MM-DD')+1";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, date);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int ono = rs.getInt("ono");
+				Date odate = rs.getDate("odate");
+				Date parrive_date = rs.getDate("parrive_date");
+				int purchase_amount = rs.getInt("purchase_amount");
+				int dno = rs.getInt("dno");
+				String mid = rs.getString("mid");
+				orders.add(new Orders_dto(ono, odate, parrive_date, null, null, purchase_amount, dno, mid));
+			}
+		} catch (Exception e) {
+			System.out.println("getDateOrders오류:"+e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return orders;
 	}
 }

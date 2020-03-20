@@ -74,8 +74,6 @@
 						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/mgPage.do"><small>${manager.mgname }님</small></a></li>
 						<li class="nav-item"><a class="nav-link text-dark"
-							href="${conPath }/mgPage.do">관리자페이지</a></li>
-						<li class="nav-item"><a class="nav-link text-dark"
 							href="${conPath }/logout.do">Log out</a></li>
 					</c:if>
 					<li class="nav-item"><a class="nav-link text-dark" href="${conPath }/csBoardsListService.do">Support</a></li>
@@ -103,8 +101,8 @@
 					</a>
 					</c:if>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="${conPath }/cartView.do?mid=${member.mid}"> <img
-							alt="cart" src="${conPath }/image/cart.png">
+					<li class="nav-item"><a class="nav-link" href="${conPath }/cartView.do?mid=${member.mid}"> 
+							<img alt="cart" src="${conPath }/image/cart.png"/>
 					</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -117,21 +115,19 @@
 							<a class="dropdown-item" href="${conPath }/main.do">Home</a>
 							<c:if test="${empty member && empty manager }">
 								<a class="dropdown-item" href="${conPath }/loginView.do">Login</a>
-								<a class="dropdown-item" href="${conPath }/joinView.do">Sign
-									Up</a>
+								<a class="dropdown-item" href="${conPath }/joinView.do">Sign Up</a>
 							</c:if>
 							<c:if test="${not empty member && empty manager }">
 								<a class="dropdown-item" href="${conPath }/mMypage.do">My Page</a>
-								<a class="dropdown-item" href="${conPath }/logout.do">Log
-									out</a>
+								<a class="dropdown-item" href="${conPath }/logout.do">Log out</a>
+								<a class="dropdown-item" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a> 
 							</c:if>
 							<c:if test="${not empty manager && empty member }">
 								<a class="dropdown-item" href="${conPath }/mgPage.do">관리자 페이지</a>
 								<a class="dropdown-item" href="${conPath }/logout.do">Log
 									out</a>
 							</c:if>
-							<a class="dropdown-item" href="${conPath }/cartView.do?mid=${member.mid}">Cart</a> <a
-								class="dropdown-item" href="${conPath }/csBoardsListService.do">Support</a>
+							<a class="dropdown-item" href="${conPath }/csBoardsListService.do">Support</a>
 						</div></li>
 				</ul>
 			</div>
@@ -143,7 +139,6 @@
 					<ul class="nav">
 						<li class="nav-item"><a class="nav-link active"
 							href="${conPath }/productAll.do">전체 상품 보기</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">공지사항</a></li>
 						<li class="nav-item"><a class="nav-link" href="${conPath }/longfoodIntro.do">Long's
 								Food 소개</a></li>
 					</ul>

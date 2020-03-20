@@ -171,6 +171,50 @@ public class Member_dao {
 		}
 		return member;
 	}
+	public ArrayList<Member_dto> getAllMember() {
+		ArrayList<Member_dto> members = new ArrayList<Member_dto>();
+		String sql = "SELECT M.*,a.ad_email,a.ad_phone,A.AD_CALL,G.GNAME,(SELECT COUNT(*) FROM CART C, MEMBER M WHERE C.MID=M.MID) CART_CNT FROM MEMBER M,AD A,GRADES G WHERE M.MID=A.MID AND M.MCUMULATIVE_BUY BETWEEN G.LOWGRADE AND G.HIGHGRADE";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String mid = rs.getString("mid");
+				String mpw = rs.getString("mpw");
+				String mname = rs.getString("mname");
+				String mphone = rs.getString("mphone");
+				String maddress_basic = rs.getString("maddress_basic");
+				String maddress_detail = rs.getString("maddress_detail");
+				Date mbirth = rs.getDate("mbirth");
+				String memail = rs.getString("memail");
+				String mgender = rs.getString("mgender");
+				int mpoint = rs.getInt("mpoint");
+				int mcumulative_buy = rs.getInt("mcumulative_buy");
+				Date mjoindate = rs.getDate("mjoindate");
+				boolean mstatus = rs.getInt("mstatus")==0;
+				String gname = rs.getString("gname");
+				int cart_cnt = rs.getInt("cart_cnt");
+				int ad_email = rs.getInt("ad_email");
+				int ad_phone = rs.getInt("ad_phone");
+				int ad_call = rs.getInt("ad_call");
+				members.add(new Member_dto(mid, mpw, mname, mphone, maddress_basic, maddress_detail, mbirth, memail, mgender, mpoint, mcumulative_buy, mjoindate, mstatus, gname, cart_cnt, ad_email, ad_phone, ad_call));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return members;
+	}
 	
 	
 	
@@ -502,5 +546,32 @@ public class Member_dao {
 			}
 		}
 		return result;
+	}
+	public ArrayList<String> getMemberListGrades(String gname) {
+		ArrayList<String> mids = new ArrayList<String>();
+		String sql="SELECT * FROM MEMBER M,GRADES G WHERE  MCUMULATIVE_BUY BETWEEN LOWGRADE AND HIGHGRADE AND GNAME=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, gname);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				mids.add(rs.getString("mid"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return mids;
 	}
 }

@@ -10,6 +10,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<style>
+	.top4Product:hover{
+		cursor: pointer;
+	}
+</style>
 <title>Myproject</title>
  
 <link rel="stylesheet" href="${conPath }/css/content.css"
@@ -19,9 +24,6 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Alata|Dancing+Script|Gochi+Hand|Indie+Flower|Kaushan+Script|Lobster|Lobster+Two|Nanum+Pen+Script|Roboto&display=swap"
 	rel="stylesheet">
-
-
-
 </head>
 <c:if test="${joinResult eq true }">
 	<script>
@@ -144,7 +146,7 @@
 			<p class="display-4">판매량 TOP4</p>
 			<div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 mt-5 card-deck">
 				<c:forEach items="${products }" var="product">
-				<div class="col mb-4 ">
+				<div class="col mb-4 top4Product" onclick="location.href='${conPath}/productDetail.do?pcode=${product.pcode }'">
 					<div class="card mh-100">
 						<div class="bg-warning">
 							<img src="${conPath }/image/product/${product.pimage}" class="card-img-top"
@@ -158,8 +160,6 @@
 				</div>
 				</c:forEach>
 			</div>
-
-			<div id="ad_side">ad_side</div>
 		</div>
 	</div>
 

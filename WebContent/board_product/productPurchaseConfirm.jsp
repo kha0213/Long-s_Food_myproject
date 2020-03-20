@@ -8,6 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.card-body:hover {
+		cursor:pointer;
+		background-color: #F4FA58;
+	}
+</style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script
 	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -62,13 +68,30 @@
 		});
 		$('form').submit(function(){
 			var finalPayNow = Number($('#finalPay').html());
+			var couponDiscount = Number($('#discoupon').html());
 			var discount = Number($('#discount').html());
 			var usemp = Number($('#usemp').html());
-			var finalPayInput = $("<input>").attr("type", "hidden").attr("name", "finalPay").val(finalPayNow);
-			var usempInput = $("<input>").attr("type", "hidden").attr("name", "usemp").val(usemp);
-			var discountInput = $("<input>").attr("type", "hidden").attr("name", "discount").val(discount);
-			$('form').append(finalPayInput).append(usempInput);
+			var purchaseMoney = Number($('#purchaseMoney').html());
+			$('input[name=finalPay]').val(finalPayNow);
+			$('input[name=usemp]').val(usemp);
+			$('input[name=discount]').val(discount);
+			$('input[name=couponDiscount]').val(couponDiscount);
+			$('input[name=purchaseMoney]').val(purchaseMoney);
 		});
+		
+		$('#useCouponView').click(function(){
+			$('input[name=cono]').val('');
+			$('#useCoupon').html('');
+			$('.modal-content').load('${conPath}/mCouponView.do?mid=${member.mid}');
+			var discoupon = Number($('#discoupon').html());
+			var finalPay = Number($('#finalPay').html());
+			$('#finalPay').html(finalPay+discoupon);
+			$('#discoupon').html(0);
+			$('#myCoupon').click();
+		});
+		
+		
+		
 	});
 </script>
 <script>
@@ -115,6 +138,23 @@ th {
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 <body class="myColor">
+
+
+<!-- Extra large modal -->
+<button type="button" class="btn btn-primary d-none" data-toggle="modal" data-target=".myCoupon" id="myCoupon"></button>
+
+<div class="modal fade myCoupon" tabindex="-1" role="dialog" aria-labelledby="myCoupon" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+
+
+
+
+
 	<jsp:include page="../main/header.jsp" />
 	<div class="container">
 		<div class="row mt-5 mb-5">
@@ -150,9 +190,14 @@ th {
 		<div class="w-100">
 			<hr>
 		</div>
-		
-		<form action="${conPath }/payment.do" method="post">
+		<form action="${conPath }/payment.do" method="get">
 		<input type="hidden" name="mid" value="${member.mid }">
+		<input type="hidden" name="finalPay">
+		<input type="hidden" name="usemp">
+		<input type="hidden" name="discount">
+		<input type="hidden" name="couponDiscount">
+		<input type="hidden" name="cono">
+		<input type="hidden" name="purchaseMoney">
 		<table class="table table-borderless">
 			<thead>
 				<tr>
@@ -219,18 +264,19 @@ th {
 		<table class="table table-borderless">
 			<thead>
 				<tr>
-					<td colspan="6"><h3>결제 정보</h3></td>
+					<td colspan="7"><h3>결제 정보</h3></td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<th>할인쿠폰</th>
-					<td colspan="5"><button type="button"
-							class="btn btn-primary btn-lg">보유 쿠폰확인</button></td>
+					<td colspan="6"><button type="button"
+							class="btn btn-primary btn-lg" id="useCouponView">보유 쿠폰확인</button><small class="text-muted"> &nbsp; &nbsp; (쿠폰은 한 장만 사용가능합니다.)</small>
+							<span id="useCoupon"></span></td>
 				</tr>
 				<tr>
 					<th>포인트사용</th>
-					<td colspan="5"><input type="number" min="0"
+					<td colspan="6"><input type="number" min="0"
 						max="${member.mpoint}" id="usePointAmount"> &nbsp; (보유포인트
 						: ${member.mpoint}포인트) &nbsp;
 						<button type="button" class="btn btn-info" id="usePointBtn">포인트사용</button>
@@ -241,13 +287,15 @@ th {
 					<td>구매금액</td>
 					<td>할인금액</td>
 					<td>사용포인트</td>
+					<td>쿠폰할인</td>
 					<td>배송비</td>
-					<td>총 결제금액</td>
+					<td>결제금액</td>
 				</tr>
 				<tr class="text-center h5">
-					<td>${ppriceAll}원</td>
+					<td><span id="purchaseMoney">${ppriceAll}</span>원</td>
 					<td class="text-danger"><span id="discount">${pdiscountAll}</span>원</td>
 					<td class="text-danger"><span id="usemp">0</span>포인트</td>
+					<td class="text-danger"><span id="discoupon">0</span>원</td>
 					<td>2500원</td>
 					<td class="text-primary font-weight-bold"><strong
 						id="finalPay">${ppriceAll-pdiscountAll+2500}</strong>원</td>

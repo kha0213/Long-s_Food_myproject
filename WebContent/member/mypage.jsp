@@ -17,10 +17,12 @@
 		cursor: pointer;
 	}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 <script>
 	$(function(){
+		$('[data-toggle="tooltip"]').tooltip();
 		$('.mModify').click(function(){
 			$('#myContent').load('${conPath}/member/modifyPwChk.jsp');
 		});
@@ -34,9 +36,11 @@
 			$('#myContent').load('${conPath}/mBuyHistory.do?mid=${member.mid}');
 		});
 		$('.mDelivery').click(function(){
-			$('#myContent').load('${conPath}/mDelivery.do');
+			$('#myContent').load('${conPath}/mDelivery.do?mid=${member.mid}');
 		});
-		
+		$('.mCoupon').click(function(){
+			$('#myContent').load('${conPath}/mCouponView.do?mid=${member.mid}');
+		});
 	});
 
 </script> 
@@ -69,7 +73,6 @@
   <span class="list-group-item list-group-item-action list-group-item-primary mylist mPoint">포인트정보</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist mModify">정보 수정</span>
   <span class="list-group-item list-group-item-action list-group-item-primary mylist mDelete">회원 탈퇴</span>
-  <span class="list-group-item list-group-item-action list-group-item-primary mylist">1:1문의</span>
 </div>
 <div class="col mb-5 overflow-hidden mr-5" id="myContent">
 	<div class="row text-center">
@@ -86,6 +89,7 @@
 		<div class="col mCoupon mylist">
 		<img src="${conPath }/image/icon/mcoupon.png" alt="쿠폰이미지">
 		<h3>보유쿠폰</h3>
+		<h3 class="text-primary">${mCouponCnt }개</h3>
 		</div>
 		<div class="col mPoint mylist">
 		<img src="${conPath }/image/icon/mpoint.png" alt="포인트이미지">

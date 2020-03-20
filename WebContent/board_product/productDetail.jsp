@@ -17,6 +17,9 @@
   src="https://code.jquery.com/jquery-3.4.1.js"></script> 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+function reload(second){  
+    setTimeout('location.reload()',second); 
+}
 $(function(){
 			var pstock = ${product.pstock};
 			var mpoint = $();
@@ -26,7 +29,22 @@ $(function(){
 			$('#pcnt').attr('readonly', true);
 			$('#pBuy').html('품절');
 		}
+		
+		/***********사용자 버튼(수량,구매,장바구니)**************/
 		$('#pBuy').click(function(){
+			if('${member}' == ''){
+				swal({
+					  text: "구매는 회원 가입 후 가능합니다.",
+					  icon: "error",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
+			}else{
+				
+			
 				var pcnt = $('#pcnt').val();
 			if(pstock<pcnt){
 				swal({
@@ -55,6 +73,7 @@ $(function(){
 				
 				location.href="${conPath}/cartBuyProduct.do?pBuyNow=1&pcnt="+pcnt+"&pcode="+pcode+"&mid="+mid;
 			}
+			}
 		});
 		$("#pcnt").on("propertychange change keyup paste input", function() {
 			var pcnt = $('#pcnt').val();
@@ -76,6 +95,19 @@ $(function(){
 		
 		$('#cart').click(function(){
 			var pcnt = $('#pcnt').val();
+			if('${member}' == ''){
+				swal({
+					  text: "구매는 회원 가입 후 가능합니다.",
+					  icon: "error",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
+			}else{
+				
+			
 			if(pstock<pcnt){
 				swal({
 					  text: "죄송합니다. 재고 부족으로 장바구니에 담을 수 없습니다. 주문 수량을 확인해주세요. 빠른 시일내에 입고하도록 하겠습니다.",
@@ -106,16 +138,16 @@ $(function(){
 								  }
 							  }
 							});
-						setTimeout(function(){
-							location.reload();
-							},2000);
+						reload(2000);
 					}
 								
 				});
 			}
+			}
 		});
 		
 		
+		/***********좋아요 버튼**************/
 		$('.rGoodBtn').click(function(){
 			if('${member.mid}'==''){
 				swal('좋아요는 로그인 이후에 가능합니다.');
@@ -132,25 +164,13 @@ $(function(){
 					}
 								
 				});
-				function reload(){  
-				      setTimeout('location.reload()',1000); 
-				}
-				reload();
+				
+				reload(2000);
 			}
 		});
 		
-		$('.mgReviewCommentWriteBtn').click(function(){
-			var btnName = $(this).html().trim();
-			if(btnName == '관리자 댓글 작성'){
-				$(this).parent().parent().next().removeClass('d-none');
-				$(this).html('작성취소');
-			}else{
-				$(this).parent().parent().next().addClass('d-none');
-				$(this).html('관리자 댓글 작성');
-			}
-			
-		});
 		
+		/***********리뷰 보기, 쓰기**************/
 		$('.rcView').click(function(){
 			var btnName = $(this).html().trim();
 			var rcDiv = $(this).parent().parent().next().next();
@@ -178,6 +198,53 @@ $(function(){
 		});
 		
 		
+		/***********관리자 댓글**************/
+		$('.mgReviewCommentWriteBtn').click(function(){
+			var btnName = $(this).html().trim();
+			if(btnName == '관리자 댓글 작성'){
+				$(this).parent().parent().next().removeClass('d-none');
+				$(this).html('작성취소');
+			}else{
+				$(this).parent().parent().next().addClass('d-none');
+				$(this).html('관리자 댓글 작성');
+			}
+		});
+		/***********관리자 버튼(수량,재고추가,상품수정)**************/
+		$('#addStock').click(function(){
+			var addPcnt = $('#addPcnt').val();
+			if(addPcnt == '' || addPcnt <=0){
+				swal({
+					  text: "재고 추가할 수량을 정확히 입력해주세요",
+					  icon: "warning",
+					  buttons : {
+						  confirm : {
+							  text : '확인',
+						  }
+					  }
+					});
+			}else{
+				$.ajax({ 
+					url: '${conPath}/mgAddStockProduct.do', 
+					data: "pcode=${product.pcode}&pcnt="+addPcnt,
+					dataType: "html",
+					success: function(data){
+						swal({
+							  title: data,
+							  icon: "success",
+							  buttons : {
+								  confirm : {
+									  text : '확인',
+								  }
+							  }
+							});
+							}
+				});
+				reload(2000);
+			}
+		});
+		$('#modifyProduct').click(function(){
+			$('#modifyView').load('${conPath }/modifyProductView.do?pcode=${product.pcode}');
+		});
 		
 	});
 </script> 
@@ -274,9 +341,6 @@ $(function(){
 		<c:if test="${empty manager }"> <!-- 회원 & 비회원일때 -->
 		<div class="row mt-5 mb-5 justify-content-center">
 			<div class="input-group input-group-lg col-3">
-			
-			
-			
   <div class="input-group-prepend mb-5">
     <span class="input-group-text bg-dark text-white">수량</span>
   </div>
@@ -289,10 +353,30 @@ $(function(){
 			<button type="button" class="btn btn-info btn-lg btn-block" id="cart">장바 구니</button>
 			<div class="d-none"></div>
 		</div>
-		
 		</div>
-		
 		</c:if> 
+		
+		<c:if test="${not empty manager }">
+		<div class="row mt-5 mb-5 justify-content-center">
+			<div class="input-group input-group-lg col-3">
+  <div class="input-group-prepend mb-5">
+    <span class="input-group-text bg-dark text-white">수량</span>
+  </div>
+  <input type="number" class="form-control" id="addPcnt" aria-label="Sizing input" aria-describedby="inputGroup-sizing-lg" value="1" min="1" max="100000">
+</div>
+		<div class="col-2">
+			<button type="button" class="btn btn-primary btn-lg btn-block" id="addStock">재고 추가</button>
+			<span class="d-none addStockMessage"></span>
+		</div>
+		<div class="col-2">
+			<button type="button" class="btn btn-info btn-lg btn-block" id="modifyProduct">상품 수정</button>
+		</div>
+		</div>
+		<div id="modifyView"></div>
+		</c:if> 
+		
+		
+		
 		
 		
 		<div class="row mt-5 mb-3 ml-5">

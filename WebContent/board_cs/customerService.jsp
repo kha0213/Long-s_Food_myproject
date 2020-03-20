@@ -43,6 +43,11 @@
 			alert('${csBoardsDeleteResult}');
 		</script>
 	</c:if>
+	<c:if test="${not empty replyCsResult }">
+		<script>
+			alert('${replyCsResult}');
+		</script>
+	</c:if>
 
 			<jsp:include page="../main/header.jsp" />
 	<div class="container mb-5">
@@ -124,10 +129,12 @@
 						href="${conPath }/csBoardsListService.do?pageNum=${page}">${page }</a></li>
 					</c:if>
 				</c:forEach>
+				<c:if test="${endPage ne totalPage }">
 				<li class="page-item"><a class="page-link"
 					href="${conPath }/csBoardsListService.do?pageNum=${endPage+1}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
+				</c:if>
 			</ul>
 		</nav>
 	

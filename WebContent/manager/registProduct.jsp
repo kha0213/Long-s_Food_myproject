@@ -7,7 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<script>
+	
+	
+</script>
 </head>
 <body style="background-color: #f5f3f6">
 	<div id="wrap" class="container">
@@ -16,6 +19,7 @@
 		
 		
 		<form action="${conPath }/registProduct.do" method="post" enctype="multipart/form-data" class="m-5 p-3">
+		<input type="hidden" name="mgid" value="${manager.mgid }">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label>상품코드<span style="color:red">*</span></label>
@@ -29,6 +33,10 @@
    <div class="form-group">
       <label>상품가격<span style="color:red">*</span></label>
       <input type="number" class="form-control" name="pprice" required="required">
+    </div>
+    <div class="form-group">
+      <label>상품할인율</label>
+      <input type="number" class="form-control" name="pdiscount" min="0" max="100">
     </div>
     <div class="form-group">
       <label>상품이미지</label>

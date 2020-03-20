@@ -94,17 +94,22 @@
 			<tbody>
 				<tr>
 					<td colspan="2">상품금액</td>
-					<th>${productPay }원</th>
+					<th>${payment.product_all_pay }원</th>
 				</tr>
 				<tr>
 					<td>할인금액</td>
 					<td class="text-right"><img src="${conPath }/image/icon/minusGra.png" width="40"></td>
-					<th class="text-danger">${discount }원</th>
+					<th class="text-danger">${payment.discount }원</th>
 				</tr>
 				<tr>
 					<td>사용포인트</td>
 					<td class="text-right"><img src="${conPath }/image/icon/minusGra.png" width="40"></td>
-					<th class="text-danger">${usemp }포인트</th>
+					<th class="text-danger">${payment.usepoint }포인트</th>
+				</tr>
+				<tr>
+					<td>할인쿠폰</td>
+					<td class="text-right"><img src="${conPath }/image/icon/minusGra.png" width="40"></td>
+					<th class="text-danger">${payment.coupondiscount }원</th>
 				</tr>
 				<tr>
 					<td>적립포인트</td>
@@ -112,9 +117,14 @@
 					<th class="text-primary">(+${addmp }포인트)</th>
 				</tr>
 				<tr>
+					<td>배송비</td>
+					<td class="text-right"><img src="${conPath }/image/icon/plusGra.png" width="40"></td>
+					<th>2500원</th>
+				</tr>
+				<tr>
 					<th><h3>결제금액</h3></th>
 					<td class="text-right"><img src="${conPath }/image/icon/card-payment.png" width="50"></td>
-					<th><h3>${finalpay }원</h3></th>
+					<th><h3>${payment.purchase_amount }원</h3></th>
 				</tr>
 			</tbody>
 		</table>

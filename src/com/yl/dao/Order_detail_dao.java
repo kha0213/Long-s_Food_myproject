@@ -96,15 +96,16 @@ private Order_detail_dao() {
 		}
 		return ods;
 	} 
-	public ArrayList<Orders_dto> getDeliveryNotArrive() {
+	public ArrayList<Orders_dto> getDeliveryNotArrive(String mid) {
 		ArrayList<Orders_dto> orders = new ArrayList<Orders_dto>();
-		String sql = "SELECT O.*,P.PNAME,P.PIMAGE,OD.ODNO,P.PCODE,OD.PCNT,P.PPRICE FROM ORDERS O,PRODUCT P,ORDER_DETAIL OD WHERE O.ONO=OD.ONO AND OD.PCODE=P.PCODE AND O.PARRIVE_DATE IS NULL";
+		String sql = "SELECT O.*,P.PNAME,P.PIMAGE,OD.ODNO,P.PCODE,OD.PCNT,P.PPRICE FROM ORDERS O,PRODUCT P,ORDER_DETAIL OD WHERE O.ONO=OD.ONO AND OD.PCODE=P.PCODE AND O.PARRIVE_DATE IS NULL AND MID=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int ono = rs.getInt("ono");
@@ -114,7 +115,6 @@ private Order_detail_dao() {
 				String pimage =rs.getString("pimage");
 				int purchase_amount = rs.getInt("purchase_amount");
 				int dno = rs.getInt("dno");
-				String mid = rs.getString("mid");
 				orders.add(new Orders_dto(ono, odate, parrive_date, pname, pimage, purchase_amount, dno, mid));
 			}
 		} catch (Exception e) {

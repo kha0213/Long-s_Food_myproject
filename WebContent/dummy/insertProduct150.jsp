@@ -31,27 +31,38 @@ mgDao.joinManager("admin", "11", "관리자롱", "상품MD");
 		String pimage = ((i%20)+1)+".jpg";
 		int pstock = (int)(Math.random()*30);
 		String pdescription = i+"번 test 제품 설명";
-		pDao.registProduct(pcode,mgid, pname, pprice, pimage, pstock, pdescription);
+		int pdiscount = (int)(Math.random()*30);
+		pDao.registProduct(pcode, mgid, pname, pprice, pimage, pstock, pdescription, pdiscount);
 		
 	}
 	pDao.modifyProductDiscount(15, "admin");
 	Member_dao mDao = Member_dao.getInstance();
+	String[] mids = {"aaa","bbb","ccc","ddd"};
 	mDao.adMember("aaa", 1, 0, 1);
 	mDao.joinMember("aaa", "11", "롱롱이", "01023448628", "서울시 송파구","현대빌라", Date.valueOf("1989-03-27"), "email", "남자");
+	mDao.adMember("bbb", 0, 0, 0);
+	mDao.joinMember("bbb", "11", "롱롱이2", "01023448628", "서울시 송파구","현대빌라", Date.valueOf("1989-03-27"), "email", "남자");
+	mDao.adMember("ccc", 1, 1, 1);
+	mDao.joinMember("ccc", "11", "롱롱이3", "01023448628", "서울시 송파구","현대빌라", Date.valueOf("1989-03-27"), "email", "남자");
+	mDao.adMember("ddd", 1, 1, 1);
+	mDao.joinMember("ddd", "11", "롱롱이4", "01023448628", "서울시 송파구","현대빌라", Date.valueOf("1989-03-27"), "email", "남자");
+	
+	mDao.getMember("aaa");
+	mDao.mPointPlus(10000, "aaa");
+	mDao.mcumulative_buy_plus(1001000, "aaa");
+	mDao.mcumulative_buy_plus(11001000, "bbb");
+	mDao.mcumulative_buy_plus(111001000, "ccc");
+	mDao.mcumulative_buy_plus(511100100, "ddd");
 	
 	Customer_service_dao csDao = Customer_service_dao.getInstance();
 	for(int i=1;i<209;i++){
-		csDao.writeCsBoardMember("aaa", "test"+i, "content"+i, true, ((i%12)+1)+".jpg", 0);
+		csDao.writeCsBoardMember(mids[(int)(Math.random()*4)], "test"+i, "content"+i, true, ((i%12)+1)+".jpg", (int)(Math.random()*2));
 	}
 	Review_dao rDao = Review_dao.getInstance();
-	for(int i=1;i<200;i++){
-		rDao.reviewWrite("testPcode2", "aaa", (i%12+1)+".jpg", null, null, (int)(Math.random()*10)+1, "testReview"+i);
+	for(int i=1;i<2000;i++){
+		rDao.reviewWrite("testPcode"+((int)(Math.random()*150)), mids[(int)(Math.random()*4)], (i%12+1)+".jpg", null, null, (int)(Math.random()*10)+1, "testReview"+i);
 	}
-	
 %>
-
-
-
 
 
 </body>

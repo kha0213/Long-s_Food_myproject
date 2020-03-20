@@ -40,7 +40,7 @@ public class CsBoardWrite implements Service {
 				ono = Integer.parseInt(onoStr);
 			}
 			String ccontent = mRequest.getParameter("ccontent");
-			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null);
+			boolean csecret = mRequest.getParameter("csecretCheckbox")!=null;
 			
 			Customer_service_dao csDao = Customer_service_dao.getInstance();
 			if(csDao.writeCsBoardMember(mid, csubject, ccontent, csecret, cimage, ono)) {

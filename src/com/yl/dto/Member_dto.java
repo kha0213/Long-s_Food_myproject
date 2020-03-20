@@ -21,6 +21,7 @@ public class Member_dto {
 	private int ad_email;
 	private int ad_phone;
 	private int ad_call;
+	
 
 	public Member_dto() {
 		super();

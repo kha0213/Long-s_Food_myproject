@@ -3,16 +3,15 @@ package com.yl.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yl.dao.Delivery_dao;
-import com.yl.dao.Order_detail_dao;
+import com.yl.dao.Coupon_dao;
 
-public class MDeliveryService implements Service {
+public class MCouponViewService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		Order_detail_dao oDao = Order_detail_dao.getInstance();
 		String mid = request.getParameter("mid");
-		request.setAttribute("oNoArrive", oDao.getDeliveryNotArrive(mid));
+		Coupon_dao coDao = Coupon_dao.getInstance();
+		request.setAttribute("coupons", coDao.getMemberCoupon(mid));
 	}
 
 }

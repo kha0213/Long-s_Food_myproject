@@ -16,32 +16,24 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yl.dao.Product_dao;
 
-public class RegistProduct implements Service {
+public class ProductModifyService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-
 		String saveDirectory=request.getRealPath("image/product");
 		int maxProductSize = 1024*1024*5;
 		String pimage = "";
 		MultipartRequest mRequest = null;
-		
 		try {
 			mRequest = new MultipartRequest(request, saveDirectory,maxProductSize,"utf-8",new DefaultFileRenamePolicy());
 			String pcode = mRequest.getParameter("pcode");
 			String pname = mRequest.getParameter("pname");
-			String mgid = mRequest.getParameter("mgid");
 			int pprice = Integer.parseInt(mRequest.getParameter("pprice"));
 			int pstock = Integer.parseInt(mRequest.getParameter("pstock"));
-			int pdiscount;
+			int pdiscount = 0;
 			String pdiscountStr = mRequest.getParameter("pdiscount");
-			if(pdiscountStr == null || pdiscountStr.equals("")) {
-				pdiscount = 0;
-			}else {
-				pdiscount = Integer.parseInt(pdiscountStr);
-			}
+			if(pdiscountStr != null && pdiscountStr.length()!=0) pdiscount = Integer.parseInt(pdiscountStr);
 			String pdescription = mRequest.getParameter("pdescription");
-			
 			Enumeration<String> param = mRequest.getFileNames();
 			String paramStr = "";
 			if(param.hasMoreElements()) {
@@ -51,7 +43,7 @@ public class RegistProduct implements Service {
 			if(pimage == null) pimage = "noProductImage.png";
 			
 			Product_dao pDao = Product_dao.getInstance();
-			boolean result = pDao.registProduct(pcode, mgid, pname, pprice, pimage, pstock, pdescription, pdiscount);
+			boolean result = pDao.modifyProduct(pname, pprice, pimage, pstock, pdescription, pdiscount, pcode);
 			
 			  if(result) {
 				  request.setAttribute("registProductResult", true); 
@@ -92,10 +84,7 @@ public class RegistProduct implements Service {
 				}
 			}
 		}
-		
-		
-		
-		
+
 	}
 
 }

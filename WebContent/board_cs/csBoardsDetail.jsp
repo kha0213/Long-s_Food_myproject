@@ -101,12 +101,14 @@
 				<div class="col">주문번호${csBoard.ono }</div>
 			</div>
 		</c:if>
+		<c:if test="${not empty csBoard.cimage}">
 		<div class="row mt-2">
 			<div class="col text-center">
 				<img alt="cs이미지"
 					src="${conPath }/image/customer_service/${csBoard.cimage}">
 			</div>
 		</div>
+		</c:if>
 		<div class="row">
 			<div class="col">내용${csBoard.ccontent }</div>
 		</div>

@@ -40,7 +40,7 @@ public class CsBoardReplyService implements Service {
 				ono = Integer.parseInt(onoStr);
 			}
 			String ccontent = mRequest.getParameter("ccontent");
-			boolean csecret = (mRequest.getParameter("csecretCheckbox")!=null && mRequest.getParameter("csecretCheckbox").length()!=0);
+			boolean csecret = mRequest.getParameter("csecret")!=null;
 			int cgroup = Integer.parseInt(mRequest.getParameter("cgroup"));
 			int cgroup_outnum = Integer.parseInt(mRequest.getParameter("cgroup_outnum"));
 			int cindent = Integer.parseInt(mRequest.getParameter("cindent"));
