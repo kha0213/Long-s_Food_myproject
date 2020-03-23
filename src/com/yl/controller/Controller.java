@@ -180,11 +180,11 @@ public class Controller extends HttpServlet {
 		
 		//Product
 		else if(command.equals("/productAll.do")) {//전체 제품 보기
-			service = new ProductAll();
+			service = new ProductAllService();
 			service.execute(request, response);
 			viewPage = "board_product/productAll.jsp";
 		}else if(command.equals("/productDetail.do")) {//제품 상세 보기 + 리뷰
-			service = new ProductDetail();
+			service = new ProductDetailService();
 			service.execute(request, response);
 			viewPage = "board_product/productDetail.jsp";
 		}else if(command.equals("/cartAddProduct.do")) {//장바구니 제품 추가

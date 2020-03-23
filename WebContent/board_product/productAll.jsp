@@ -96,9 +96,7 @@
 							
 							<h5 class="card-title">${product.pname }</h5>
 							<h6 class="card-subtitle mt-2 mb-2">
-								<c:if test="${product.pdiscount>=20 }">
-									<img src="${conPath }/image/icon/sale.png" alt="sale">
-								</c:if>
+								
 								${product.pdiscount }%할인 &nbsp;
 								<del>
 									<fmt:formatNumber value="${product.pprice}"
